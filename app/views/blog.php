@@ -53,9 +53,9 @@
                 <ul class="menu">
                     <li><a href="#" data-toggle="modal" data-target="#login-modal">Login</a>
                     </li>
-                    <li><a href="register.html">Register</a>
+                    <li><a href="register">Register</a>
                     </li>
-                    <li><a href="contact.html">Contact</a>
+                    <li><a href="contact">Contact</a>
                     </li>
                     <li><a href="#">Recently viewed</a>
                     </li>
@@ -71,7 +71,7 @@
                         <h4 class="modal-title" id="Login">Customer login</h4>
                     </div>
                     <div class="modal-body">
-                        <form action="customer-orders.html" method="post">
+                        <form action="customer-orders" method="post">
                             <div class="form-group">
                                 <input type="text" class="form-control" id="email-modal" placeholder="email">
                             </div>
@@ -86,7 +86,7 @@
                         </form>
 
                         <p class="text-center text-muted">Not registered yet?</p>
-                        <p class="text-center text-muted"><a href="register.html"><strong>Register now</strong></a>! It is easy and done in 1&nbsp;minute and gives you access to special discounts and much more!</p>
+                        <p class="text-center text-muted"><a href="register"><strong>Register now</strong></a>! It is easy and done in 1&nbsp;minute and gives you access to special discounts and much more!</p>
 
                     </div>
                 </div>
@@ -104,7 +104,7 @@
         <div class="container">
             <div class="navbar-header">
 
-                <a class="navbar-brand home" href="index.html" data-animate-hover="bounce">
+                <a class="navbar-brand home" href="index" data-animate-hover="bounce">
                     <img src="img/logo.png" alt="Obaju logo" class="hidden-xs">
                     <img src="img/logo-small.png" alt="Obaju logo" class="visible-xs"><span class="sr-only">Obaju - go to homepage</span>
                 </a>
@@ -117,7 +117,7 @@
                         <span class="sr-only">Toggle search</span>
                         <i class="fa fa-search"></i>
                     </button>
-                    <a class="btn btn-default navbar-toggle" href="basket.html">
+                    <a class="btn btn-default navbar-toggle" href="basket">
                         <i class="fa fa-shopping-cart"></i>  <span class="hidden-xs">3 items in cart</span>
                     </a>
                 </div>
@@ -127,7 +127,7 @@
             <div class="navbar-collapse collapse" id="navigation">
 
                 <ul class="nav navbar-nav navbar-left">
-                    <li class="active"><a href="index.html">Home</a>
+                    <li class="active"><a href="index">Home</a>
                     </li>
                     <li class="dropdown yamm-fw">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="200">Men <b class="caret"></b></a>
@@ -138,63 +138,63 @@
                                         <div class="col-sm-3">
                                             <h5>Clothing</h5>
                                             <ul>
-                                                <li><a href="category.html">T-shirts</a>
+                                                <li><a href="category">T-shirts</a>
                                                 </li>
-                                                <li><a href="category.html">Shirts</a>
+                                                <li><a href="category">Shirts</a>
                                                 </li>
-                                                <li><a href="category.html">Pants</a>
+                                                <li><a href="category">Pants</a>
                                                 </li>
-                                                <li><a href="category.html">Accessories</a>
+                                                <li><a href="category">Accessories</a>
                                                 </li>
                                             </ul>
                                         </div>
                                         <div class="col-sm-3">
                                             <h5>Shoes</h5>
                                             <ul>
-                                                <li><a href="category.html">Trainers</a>
+                                                <li><a href="category">Trainers</a>
                                                 </li>
-                                                <li><a href="category.html">Sandals</a>
+                                                <li><a href="category">Sandals</a>
                                                 </li>
-                                                <li><a href="category.html">Hiking shoes</a>
+                                                <li><a href="category">Hiking shoes</a>
                                                 </li>
-                                                <li><a href="category.html">Casual</a>
+                                                <li><a href="category">Casual</a>
                                                 </li>
                                             </ul>
                                         </div>
                                         <div class="col-sm-3">
                                             <h5>Accessories</h5>
                                             <ul>
-                                                <li><a href="category.html">Trainers</a>
+                                                <li><a href="category">Trainers</a>
                                                 </li>
-                                                <li><a href="category.html">Sandals</a>
+                                                <li><a href="category">Sandals</a>
                                                 </li>
-                                                <li><a href="category.html">Hiking shoes</a>
+                                                <li><a href="category">Hiking shoes</a>
                                                 </li>
-                                                <li><a href="category.html">Casual</a>
+                                                <li><a href="category">Casual</a>
                                                 </li>
-                                                <li><a href="category.html">Hiking shoes</a>
+                                                <li><a href="category">Hiking shoes</a>
                                                 </li>
-                                                <li><a href="category.html">Casual</a>
+                                                <li><a href="category">Casual</a>
                                                 </li>
                                             </ul>
                                         </div>
                                         <div class="col-sm-3">
                                             <h5>Featured</h5>
                                             <ul>
-                                                <li><a href="category.html">Trainers</a>
+                                                <li><a href="category">Trainers</a>
                                                 </li>
-                                                <li><a href="category.html">Sandals</a>
+                                                <li><a href="category">Sandals</a>
                                                 </li>
-                                                <li><a href="category.html">Hiking shoes</a>
+                                                <li><a href="category">Hiking shoes</a>
                                                 </li>
                                             </ul>
                                             <h5>Looks and trends</h5>
                                             <ul>
-                                                <li><a href="category.html">Trainers</a>
+                                                <li><a href="category">Trainers</a>
                                                 </li>
-                                                <li><a href="category.html">Sandals</a>
+                                                <li><a href="category">Sandals</a>
                                                 </li>
-                                                <li><a href="category.html">Hiking shoes</a>
+                                                <li><a href="category">Hiking shoes</a>
                                                 </li>
                                             </ul>
                                         </div>
@@ -214,52 +214,52 @@
                                         <div class="col-sm-3">
                                             <h5>Clothing</h5>
                                             <ul>
-                                                <li><a href="category.html">T-shirts</a>
+                                                <li><a href="category">T-shirts</a>
                                                 </li>
-                                                <li><a href="category.html">Shirts</a>
+                                                <li><a href="category">Shirts</a>
                                                 </li>
-                                                <li><a href="category.html">Pants</a>
+                                                <li><a href="category">Pants</a>
                                                 </li>
-                                                <li><a href="category.html">Accessories</a>
+                                                <li><a href="category">Accessories</a>
                                                 </li>
                                             </ul>
                                         </div>
                                         <div class="col-sm-3">
                                             <h5>Shoes</h5>
                                             <ul>
-                                                <li><a href="category.html">Trainers</a>
+                                                <li><a href="category">Trainers</a>
                                                 </li>
-                                                <li><a href="category.html">Sandals</a>
+                                                <li><a href="category">Sandals</a>
                                                 </li>
-                                                <li><a href="category.html">Hiking shoes</a>
+                                                <li><a href="category">Hiking shoes</a>
                                                 </li>
-                                                <li><a href="category.html">Casual</a>
+                                                <li><a href="category">Casual</a>
                                                 </li>
                                             </ul>
                                         </div>
                                         <div class="col-sm-3">
                                             <h5>Accessories</h5>
                                             <ul>
-                                                <li><a href="category.html">Trainers</a>
+                                                <li><a href="category">Trainers</a>
                                                 </li>
-                                                <li><a href="category.html">Sandals</a>
+                                                <li><a href="category">Sandals</a>
                                                 </li>
-                                                <li><a href="category.html">Hiking shoes</a>
+                                                <li><a href="category">Hiking shoes</a>
                                                 </li>
-                                                <li><a href="category.html">Casual</a>
+                                                <li><a href="category">Casual</a>
                                                 </li>
-                                                <li><a href="category.html">Hiking shoes</a>
+                                                <li><a href="category">Hiking shoes</a>
                                                 </li>
-                                                <li><a href="category.html">Casual</a>
+                                                <li><a href="category">Casual</a>
                                                 </li>
                                             </ul>
                                             <h5>Looks and trends</h5>
                                             <ul>
-                                                <li><a href="category.html">Trainers</a>
+                                                <li><a href="category">Trainers</a>
                                                 </li>
-                                                <li><a href="category.html">Sandals</a>
+                                                <li><a href="category">Sandals</a>
                                                 </li>
-                                                <li><a href="category.html">Hiking shoes</a>
+                                                <li><a href="category">Hiking shoes</a>
                                                 </li>
                                             </ul>
                                         </div>
@@ -291,64 +291,64 @@
                                         <div class="col-sm-3">
                                             <h5>Shop</h5>
                                             <ul>
-                                                <li><a href="index.html">Homepage</a>
+                                                <li><a href="index">Homepage</a>
                                                 </li>
-                                                <li><a href="category.html">Category - sidebar left</a>
+                                                <li><a href="category">Category - sidebar left</a>
                                                 </li>
-                                                <li><a href="category-right.html">Category - sidebar right</a>
+                                                <li><a href="category-right">Category - sidebar right</a>
                                                 </li>
-                                                <li><a href="category-full.html">Category - full width</a>
+                                                <li><a href="category-full">Category - full width</a>
                                                 </li>
-                                                <li><a href="detail.html">Product detail</a>
+                                                <li><a href="detail">Product detail</a>
                                                 </li>
                                             </ul>
                                         </div>
                                         <div class="col-sm-3">
                                             <h5>User</h5>
                                             <ul>
-                                                <li><a href="register.html">Register / login</a>
+                                                <li><a href="register">Register / login</a>
                                                 </li>
-                                                <li><a href="customer-orders.html">Orders history</a>
+                                                <li><a href="customer-orders">Orders history</a>
                                                 </li>
-                                                <li><a href="customer-order.html">Order history detail</a>
+                                                <li><a href="customer-order">Order history detail</a>
                                                 </li>
-                                                <li><a href="customer-wishlist.html">Wishlist</a>
+                                                <li><a href="customer-wishlist">Wishlist</a>
                                                 </li>
-                                                <li><a href="customer-account.html">Customer account / change password</a>
+                                                <li><a href="customer-account">Customer account / change password</a>
                                                 </li>
                                             </ul>
                                         </div>
                                         <div class="col-sm-3">
                                             <h5>Order process</h5>
                                             <ul>
-                                                <li><a href="basket.html">Shopping cart</a>
+                                                <li><a href="basket">Shopping cart</a>
                                                 </li>
-                                                <li><a href="checkout1.html">Checkout - step 1</a>
+                                                <li><a href="checkout1">Checkout - step 1</a>
                                                 </li>
-                                                <li><a href="checkout2.html">Checkout - step 2</a>
+                                                <li><a href="checkout2">Checkout - step 2</a>
                                                 </li>
-                                                <li><a href="checkout3.html">Checkout - step 3</a>
+                                                <li><a href="checkout3">Checkout - step 3</a>
                                                 </li>
-                                                <li><a href="checkout4.html">Checkout - step 4</a>
+                                                <li><a href="checkout4">Checkout - step 4</a>
                                                 </li>
                                             </ul>
                                         </div>
                                         <div class="col-sm-3">
                                             <h5>Pages and blog</h5>
                                             <ul>
-                                                <li><a href="blog.html">Blog listing</a>
+                                                <li><a href="blog">Blog listing</a>
                                                 </li>
-                                                <li><a href="post.html">Blog Post</a>
+                                                <li><a href="post">Blog Post</a>
                                                 </li>
-                                                <li><a href="faq.html">FAQ</a>
+                                                <li><a href="faq">FAQ</a>
                                                 </li>
-                                                <li><a href="text.html">Text page</a>
+                                                <li><a href="text">Text page</a>
                                                 </li>
-                                                <li><a href="text-right.html">Text page - right sidebar</a>
+                                                <li><a href="text-right">Text page - right sidebar</a>
                                                 </li>
-                                                <li><a href="404.html">404 page</a>
+                                                <li><a href="404">404 page</a>
                                                 </li>
-                                                <li><a href="contact.html">Contact</a>
+                                                <li><a href="contact">Contact</a>
                                                 </li>
                                             </ul>
                                         </div>
@@ -366,7 +366,7 @@
             <div class="navbar-buttons">
 
                 <div class="navbar-collapse collapse right" id="basket-overview">
-                    <a href="basket.html" class="btn btn-primary navbar-btn"><i class="fa fa-shopping-cart"></i><span class="hidden-sm">3 items in cart</span></a>
+                    <a href="basket" class="btn btn-primary navbar-btn"><i class="fa fa-shopping-cart"></i><span class="hidden-sm">3 items in cart</span></a>
                 </div>
                 <!--/.nav-collapse -->
 
@@ -410,7 +410,7 @@
                 <div class="col-sm-12">
                     <ul class="breadcrumb">
 
-                        <li><a href="index.html">Home</a>
+                        <li><a href="index">Home</a>
                         </li>
                         <li>Blog listing</li>
                     </ul>
@@ -437,43 +437,43 @@
                     </div>
 
                     <div class="post">
-                        <h2><a href="post.html">Fashion now</a></h2>
+                        <h2><a href="post">Fashion now</a></h2>
                         <p class="author-category">By <a href="#">John Slim</a> in <a href="">Fashion and style</a>
                         </p>
                         <hr>
                         <p class="date-comments">
-                            <a href="post.html"><i class="fa fa-calendar-o"></i> June 20, 2013</a>
-                            <a href="post.html"><i class="fa fa-comment-o"></i> 8 Comments</a>
+                            <a href="post"><i class="fa fa-calendar-o"></i> June 20, 2013</a>
+                            <a href="post"><i class="fa fa-comment-o"></i> 8 Comments</a>
                         </p>
                         <div class="image">
-                            <a href="post.html">
+                            <a href="post">
                                 <img src="img/blog2.jpg" class="img-responsive" alt="Example blog post alt">
                             </a>
                         </div>
                         <p class="intro">Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies
                             mi vitae est. Mauris placerat eleifend leo.</p>
-                        <p class="read-more"><a href="post.html" class="btn btn-primary">Continue reading</a>
+                        <p class="read-more"><a href="post" class="btn btn-primary">Continue reading</a>
                         </p>
                     </div>
 
 
                     <div class="post">
-                        <h2><a href="post.html">Who is who - example blog post</a></h2>
+                        <h2><a href="post">Who is who - example blog post</a></h2>
                         <p class="author-category">By <a href="#">John Slim</a> in <a href="">About Minimal</a>
                         </p>
                         <hr>
                         <p class="date-comments">
-                            <a href="post.html"><i class="fa fa-calendar-o"></i> June 20, 2013</a>
-                            <a href="post.html"><i class="fa fa-comment-o"></i> 8 Comments</a>
+                            <a href="post"><i class="fa fa-calendar-o"></i> June 20, 2013</a>
+                            <a href="post"><i class="fa fa-comment-o"></i> 8 Comments</a>
                         </p>
                         <div class="image">
-                            <a href="post.html">
+                            <a href="post">
                                 <img src="img/blog.jpg" class="img-responsive" alt="Example blog post alt">
                             </a>
                         </div>
                         <p class="intro">Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies
                             mi vitae est. Mauris placerat eleifend leo.</p>
-                        <p class="read-more"><a href="post.html" class="btn btn-primary">Continue reading</a>
+                        <p class="read-more"><a href="post" class="btn btn-primary">Continue reading</a>
                         </p>
                     </div>
 
@@ -505,16 +505,16 @@
 
                             <ul class="nav nav-pills nav-stacked">
                                 <li>
-                                    <a href="blog.html">About us</a>
+                                    <a href="blog">About us</a>
                                 </li>
                                 <li class="active">
-                                    <a href="blog.html">Fashion</a>
+                                    <a href="blog">Fashion</a>
                                 </li>
                                 <li>
-                                    <a href="blog.html">News and gossip</a>
+                                    <a href="blog">News and gossip</a>
                                 </li>
                                 <li>
-                                    <a href="blog.html">Design</a>
+                                    <a href="blog">Design</a>
                                 </li>
                             </ul>
                         </div>
@@ -547,13 +547,13 @@
                         <h4>Pages</h4>
 
                         <ul>
-                            <li><a href="text.html">About us</a>
+                            <li><a href="text">About us</a>
                             </li>
-                            <li><a href="text.html">Terms and conditions</a>
+                            <li><a href="text">Terms and conditions</a>
                             </li>
-                            <li><a href="faq.html">FAQ</a>
+                            <li><a href="faq">FAQ</a>
                             </li>
-                            <li><a href="contact.html">Contact us</a>
+                            <li><a href="contact">Contact us</a>
                             </li>
                         </ul>
 
@@ -564,7 +564,7 @@
                         <ul>
                             <li><a href="#" data-toggle="modal" data-target="#login-modal">Login</a>
                             </li>
-                            <li><a href="register.html">Regiter</a>
+                            <li><a href="register">Regiter</a>
                             </li>
                         </ul>
 
@@ -580,23 +580,23 @@
                         <h5>Men</h5>
 
                         <ul>
-                            <li><a href="category.html">T-shirts</a>
+                            <li><a href="category">T-shirts</a>
                             </li>
-                            <li><a href="category.html">Shirts</a>
+                            <li><a href="category">Shirts</a>
                             </li>
-                            <li><a href="category.html">Accessories</a>
+                            <li><a href="category">Accessories</a>
                             </li>
                         </ul>
 
                         <h5>Ladies</h5>
                         <ul>
-                            <li><a href="category.html">T-shirts</a>
+                            <li><a href="category">T-shirts</a>
                             </li>
-                            <li><a href="category.html">Skirts</a>
+                            <li><a href="category">Skirts</a>
                             </li>
-                            <li><a href="category.html">Pants</a>
+                            <li><a href="category">Pants</a>
                             </li>
-                            <li><a href="category.html">Accessories</a>
+                            <li><a href="category">Accessories</a>
                             </li>
                         </ul>
 
@@ -618,7 +618,7 @@
                             <strong>Great Britain</strong>
                         </p>
 
-                        <a href="contact.html">Go to contact page</a>
+                        <a href="contact">Go to contact page</a>
 
                         <hr class="hidden-md hidden-lg">
 
