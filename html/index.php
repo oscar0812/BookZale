@@ -21,6 +21,7 @@ $app->get('/{name}', function ($request, $response, $args) {
     try {
         return $this->view->render($response, $args["name"].".php", ['router' => $this->router]);
     } catch (\RuntimeException $e) {
+        // route doesn't exist? 404 it
         throw new \Slim\Exception\NotFoundException($request, $response);
     }
 });
