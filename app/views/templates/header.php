@@ -126,7 +126,7 @@
 
         <ul class="nav navbar-nav navbar-left">
           <li>
-            <a href="home" data-hover="dropdown" data-delay="">Books</a>
+            <a href="home" data-hover="dropdown" data-delay="">Home</a>
           </li>
           <!-- add class active for blue -->
 
