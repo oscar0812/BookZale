@@ -20,7 +20,7 @@ $container['notFoundHandler'] = function ($c) {
 $app->get('/{name}', function ($request, $response, $args) {
     try {
         return $this->view->render($response, $args["name"].".php", ['router' => $this->router]);
-    } catch (\Exception $e) {
+    } catch (\RuntimeException $e) {
         throw new \Slim\Exception\NotFoundException($request, $response);
     }
 });

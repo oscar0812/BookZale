@@ -103,7 +103,7 @@
         <div class="container">
             <div class="navbar-header">
 
-                <a class="navbar-brand home" href="index" data-animate-hover="bounce">
+                <a class="navbar-brand home" href="home" data-animate-hover="bounce">
                     <img src="img/logo.png" alt="Obaju logo" class="hidden-xs">
                     <img src="img/logo-small.png" alt="Obaju logo" class="visible-xs"><span class="sr-only">Obaju - go to homepage</span>
                 </a>
@@ -126,7 +126,7 @@
             <div class="navbar-collapse collapse" id="navigation">
 
                 <ul class="nav navbar-nav navbar-left">
-                    <li class="active"><a href="index">Home</a>
+                    <li class="active"><a href="home">Home</a>
                     </li>
                     <li class="dropdown yamm-fw">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="200">Men <b class="caret"></b></a>
@@ -290,7 +290,7 @@
                                         <div class="col-sm-3">
                                             <h5>Shop</h5>
                                             <ul>
-                                                <li><a href="index">Homepage</a>
+                                                <li><a href="home">Homepage</a>
                                                 </li>
                                                 <li><a href="category">Category - sidebar left</a>
                                                 </li>
@@ -428,7 +428,7 @@
 
                                 <p class="text-center">To continue please use the <strong>Search form</strong> or <strong>Menu</strong> above.</p>
 
-                                <p class="buttons"><a href="index" class="btn btn-primary"><i class="fa fa-home"></i> Go to Homepage</a>
+                                <p class="buttons"><a href="home" class="btn btn-primary"><i class="fa fa-home"></i> Go to Homepage</a>
                                 </p>
                             </div>
                         </div>

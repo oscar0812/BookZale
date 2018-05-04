@@ -103,7 +103,7 @@
         <div class="container">
             <div class="navbar-header">
 
-                <a class="navbar-brand home" href="index" data-animate-hover="bounce">
+                <a class="navbar-brand home" href="home" data-animate-hover="bounce">
                     <img src="img/logo.png" alt="Obaju logo" class="hidden-xs">
                     <img src="img/logo-small.png" alt="Obaju logo" class="visible-xs"><span class="sr-only">Obaju - go to homepage</span>
                 </a>
@@ -126,7 +126,7 @@
             <div class="navbar-collapse collapse" id="navigation">
 
                 <ul class="nav navbar-nav navbar-left">
-                    <li class="active"><a href="index">Home</a>
+                    <li class="active"><a href="home">Home</a>
                     </li>
                     <li class="dropdown yamm-fw">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="200">Men <b class="caret"></b></a>
@@ -290,7 +290,7 @@
                                         <div class="col-sm-3">
                                             <h5>Shop</h5>
                                             <ul>
-                                                <li><a href="index">Homepage</a>
+                                                <li><a href="home">Homepage</a>
                                                 </li>
                                                 <li><a href="category">Category - sidebar left</a>
                                                 </li>
@@ -409,7 +409,7 @@
                 <div class="col-md-12">
 
                     <ul class="breadcrumb">
-                        <li><a href="index">Home</a>
+                        <li><a href="home">Home</a>
                         </li>
                         <li><a href="#">My orders</a>
                         </li>
@@ -440,7 +440,7 @@
                                     <a href="customer-account"><i class="fa fa-user"></i> My account</a>
                                 </li>
                                 <li>
-                                    <a href="index"><i class="fa fa-sign-out"></i> Logout</a>
+                                    <a href="home"><i class="fa fa-sign-out"></i> Logout</a>
                                 </li>
                             </ul>
                         </div>
