@@ -59,7 +59,7 @@ class UserTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 4;
+    const NUM_COLUMNS = 5;
 
     /**
      * The number of lazy-loaded columns
@@ -69,7 +69,7 @@ class UserTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 4;
+    const NUM_HYDRATE_COLUMNS = 5;
 
     /**
      * the column name for the id field
@@ -77,9 +77,9 @@ class UserTableMap extends TableMap
     const COL_ID = 'user.id';
 
     /**
-     * the column name for the Name field
+     * the column name for the name field
      */
-    const COL_NAME = 'user.Name';
+    const COL_NAME = 'user.name';
 
     /**
      * the column name for the email field
@@ -90,6 +90,11 @@ class UserTableMap extends TableMap
      * the column name for the password field
      */
     const COL_PASSWORD = 'user.password';
+
+    /**
+     * the column name for the date_joined field
+     */
+    const COL_DATE_JOINED = 'user.date_joined';
 
     /**
      * The default string format for model objects of the related table
@@ -103,11 +108,11 @@ class UserTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'Name', 'Email', 'Password', ),
-        self::TYPE_CAMELNAME     => array('id', 'name', 'email', 'password', ),
-        self::TYPE_COLNAME       => array(UserTableMap::COL_ID, UserTableMap::COL_NAME, UserTableMap::COL_EMAIL, UserTableMap::COL_PASSWORD, ),
-        self::TYPE_FIELDNAME     => array('id', 'Name', 'email', 'password', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, )
+        self::TYPE_PHPNAME       => array('Id', 'Name', 'Email', 'Password', 'DateJoined', ),
+        self::TYPE_CAMELNAME     => array('id', 'name', 'email', 'password', 'dateJoined', ),
+        self::TYPE_COLNAME       => array(UserTableMap::COL_ID, UserTableMap::COL_NAME, UserTableMap::COL_EMAIL, UserTableMap::COL_PASSWORD, UserTableMap::COL_DATE_JOINED, ),
+        self::TYPE_FIELDNAME     => array('id', 'name', 'email', 'password', 'date_joined', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
     );
 
     /**
@@ -117,11 +122,11 @@ class UserTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'Name' => 1, 'Email' => 2, 'Password' => 3, ),
-        self::TYPE_CAMELNAME     => array('id' => 0, 'name' => 1, 'email' => 2, 'password' => 3, ),
-        self::TYPE_COLNAME       => array(UserTableMap::COL_ID => 0, UserTableMap::COL_NAME => 1, UserTableMap::COL_EMAIL => 2, UserTableMap::COL_PASSWORD => 3, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'Name' => 1, 'email' => 2, 'password' => 3, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'Name' => 1, 'Email' => 2, 'Password' => 3, 'DateJoined' => 4, ),
+        self::TYPE_CAMELNAME     => array('id' => 0, 'name' => 1, 'email' => 2, 'password' => 3, 'dateJoined' => 4, ),
+        self::TYPE_COLNAME       => array(UserTableMap::COL_ID => 0, UserTableMap::COL_NAME => 1, UserTableMap::COL_EMAIL => 2, UserTableMap::COL_PASSWORD => 3, UserTableMap::COL_DATE_JOINED => 4, ),
+        self::TYPE_FIELDNAME     => array('id' => 0, 'name' => 1, 'email' => 2, 'password' => 3, 'date_joined' => 4, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
     );
 
     /**
@@ -142,9 +147,10 @@ class UserTableMap extends TableMap
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
-        $this->addColumn('Name', 'Name', 'VARCHAR', true, 64, null);
+        $this->addColumn('name', 'Name', 'VARCHAR', true, 64, null);
         $this->addColumn('email', 'Email', 'INTEGER', true, 64, null);
         $this->addColumn('password', 'Password', 'VARCHAR', true, 128, null);
+        $this->addColumn('date_joined', 'DateJoined', 'INTEGER', true, 16, null);
     } // initialize()
 
     /**
@@ -160,6 +166,19 @@ class UserTableMap extends TableMap
   ),
 ), null, null, 'Books', false);
     } // buildRelations()
+
+    /**
+     *
+     * Gets the list of behaviors registered for this table
+     *
+     * @return array Associative array (name => parameters) of behaviors
+     */
+    public function getBehaviors()
+    {
+        return array(
+            'validate' => array('rule1' => array ('column' => 'name','validator' => 'Length','options' => array ('min' => 1,),), 'rule2' => array ('column' => 'password','validator' => 'Regex','options' => array ('pattern' => '/^(?=.*[a-z])(?=.*[@#$%!+=]).{5,}$/',),'match' => false,'message' => 'Please enter a valid password',), ),
+        );
+    } // getBehaviors()
 
     /**
      * Retrieves a string version of the primary key from the DB resultset row that can be used to uniquely identify a row in this table.
@@ -306,11 +325,13 @@ class UserTableMap extends TableMap
             $criteria->addSelectColumn(UserTableMap::COL_NAME);
             $criteria->addSelectColumn(UserTableMap::COL_EMAIL);
             $criteria->addSelectColumn(UserTableMap::COL_PASSWORD);
+            $criteria->addSelectColumn(UserTableMap::COL_DATE_JOINED);
         } else {
             $criteria->addSelectColumn($alias . '.id');
-            $criteria->addSelectColumn($alias . '.Name');
+            $criteria->addSelectColumn($alias . '.name');
             $criteria->addSelectColumn($alias . '.email');
             $criteria->addSelectColumn($alias . '.password');
+            $criteria->addSelectColumn($alias . '.date_joined');
         }
     }
 

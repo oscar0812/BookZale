@@ -26,4 +26,47 @@ $app->get('/{name}', function ($request, $response, $args) {
     }
 });
 
+$app->post("/email", function ($request, $response, $args) {
+    // checking if user email is available
+    $post = $request->getParsedBody();
+    $info = \UserQuery::create()->findOneByEmail($post['email']);
+    echo ($info== null)?"true":"false";
+});
+
+// post /register
+$app->post('/register', function ($request, $response, $args) {
+    $post = $request->getParsedBody();
+    if ($post['type'] == 'login') {
+        // check if valid login credentials, if yes, sign in
+        $user = UserQuery::create()->findOneByEmail($post['email']);
+        $pass = $post['password'];
+
+        if ($user == null || !$user->login($pass)) {
+            // user doesn't exist or wrong password
+            $response = $response->withJson(['success'=>false]);
+        } else {
+            logUserIn($user->getId());
+            $response = $response->withJson(['success'=>true]);
+        }
+    } else {
+        // register
+        $user = new User();
+        $user->setName($post['name']);
+        $user->setEmail($post['email']);
+        $user->setPassword($post['password']);
+
+        if (!$user->validate()) {
+            // an error occured
+            $response = $response->withJson(['success'=>false]);
+        } else {
+            // all good
+            $user->setDateJoined(getCurrentDate()->getTimestamp());
+            $user->save();
+            logUserIn($user->getId());
+            $response = $response->withJson(['success'=>true]);
+        }
+    }
+    return $response;
+});
+
 $app->run();

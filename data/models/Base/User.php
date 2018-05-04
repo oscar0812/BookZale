@@ -22,6 +22,17 @@ use Propel\Runtime\Exception\LogicException;
 use Propel\Runtime\Exception\PropelException;
 use Propel\Runtime\Map\TableMap;
 use Propel\Runtime\Parser\AbstractParser;
+use Symfony\Component\Translation\IdentityTranslator;
+use Symfony\Component\Validator\ConstraintValidatorFactory;
+use Symfony\Component\Validator\ConstraintViolationList;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\Regex;
+use Symfony\Component\Validator\Context\ExecutionContextFactory;
+use Symfony\Component\Validator\Mapping\ClassMetadata;
+use Symfony\Component\Validator\Mapping\Factory\LazyLoadingMetadataFactory;
+use Symfony\Component\Validator\Mapping\Loader\StaticMethodLoader;
+use Symfony\Component\Validator\Validator\RecursiveValidator;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Base class that represents a row from the 'user' table.
@@ -93,6 +104,13 @@ abstract class User implements ActiveRecordInterface
     protected $password;
 
     /**
+     * The value for the date_joined field.
+     *
+     * @var        int
+     */
+    protected $date_joined;
+
+    /**
      * @var        ObjectCollection|ChildBook[] Collection to store aggregation of ChildBook objects.
      */
     protected $collBooks;
@@ -105,6 +123,23 @@ abstract class User implements ActiveRecordInterface
      * @var boolean
      */
     protected $alreadyInSave = false;
+
+    // validate behavior
+
+    /**
+     * Flag to prevent endless validation loop, if this object is referenced
+     * by another object which falls in this transaction.
+     * @var        boolean
+     */
+    protected $alreadyInValidation = false;
+
+    /**
+     * ConstraintViolationList object
+     *
+     * @see     http://api.symfony.com/2.0/Symfony/Component/Validator/ConstraintViolationList.html
+     * @var     ConstraintViolationList
+     */
+    protected $validationFailures;
 
     /**
      * An array of objects scheduled for deletion.
@@ -378,6 +413,16 @@ abstract class User implements ActiveRecordInterface
     }
 
     /**
+     * Get the [date_joined] column value.
+     *
+     * @return int
+     */
+    public function getDateJoined()
+    {
+        return $this->date_joined;
+    }
+
+    /**
      * Set the value of [id] column.
      *
      * @param int $v new value
@@ -458,6 +503,26 @@ abstract class User implements ActiveRecordInterface
     } // setPassword()
 
     /**
+     * Set the value of [date_joined] column.
+     *
+     * @param int $v new value
+     * @return $this|\User The current object (for fluent API support)
+     */
+    public function setDateJoined($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->date_joined !== $v) {
+            $this->date_joined = $v;
+            $this->modifiedColumns[UserTableMap::COL_DATE_JOINED] = true;
+        }
+
+        return $this;
+    } // setDateJoined()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -504,6 +569,9 @@ abstract class User implements ActiveRecordInterface
 
             $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : UserTableMap::translateFieldName('Password', TableMap::TYPE_PHPNAME, $indexType)];
             $this->password = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : UserTableMap::translateFieldName('DateJoined', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->date_joined = (null !== $col) ? (int) $col : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -512,7 +580,7 @@ abstract class User implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 4; // 4 = UserTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 5; // 5 = UserTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException(sprintf('Error populating %s object', '\\User'), 0, $e);
@@ -736,13 +804,16 @@ abstract class User implements ActiveRecordInterface
             $modifiedColumns[':p' . $index++]  = 'id';
         }
         if ($this->isColumnModified(UserTableMap::COL_NAME)) {
-            $modifiedColumns[':p' . $index++]  = 'Name';
+            $modifiedColumns[':p' . $index++]  = 'name';
         }
         if ($this->isColumnModified(UserTableMap::COL_EMAIL)) {
             $modifiedColumns[':p' . $index++]  = 'email';
         }
         if ($this->isColumnModified(UserTableMap::COL_PASSWORD)) {
             $modifiedColumns[':p' . $index++]  = 'password';
+        }
+        if ($this->isColumnModified(UserTableMap::COL_DATE_JOINED)) {
+            $modifiedColumns[':p' . $index++]  = 'date_joined';
         }
 
         $sql = sprintf(
@@ -758,7 +829,7 @@ abstract class User implements ActiveRecordInterface
                     case 'id':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case 'Name':
+                    case 'name':
                         $stmt->bindValue($identifier, $this->name, PDO::PARAM_STR);
                         break;
                     case 'email':
@@ -766,6 +837,9 @@ abstract class User implements ActiveRecordInterface
                         break;
                     case 'password':
                         $stmt->bindValue($identifier, $this->password, PDO::PARAM_STR);
+                        break;
+                    case 'date_joined':
+                        $stmt->bindValue($identifier, $this->date_joined, PDO::PARAM_INT);
                         break;
                 }
             }
@@ -841,6 +915,9 @@ abstract class User implements ActiveRecordInterface
             case 3:
                 return $this->getPassword();
                 break;
+            case 4:
+                return $this->getDateJoined();
+                break;
             default:
                 return null;
                 break;
@@ -875,6 +952,7 @@ abstract class User implements ActiveRecordInterface
             $keys[1] => $this->getName(),
             $keys[2] => $this->getEmail(),
             $keys[3] => $this->getPassword(),
+            $keys[4] => $this->getDateJoined(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -943,6 +1021,9 @@ abstract class User implements ActiveRecordInterface
             case 3:
                 $this->setPassword($value);
                 break;
+            case 4:
+                $this->setDateJoined($value);
+                break;
         } // switch()
 
         return $this;
@@ -980,6 +1061,9 @@ abstract class User implements ActiveRecordInterface
         }
         if (array_key_exists($keys[3], $arr)) {
             $this->setPassword($arr[$keys[3]]);
+        }
+        if (array_key_exists($keys[4], $arr)) {
+            $this->setDateJoined($arr[$keys[4]]);
         }
     }
 
@@ -1033,6 +1117,9 @@ abstract class User implements ActiveRecordInterface
         }
         if ($this->isColumnModified(UserTableMap::COL_PASSWORD)) {
             $criteria->add(UserTableMap::COL_PASSWORD, $this->password);
+        }
+        if ($this->isColumnModified(UserTableMap::COL_DATE_JOINED)) {
+            $criteria->add(UserTableMap::COL_DATE_JOINED, $this->date_joined);
         }
 
         return $criteria;
@@ -1123,6 +1210,7 @@ abstract class User implements ActiveRecordInterface
         $copyObj->setName($this->getName());
         $copyObj->setEmail($this->getEmail());
         $copyObj->setPassword($this->getPassword());
+        $copyObj->setDateJoined($this->getDateJoined());
 
         if ($deepCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -1418,6 +1506,7 @@ abstract class User implements ActiveRecordInterface
         $this->name = null;
         $this->email = null;
         $this->password = null;
+        $this->date_joined = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
         $this->resetModified();
@@ -1454,6 +1543,80 @@ abstract class User implements ActiveRecordInterface
     public function __toString()
     {
         return (string) $this->exportTo(UserTableMap::DEFAULT_STRING_FORMAT);
+    }
+
+    // validate behavior
+
+    /**
+     * Configure validators constraints. The Validator object uses this method
+     * to perform object validation.
+     *
+     * @param ClassMetadata $metadata
+     */
+    static public function loadValidatorMetadata(ClassMetadata $metadata)
+    {
+        $metadata->addPropertyConstraint('name', new Length(array ('min' => 1,)));
+        $metadata->addPropertyConstraint('password', new Regex(array ('pattern' => '/^(?=.*[a-z])(?=.*[@#$%!+=]).{5,}$/',)));
+    }
+
+    /**
+     * Validates the object and all objects related to this table.
+     *
+     * @see        getValidationFailures()
+     * @param      ValidatorInterface|null $validator A Validator class instance
+     * @return     boolean Whether all objects pass validation.
+     */
+    public function validate(ValidatorInterface $validator = null)
+    {
+        if (null === $validator) {
+            $validator = new RecursiveValidator(
+                new ExecutionContextFactory(new IdentityTranslator()),
+                new LazyLoadingMetadataFactory(new StaticMethodLoader()),
+                new ConstraintValidatorFactory()
+            );
+        }
+
+        $failureMap = new ConstraintViolationList();
+
+        if (!$this->alreadyInValidation) {
+            $this->alreadyInValidation = true;
+            $retval = null;
+
+
+            $retval = $validator->validate($this);
+            if (count($retval) > 0) {
+                $failureMap->addAll($retval);
+            }
+
+            if (null !== $this->collBooks) {
+                foreach ($this->collBooks as $referrerFK) {
+                    if (method_exists($referrerFK, 'validate')) {
+                        if (!$referrerFK->validate($validator)) {
+                            $failureMap->addAll($referrerFK->getValidationFailures());
+                        }
+                    }
+                }
+            }
+
+            $this->alreadyInValidation = false;
+        }
+
+        $this->validationFailures = $failureMap;
+
+        return (Boolean) (!(count($this->validationFailures) > 0));
+
+    }
+
+    /**
+     * Gets any ConstraintViolation objects that resulted from last call to validate().
+     *
+     *
+     * @return     object ConstraintViolationList
+     * @see        validate()
+     */
+    public function getValidationFailures()
+    {
+        return $this->validationFailures;
     }
 
     /**

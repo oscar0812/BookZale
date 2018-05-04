@@ -20,11 +20,16 @@
   </table>
   <table name="user" idMethod="native" phpName="User">
     <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
-    <column name="Name" phpName="Name" type="VARCHAR" size="64" required="true"/>
+    <column name="name" phpName="Name" type="VARCHAR" size="64" required="true"/>
     <column name="email" phpName="Email" type="INTEGER" size="64" required="true"/>
     <column name="password" phpName="Password" type="VARCHAR" size="128" required="true"/>
+    <column name="date_joined" phpName="DateJoined" type="INTEGER" size="16" required="true"/>
     <vendor type="mysql">
       <parameter name="Engine" value="InnoDB"/>
     </vendor>
+    <behavior name="validate">
+      <parameter name="rule1" value="{column: name, validator: Length, options: {min: 1}}"/>
+      <parameter name="rule2" value="{column: password, validator: Regex, options: {pattern: &quot;/^(?=.*[a-z])(?=.*[@#$%!+=]).{5,}$/&quot;}, match: false, message: Please enter a valid password}"/>
+    </behavior>
   </table>
 </database>

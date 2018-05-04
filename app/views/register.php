@@ -298,7 +298,7 @@ $(function() {
         email: true,
 
         remote: {
-          url: window.location.href + "/email",
+          url: "email",
           type: "POST",
           data: {
             email: function() {
@@ -343,7 +343,6 @@ $(function() {
   // ajax calls to login or register a new account
 
   function logIn(email, password) {
-    console.log(email + ", " + password);
     $.ajax({
       type: "POST",
       data: {
@@ -363,24 +362,18 @@ $(function() {
     });
   }
 
-  function registerUser(first, last, email, password) {
+  function registerUser(name, email, password) {
     $.ajax({
       type: "POST",
       data: {
         type: "register",
-        first: first,
-        last: last,
+        name: name,
         email: email,
         password: password
       },
       url: window.location.href,
       success: function(data) {
-        if (data['success']) {
-          window.location = data['path'];
-        } else {
-          // an error occured
-          signup_form.find('label').eq(0).removeClass('sr-only').text("An error occured.");
-        }
+        console.log(data);
       }
     });
   }
