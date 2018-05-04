@@ -22,18 +22,18 @@
 
         <hr>
 
-        <form action="customer-orders" method="post">
+        <form action="customer-orders" method="post" id="register-form">
           <div class="form-group">
             <label for="name">Name</label>
-            <input type="text" class="form-control" id="name">
+            <input type="text" class="form-control" name="name">
           </div>
           <div class="form-group">
             <label for="email">Email</label>
-            <input type="text" class="form-control" id="email">
+            <input type="text" class="form-control" name="email">
           </div>
           <div class="form-group">
             <label for="password">Password</label>
-            <input type="password" class="form-control" id="password">
+            <input type="password" class="form-control" name="password">
           </div>
           <div class="text-center">
             <button type="submit" class="btn btn-primary"><i class="fa fa-user-md"></i> Register</button>
@@ -52,14 +52,14 @@
 
         <hr>
 
-        <form action="customer-orders" method="post">
+        <form action="customer-orders" method="post" id="login-form">
           <div class="form-group">
             <label for="email">Email</label>
-            <input type="text" class="form-control" id="email">
+            <input type="text" class="form-control" name="email">
           </div>
           <div class="form-group">
             <label for="password">Password</label>
-            <input type="password" class="form-control" id="password">
+            <input type="password" class="form-control" name="password">
           </div>
           <div class="text-center">
             <button type="submit" class="btn btn-primary"><i class="fa fa-sign-in"></i> Log in</button>
@@ -73,4 +73,322 @@
   <!-- /.container -->
 </div>
 <!-- /#content -->
-<?php require_once("templates/footer.php");?>
+<!-- *** FOOTER ***
+ _________________________________________________________ -->
+<div id="footer" data-animate="fadeInUp">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-3 col-sm-6">
+        <h4>Pages</h4>
+
+        <ul>
+          <li><a href="text">About us</a>
+          </li>
+          <li><a href="text">Terms and conditions</a>
+          </li>
+          <li><a href="faq">FAQ</a>
+          </li>
+          <li><a href="contact">Contact us</a>
+          </li>
+        </ul>
+
+        <hr>
+
+        <h4>User section</h4>
+
+        <ul>
+          <li><a href="#" data-toggle="modal" data-target="#login-modal">Login</a>
+          </li>
+          <li><a href="register">Regiter</a>
+          </li>
+        </ul>
+
+        <hr class="hidden-md hidden-lg hidden-sm">
+
+      </div>
+      <!-- /.col-md-3 -->
+
+      <div class="col-md-3 col-sm-6">
+
+        <h4>Top categories</h4>
+
+        <h5>Men</h5>
+
+        <ul>
+          <li><a href="category">T-shirts</a>
+          </li>
+          <li><a href="category">Shirts</a>
+          </li>
+          <li><a href="category">Accessories</a>
+          </li>
+        </ul>
+
+        <h5>Ladies</h5>
+        <ul>
+          <li><a href="category">T-shirts</a>
+          </li>
+          <li><a href="category">Skirts</a>
+          </li>
+          <li><a href="category">Pants</a>
+          </li>
+          <li><a href="category">Accessories</a>
+          </li>
+        </ul>
+
+        <hr class="hidden-md hidden-lg">
+
+      </div>
+      <!-- /.col-md-3 -->
+
+      <div class="col-md-3 col-sm-6">
+
+        <h4>Where to find us</h4>
+
+        <p><strong>Obaju Ltd.</strong>
+          <br>13/25 New Avenue
+          <br>New Heaven
+          <br>45Y 73J
+          <br>England
+          <br>
+          <strong>Great Britain</strong>
+        </p>
+
+        <a href="contact">Go to contact page</a>
+
+        <hr class="hidden-md hidden-lg">
+
+      </div>
+      <!-- /.col-md-3 -->
+
+
+
+      <div class="col-md-3 col-sm-6">
+
+        <h4>Get the news</h4>
+
+        <p class="text-muted">Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.</p>
+
+        <form>
+          <div class="input-group">
+
+            <input type="text" class="form-control">
+
+            <span class="input-group-btn">
+
+			    <button class="btn btn-default" type="button">Subscribe!</button>
+
+			</span>
+
+          </div>
+          <!-- /input-group -->
+        </form>
+
+        <hr>
+
+        <h4>Stay in touch</h4>
+
+        <p class="social">
+          <a href="#" class="facebook external" data-animate-hover="shake"><i class="fa fa-facebook"></i></a>
+          <a href="#" class="twitter external" data-animate-hover="shake"><i class="fa fa-twitter"></i></a>
+          <a href="#" class="instagram external" data-animate-hover="shake"><i class="fa fa-instagram"></i></a>
+          <a href="#" class="gplus external" data-animate-hover="shake"><i class="fa fa-google-plus"></i></a>
+          <a href="#" class="email external" data-animate-hover="shake"><i class="fa fa-envelope"></i></a>
+        </p>
+
+
+      </div>
+      <!-- /.col-md-3 -->
+
+    </div>
+    <!-- /.row -->
+
+  </div>
+  <!-- /.container -->
+</div>
+<!-- /#footer -->
+
+<!-- *** FOOTER END *** -->
+
+
+
+
+<!-- *** COPYRIGHT ***
+ _________________________________________________________ -->
+<div id="copyright">
+  <div class="container">
+    <div class="col-md-6">
+      <p class="pull-left">© 2018 BookStoreInc.</p>
+
+    </div>
+    <!-- no copyright since donation has been given -->
+  </div>
+</div>
+<!-- *** COPYRIGHT END *** -->
+
+
+
+</div>
+<!-- /#all -->
+
+<!-- *** SCRIPTS TO INCLUDE ***
+ _________________________________________________________ -->
+<script src="js/jquery-1.11.0.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/jquery.cookie.js"></script>
+<script src="js/waypoints.min.js"></script>
+<script src="js/modernizr.js"></script>
+<script src="js/bootstrap-hover-dropdown.js"></script>
+<script src="js/owl.carousel.min.js"></script>
+<script src="js/front.js"></script>
+<script src="js/jquery.validate.min.js"></script>
+
+
+<script>
+$(function() {
+  login_form = $("#login-form");
+  signup_form = $("#register-form");
+
+  // form validation
+
+  login_form.validate({
+    // Specify validation rules
+    rules: {
+      email: {
+        required: true,
+        // Specify that email should be validated
+        // by the built-in "email" rule
+        email: true
+      },
+      password: {
+        required: true,
+      }
+    },
+    // Specify validation error messages
+    messages: {
+      password: {
+        required: "Please provide a password",
+      },
+      email: "Please enter a valid email address"
+    },
+    errorPlacement: function(error, element) {
+      // make the error read, and append it to the parent
+      error.addClass('text-danger').appendTo(element.parent());
+    },
+    submitHandler: function(form) {
+      // once its successful
+      email = login_form.find('input[name="email"]').val();
+      password = login_form.find('input[name="password"]').val();
+      logIn(email, password);
+    }
+  });
+
+
+  signup_form.validate({
+    // Specify validation rules
+    rules: {
+
+      name: {
+        required: true
+      },
+      email: {
+        required: true,
+
+        // Specify that email should be validated
+        // by the built-in "email" rule
+        email: true,
+
+        remote: {
+          url: window.location.href + "/email",
+          type: "POST",
+          data: {
+            email: function() {
+              return $(signup_form).find('input[name="email"]').val();
+            }
+          }
+        }
+      },
+      password: {
+        required: true,
+        minlength: 5
+      }
+    },
+    // Specify validation error messages
+    messages: {
+      name: {
+        required: "Please provide a name",
+      },
+      password: {
+        required: "Please provide a password",
+        minlength: "Your password must be at least 5 characters long"
+      },
+      email: {
+        required: "Please enter a valid email address",
+        remote: jQuery.validator.format("Email is already in use.")
+      }
+    },
+    errorPlacement: function(error, element) {
+      // make the error read, and append it to the parent
+      error.addClass('text-danger').appendTo(element.parent());
+    },
+    submitHandler: function(form) {
+      // once its successful
+      name = signup_form.find('input[name="name"]').val();
+      email = signup_form.find('input[name="email"]').val();
+      password = signup_form.find('input[name="password"]').val();
+
+      registerUser(name, email, password);
+    }
+  });
+
+  // ajax calls to login or register a new account
+
+  function logIn(email, password) {
+    console.log(email + ", " + password);
+    $.ajax({
+      type: "POST",
+      data: {
+        type: "login",
+        email: email,
+        password: password
+      },
+      url: window.location.href,
+      success: function(data) {
+        if (data['success']) {
+          window.location = data['path'];
+        } else {
+          // show error on top of email box in login form
+          login_form.find('label').eq(0).removeClass('sr-only').text("Incorrect email or password");
+        }
+      }
+    });
+  }
+
+  function registerUser(first, last, email, password) {
+    $.ajax({
+      type: "POST",
+      data: {
+        type: "register",
+        first: first,
+        last: last,
+        email: email,
+        password: password
+      },
+      url: window.location.href,
+      success: function(data) {
+        if (data['success']) {
+          window.location = data['path'];
+        } else {
+          // an error occured
+          signup_form.find('label').eq(0).removeClass('sr-only').text("An error occured.");
+        }
+      }
+    });
+  }
+
+});
+
+</script>
+
+</body>
+
+</html>
