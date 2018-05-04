@@ -14,5 +14,15 @@ use Base\User as BaseUser;
  */
 class User extends BaseUser
 {
-
+    public function setPassword($password)
+    {
+        // hash password
+        $hash = PHPassLib\Hash\BCrypt::hash($password);
+        // store the Hash
+        parent::setPassword($hash);
+    }
+    public function login($password)
+    {
+        return PHPassLib\Hash\BCrypt::verify($password, $this->getPassword());
+    }
 }
