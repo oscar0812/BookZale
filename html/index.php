@@ -39,9 +39,8 @@ $app->post('/register', function ($request, $response, $args) {
     if ($post['type'] == 'login') {
         // check if valid login credentials, if yes, sign in
         $user = UserQuery::create()->findOneByEmail($post['email']);
-        $pass = $post['password'];
 
-        if ($user == null || !$user->login($pass)) {
+        if ($user == null || !$user->login($post['password'])) {
             // user doesn't exist or wrong password
             $response = $response->withJson(['success'=>false]);
         } else {

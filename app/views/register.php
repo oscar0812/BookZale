@@ -61,6 +61,7 @@
             <label for="password">Password</label>
             <input type="password" class="form-control" name="password">
           </div>
+          <label id="login-error" class="text-danger notvisible">Incorrect Email or password</label>
           <div class="text-center">
             <button type="submit" class="btn btn-primary"><i class="fa fa-sign-in"></i> Log in</button>
           </div>
@@ -353,10 +354,10 @@ $(function() {
       url: window.location.href,
       success: function(data) {
         if (data['success']) {
-          window.location = data['path'];
+          window.location = "customer-orders";
         } else {
-          // show error on top of email box in login form
-          login_form.find('label').eq(0).removeClass('sr-only').text("Incorrect email or password");
+          // show error
+          $("#login-error").removeClass("notvisible");
         }
       }
     });
