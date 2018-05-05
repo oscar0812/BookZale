@@ -19,7 +19,12 @@ $container['notFoundHandler'] = function ($c) {
 
 $app->get('/{name}', function ($request, $response, $args) {
     try {
-        return $this->view->render($response, $args["name"].".php", ['router' => $this->router]);
+        if (startsWith($args["name"], "customer") && currentUser() == null) {
+            // not signed in, redirect to register page
+            return $response->withRedirect("register");
+        } else {
+            return $this->view->render($response, $args["name"].".php", ['router' => $this->router]);
+        }
     } catch (\RuntimeException $e) {
         // route doesn't exist? 404 it
         throw new \Slim\Exception\NotFoundException($request, $response);

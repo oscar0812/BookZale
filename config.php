@@ -29,6 +29,20 @@ function logUserOut()
     unset($_SESSION['user_id']);
 }
 
+function startsWith($original, $substr)
+{
+    $length = strlen($substr);
+    return (substr($original, 0, $length) === $substr);
+}
+
+function endsWith($original, $substr)
+{
+    $length = strlen($substr);
+
+    return $length === 0 ||
+    (substr($original, -$length) === $substr);
+}
+
 // date functions
 // returns "x min ago, x hours ago, x days ago, etc"
 function timeAgo($timestamp)
