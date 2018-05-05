@@ -22,6 +22,9 @@ $app->get('/{name}', function ($request, $response, $args) {
         if (startsWith($args["name"], "customer") && currentUser() == null) {
             // not signed in, redirect to register page
             return $response->withRedirect("register");
+        } elseif (currentUser() != null && $args["name"] == "register") {
+            // user already signed in and seeing register page, dont allow
+            return $response->withRedirect("customer-orders");
         } else {
             return $this->view->render($response, $args["name"].".php", ['router' => $this->router]);
         }
