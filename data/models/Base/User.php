@@ -25,6 +25,7 @@ use Propel\Runtime\Parser\AbstractParser;
 use Symfony\Component\Translation\IdentityTranslator;
 use Symfony\Component\Validator\ConstraintValidatorFactory;
 use Symfony\Component\Validator\ConstraintViolationList;
+use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\Validator\Context\ExecutionContextFactory;
@@ -92,7 +93,7 @@ abstract class User implements ActiveRecordInterface
     /**
      * The value for the email field.
      *
-     * @var        int
+     * @var        string
      */
     protected $email;
 
@@ -395,7 +396,7 @@ abstract class User implements ActiveRecordInterface
     /**
      * Get the [email] column value.
      *
-     * @return int
+     * @return string
      */
     public function getEmail()
     {
@@ -465,13 +466,13 @@ abstract class User implements ActiveRecordInterface
     /**
      * Set the value of [email] column.
      *
-     * @param int $v new value
+     * @param string $v new value
      * @return $this|\User The current object (for fluent API support)
      */
     public function setEmail($v)
     {
         if ($v !== null) {
-            $v = (int) $v;
+            $v = (string) $v;
         }
 
         if ($this->email !== $v) {
@@ -565,7 +566,7 @@ abstract class User implements ActiveRecordInterface
             $this->name = (null !== $col) ? (string) $col : null;
 
             $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : UserTableMap::translateFieldName('Email', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->email = (null !== $col) ? (int) $col : null;
+            $this->email = (null !== $col) ? (string) $col : null;
 
             $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : UserTableMap::translateFieldName('Password', TableMap::TYPE_PHPNAME, $indexType)];
             $this->password = (null !== $col) ? (string) $col : null;
@@ -833,7 +834,7 @@ abstract class User implements ActiveRecordInterface
                         $stmt->bindValue($identifier, $this->name, PDO::PARAM_STR);
                         break;
                     case 'email':
-                        $stmt->bindValue($identifier, $this->email, PDO::PARAM_INT);
+                        $stmt->bindValue($identifier, $this->email, PDO::PARAM_STR);
                         break;
                     case 'password':
                         $stmt->bindValue($identifier, $this->password, PDO::PARAM_STR);
@@ -1556,6 +1557,7 @@ abstract class User implements ActiveRecordInterface
     static public function loadValidatorMetadata(ClassMetadata $metadata)
     {
         $metadata->addPropertyConstraint('name', new Length(array ('min' => 1,)));
+        $metadata->addPropertyConstraint('email', new Email());
         $metadata->addPropertyConstraint('password', new Regex(array ('pattern' => '/^(?=.*[a-z])(?=.*[@#$%!+=]).{5,}$/',)));
     }
 

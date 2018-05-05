@@ -57,7 +57,7 @@ use Propel\Runtime\Exception\PropelException;
  *
  * @method     ChildUser findOneById(int $id) Return the first ChildUser filtered by the id column
  * @method     ChildUser findOneByName(string $name) Return the first ChildUser filtered by the name column
- * @method     ChildUser findOneByEmail(int $email) Return the first ChildUser filtered by the email column
+ * @method     ChildUser findOneByEmail(string $email) Return the first ChildUser filtered by the email column
  * @method     ChildUser findOneByPassword(string $password) Return the first ChildUser filtered by the password column
  * @method     ChildUser findOneByDateJoined(int $date_joined) Return the first ChildUser filtered by the date_joined column *
 
@@ -66,14 +66,14 @@ use Propel\Runtime\Exception\PropelException;
  *
  * @method     ChildUser requireOneById(int $id) Return the first ChildUser filtered by the id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildUser requireOneByName(string $name) Return the first ChildUser filtered by the name column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildUser requireOneByEmail(int $email) Return the first ChildUser filtered by the email column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildUser requireOneByEmail(string $email) Return the first ChildUser filtered by the email column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildUser requireOneByPassword(string $password) Return the first ChildUser filtered by the password column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildUser requireOneByDateJoined(int $date_joined) Return the first ChildUser filtered by the date_joined column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildUser[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildUser objects based on current ModelCriteria
  * @method     ChildUser[]|ObjectCollection findById(int $id) Return ChildUser objects filtered by the id column
  * @method     ChildUser[]|ObjectCollection findByName(string $name) Return ChildUser objects filtered by the name column
- * @method     ChildUser[]|ObjectCollection findByEmail(int $email) Return ChildUser objects filtered by the email column
+ * @method     ChildUser[]|ObjectCollection findByEmail(string $email) Return ChildUser objects filtered by the email column
  * @method     ChildUser[]|ObjectCollection findByPassword(string $password) Return ChildUser objects filtered by the password column
  * @method     ChildUser[]|ObjectCollection findByDateJoined(int $date_joined) Return ChildUser objects filtered by the date_joined column
  * @method     ChildUser[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
@@ -335,35 +335,19 @@ abstract class UserQuery extends ModelCriteria
      *
      * Example usage:
      * <code>
-     * $query->filterByEmail(1234); // WHERE email = 1234
-     * $query->filterByEmail(array(12, 34)); // WHERE email IN (12, 34)
-     * $query->filterByEmail(array('min' => 12)); // WHERE email > 12
+     * $query->filterByEmail('fooValue');   // WHERE email = 'fooValue'
+     * $query->filterByEmail('%fooValue%', Criteria::LIKE); // WHERE email LIKE '%fooValue%'
      * </code>
      *
-     * @param     mixed $email The value to use as filter.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $email The value to use as filter.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return $this|ChildUserQuery The current query, for fluid interface
      */
     public function filterByEmail($email = null, $comparison = null)
     {
-        if (is_array($email)) {
-            $useMinMax = false;
-            if (isset($email['min'])) {
-                $this->addUsingAlias(UserTableMap::COL_EMAIL, $email['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($email['max'])) {
-                $this->addUsingAlias(UserTableMap::COL_EMAIL, $email['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
+        if (null === $comparison) {
+            if (is_array($email)) {
                 $comparison = Criteria::IN;
             }
         }

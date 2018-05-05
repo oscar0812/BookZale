@@ -148,7 +148,7 @@ class UserTableMap extends TableMap
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
         $this->addColumn('name', 'Name', 'VARCHAR', true, 64, null);
-        $this->addColumn('email', 'Email', 'INTEGER', true, 64, null);
+        $this->addColumn('email', 'Email', 'VARCHAR', true, 64, null);
         $this->addColumn('password', 'Password', 'VARCHAR', true, 128, null);
         $this->addColumn('date_joined', 'DateJoined', 'INTEGER', true, 16, null);
     } // initialize()
@@ -176,7 +176,7 @@ class UserTableMap extends TableMap
     public function getBehaviors()
     {
         return array(
-            'validate' => array('rule1' => array ('column' => 'name','validator' => 'Length','options' => array ('min' => 1,),), 'rule2' => array ('column' => 'password','validator' => 'Regex','options' => array ('pattern' => '/^(?=.*[a-z])(?=.*[@#$%!+=]).{5,}$/',),'match' => false,'message' => 'Please enter a valid password',), ),
+            'validate' => array('rule1' => array ('column' => 'name','validator' => 'Length','options' => array ('min' => 1,),), 'rule2' => array ('column' => 'email','validator' => 'Email',), 'rule3' => array ('column' => 'password','validator' => 'Regex','options' => array ('pattern' => '/^(?=.*[a-z])(?=.*[@#$%!+=]).{5,}$/',),'match' => false,'message' => 'Please enter a valid password',), ),
         );
     } // getBehaviors()
 
