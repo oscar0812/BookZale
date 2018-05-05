@@ -49,7 +49,11 @@
       </div>
       <div class="col-md-6" data-animate="fadeInDown">
         <ul class="menu">
+          <?php if($user == null) { ?>
           <li><a href="register">Account</a>
+          <?php } else { ?>
+          <li><a href="customer-orders"><?=$user->getName()?></a>  
+          <?php } ?>
           </li>
           <li><a href="contact">Contact</a>
           </li>

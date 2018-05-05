@@ -17,6 +17,12 @@ $container['notFoundHandler'] = function ($c) {
     };
 };
 
+$app->get('/logout', function ($request, $response, $args) {
+    // just log out and redirect home
+    logUserOut();
+    return $response->withRedirect("home");
+});
+
 $app->get('/{name}', function ($request, $response, $args) {
     try {
         if (startsWith($args["name"], "customer") && currentUser() == null) {
@@ -26,7 +32,8 @@ $app->get('/{name}', function ($request, $response, $args) {
             // user already signed in and seeing register page, dont allow
             return $response->withRedirect("customer-orders");
         } else {
-            return $this->view->render($response, $args["name"].".php", ['router' => $this->router]);
+            return $this->view->render($response, $args["name"].".php",
+            ['router' => $this->router, 'user'=>currentUser()]);
         }
     } catch (\RuntimeException $e) {
         // route doesn't exist? 404 it
