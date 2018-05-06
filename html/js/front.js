@@ -165,7 +165,6 @@ function carousels() {
     singleItem: true,
     afterInit: ''
   });
-
 }
 
 /* animations */

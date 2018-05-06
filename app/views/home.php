@@ -13,9 +13,13 @@
                         <div class="item">
                             <img class="img-responsive" src="img/main-slider3.jpg" alt="">
                         </div>
+                        <?php if($user == null) { ?>
+                        <a href="register">
                         <div class="item">
                             <img class="img-responsive" src="img/main-slider4.jpg" alt="">
                         </div>
+                        </a>
+                      <?php } ?>
                     </div>
                     <!-- /#main-slider -->
                 </div>

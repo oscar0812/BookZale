@@ -11,7 +11,7 @@
   <meta name="keywords" content="">
 
   <title>
-    Obaju : e-commerce template
+    Book Zale
   </title>
 
   <meta name="keywords" content="">
@@ -52,7 +52,7 @@
           <?php if($user == null) { ?>
           <li><a href="register">Account</a>
           <?php } else { ?>
-          <li><a href="customer-orders"><?=$user->getName()?></a>  
+          <li><a href="customer-orders"><?=$user->getName()?></a>
           <?php } ?>
           </li>
           <li><a href="contact">Contact</a>
@@ -74,8 +74,7 @@
       <div class="navbar-header">
 
         <a class="navbar-brand home" href="home" data-animate-hover="bounce">
-                    <img src="img/logo.png" alt="Obaju logo" class="hidden-xs">
-                    <img src="img/logo-small.png" alt="Obaju logo" class="visible-xs"><span class="sr-only">Obaju - go to homepage</span>
+                    <img src="img/logo.png" alt="logo" class="logo-img hidden-xs">
                 </a>
         <div class="navbar-buttons">
           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navigation">
@@ -96,10 +95,7 @@
       <div class="navbar-collapse collapse" id="navigation">
 
         <ul class="nav navbar-nav navbar-left">
-          <li>
-            <a href="home" data-hover="dropdown" data-delay="">Home</a>
-          </li>
-          <!-- add class active for blue -->
+          <!-- add class active to li for color -->
 
           <li>
             <a href="category" data-hover="dropdown" data-delay="">Books</a>
