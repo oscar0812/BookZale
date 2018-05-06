@@ -24,18 +24,21 @@ $app->get('/logout', function ($request, $response, $args) {
     return $response->withRedirect("home");
 });
 
+$name = "";
 $app->get('/{name}', function ($request, $response, $args) {
     try {
         if (startsWith($args["name"], "customer") && currentUser() == null) {
             // not signed in, redirect to register page
-            return $response->withRedirect("register");
+            $response = $response->withRedirect("register");
         } elseif (currentUser() != null && $args["name"] == "register") {
             // user already signed in and seeing register page, dont allow
-            return $response->withRedirect("customer-orders");
+            $response = $response->withRedirect("customer-orders");
         } else {
-            return $this->view->render($response, $args["name"].".php",
+            $response = $this->view->render($response, $args["name"].".php",
             ['router' => $this->router, 'user'=>currentUser()]);
         }
+        $GLOBALS['name'] = $args['name'];
+        return $response;
     } catch (\RuntimeException $e) {
         // route doesn't exist? 404 it
         throw new \Slim\Exception\NotFoundException($request, $response);

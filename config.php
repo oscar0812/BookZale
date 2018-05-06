@@ -43,6 +43,54 @@ function endsWith($original, $substr)
     (substr($original, -$length) === $substr);
 }
 
+// To get whole url and not just the path
+function url($path = false)
+{
+    if (isset($_SERVER['HTTPS'])) {
+        $protocol = ($_SERVER['HTTPS'] && $_SERVER['HTTPS'] != "off") ? "https" : "http";
+    } else {
+        $protocol = 'http';
+    }
+    $url = $protocol . "://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+    if ($path === false) {
+        return $url;
+    }
+    // input => http://localhost/book_store/html/detail
+    // $path => books
+    // outpus => http://localhost/book_store/html/books
+    return substr($url, 0, strrpos($url, '/')+1).$path;
+}
+
+// edit a url, for example, modify a get parameter
+// current url => http://url.com/page?get=param
+// input array => array('get'=>'change')
+// output url => http://url.com/page?get=change
+function modifyUrl($mod = array(), $url = false)
+{
+    // If $url wasn't passed in, use the current url
+    if ($url == false) {
+        $url = url();
+    }
+
+    // Parse the url into pieces
+    $url_array = parse_url($url);
+
+    // The original URL had a query string, modify it.
+    if (!empty($url_array['query'])) {
+        parse_str($url_array['query'], $query_array);
+        foreach ($mod as $key => $value) {
+            $query_array[$key] = $value;
+        }
+    }
+
+    // The original URL didn't have a query string, add it.
+    else {
+        $query_array = $mod;
+    }
+
+    return $url_array['scheme'].'://'.$url_array['host'].$url_array['path'].'?'.http_build_query($query_array);
+}
+
 // date functions
 // returns "x min ago, x hours ago, x days ago, etc"
 function timeAgo($timestamp)
