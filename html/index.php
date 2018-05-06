@@ -13,7 +13,8 @@ $container['view'] = new \Slim\Views\PhpRenderer("../app/views/");
 // if url is not found (404)
 $container['notFoundHandler'] = function ($c) {
     return function ($request, $response) use ($c) {
-        return $c['view']->render($response->withStatus(404), '404.php', ['router' => $c->router]);
+        return $c['view']->render($response->withStatus(404), '404.php',
+        ['router' => $c->router]);
     };
 };
 

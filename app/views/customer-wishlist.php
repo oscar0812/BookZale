@@ -24,10 +24,10 @@
         <div class="panel-body">
 
           <ul class="nav nav-pills nav-stacked">
-            <li class="active">
+            <li>
               <a href="customer-orders"><i class="fa fa-list"></i> My orders</a>
             </li>
-            <li>
+            <li class="active">
               <a href="customer-wishlist"><i class="fa fa-heart"></i> My wishlist</a>
             </li>
             <li>
