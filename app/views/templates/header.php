@@ -100,83 +100,6 @@
           <li>
             <a href="category" data-hover="dropdown" data-delay="">Books</a>
           </li>
-
-          <li class="dropdown yamm-fw">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="200">Template <b class="caret"></b></a>
-            <ul class="dropdown-menu">
-              <li>
-                <div class="yamm-content">
-                  <div class="row">
-                    <div class="col-sm-3">
-                      <h5>Shop</h5>
-                      <ul>
-                        <li><a href="home">Homepage</a>
-                        </li>
-                        <li><a href="category">Category - sidebar left</a>
-                        </li>
-                        <li><a href="category-right">Category - sidebar right</a>
-                        </li>
-                        <li><a href="category-full">Category - full width</a>
-                        </li>
-                        <li><a href="detail">Product detail</a>
-                        </li>
-                      </ul>
-                    </div>
-                    <div class="col-sm-3">
-                      <h5>User</h5>
-                      <ul>
-                        <li><a href="register">Register / login</a>
-                        </li>
-                        <li><a href="customer-orders">Orders history</a>
-                        </li>
-                        <li><a href="customer-order">Order history detail</a>
-                        </li>
-                        <li><a href="customer-wishlist">Wishlist</a>
-                        </li>
-                        <li><a href="customer-account">Customer account / change password</a>
-                        </li>
-                      </ul>
-                    </div>
-                    <div class="col-sm-3">
-                      <h5>Order process</h5>
-                      <ul>
-                        <li><a href="basket">Shopping cart</a>
-                        </li>
-                        <li><a href="checkout1">Checkout - step 1</a>
-                        </li>
-                        <li><a href="checkout2">Checkout - step 2</a>
-                        </li>
-                        <li><a href="checkout3">Checkout - step 3</a>
-                        </li>
-                        <li><a href="checkout4">Checkout - step 4</a>
-                        </li>
-                      </ul>
-                    </div>
-                    <div class="col-sm-3">
-                      <h5>Pages and blog</h5>
-                      <ul>
-                        <li><a href="blog">Blog listing</a>
-                        </li>
-                        <li><a href="post">Blog Post</a>
-                        </li>
-                        <li><a href="faq">FAQ</a>
-                        </li>
-                        <li><a href="text">Text page</a>
-                        </li>
-                        <li><a href="text-right">Text page - right sidebar</a>
-                        </li>
-                        <li><a href="404">404 page</a>
-                        </li>
-                        <li><a href="contact">Contact</a>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-                <!-- /.yamm-content -->
-              </li>
-            </ul>
-          </li>
         </ul>
 
       </div>
@@ -188,28 +111,6 @@
           <a href="basket" class="btn btn-primary navbar-btn"><i class="fa fa-shopping-cart"></i><span class="hidden-sm">3 items in cart</span></a>
         </div>
         <!--/.nav-collapse -->
-
-        <div class="navbar-collapse collapse right" id="search-not-mobile">
-          <button type="button" class="btn navbar-btn btn-primary" data-toggle="collapse" data-target="#search">
-            <span class="sr-only">Toggle search</span>
-            <i class="fa fa-search"></i>
-          </button>
-        </div>
-      </div>
-
-      <div class="collapse clearfix" id="search">
-
-        <form class="navbar-form" role="search">
-          <div class="input-group">
-            <input type="text" class="form-control" placeholder="Search">
-            <span class="input-group-btn">
-
-			<button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
-
-		    </span>
-          </div>
-        </form>
-
       </div>
       <!--/.nav-collapse -->
 

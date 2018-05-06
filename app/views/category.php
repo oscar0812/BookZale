@@ -22,41 +22,55 @@
         <div class="panel-body">
           <ul class="nav nav-pills nav-stacked category-menu">
             <li>
-              <a href="category">Men <span class="badge pull-right">42</span></a>
+              <a href="category?section=students">Students <span class="badge pull-right">2</span></a>
+            </li>
+            <li>
+              <a href="category">Nonfiction <span class="badge pull-right">42</span></a>
               <ul>
-                <li><a href="category">T-shirts</a>
+                <li><a href="category">Persuasive Writing</a>
                 </li>
-                <li><a href="category">Shirts</a>
+                <li><a href="category">Information Writing</a>
                 </li>
-                <li><a href="category">Pants</a>
+                <li><a href="category">Autobiography</a>
                 </li>
-                <li><a href="category">Accessories</a>
+                <li><a href="category">Biography</a>
                 </li>
               </ul>
             </li>
             <li class="active">
-              <a href="category">Ladies  <span class="badge pull-right">123</span></a>
+              <a href="category">Fiction  <span class="badge pull-right">123</span></a>
               <ul>
-                <li><a href="category">T-shirts</a>
+                <li><a href="category">Historical Fiction</a>
                 </li>
-                <li><a href="category">Skirts</a>
+                <li><a href="category">Science Fiction</a>
                 </li>
-                <li><a href="category">Pants</a>
+                <li><a href="category">Realistic Fiction</a>
                 </li>
-                <li><a href="category">Accessories</a>
+                <li><a href="category">Fantasy</a>
                 </li>
               </ul>
             </li>
             <li>
-              <a href="category">Kids  <span class="badge pull-right">11</span></a>
+              <a href="category">Folklore  <span class="badge pull-right">11</span></a>
               <ul>
-                <li><a href="category">T-shirts</a>
+                <li><a href="category">Fable</a>
                 </li>
-                <li><a href="category">Skirts</a>
+                <li><a href="category">Myth</a>
                 </li>
-                <li><a href="category">Pants</a>
+                <li><a href="category">Tall Tale</a>
                 </li>
-                <li><a href="category">Accessories</a>
+                <li><a href="category">Legend</a>
+                </li>
+                <li><a href="category">Fairytale</a>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <a href="category">Drama  <span class="badge pull-right">11</span></a>
+              <ul>
+                <li><a href="category">Comedy</a>
+                </li>
+                <li><a href="category">Tragedy</a>
                 </li>
               </ul>
             </li>
