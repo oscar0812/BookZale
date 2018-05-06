@@ -2,19 +2,20 @@
 
 namespace Base;
 
+use \Book as ChildBook;
 use \BookQuery as ChildBookQuery;
 use \Category as ChildCategory;
 use \CategoryQuery as ChildCategoryQuery;
-use \User as ChildUser;
-use \UserQuery as ChildUserQuery;
 use \Exception;
 use \PDO;
 use Map\BookTableMap;
+use Map\CategoryTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
 use Propel\Runtime\ActiveRecord\ActiveRecordInterface;
 use Propel\Runtime\Collection\Collection;
+use Propel\Runtime\Collection\ObjectCollection;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\BadMethodCallException;
 use Propel\Runtime\Exception\LogicException;
@@ -23,18 +24,18 @@ use Propel\Runtime\Map\TableMap;
 use Propel\Runtime\Parser\AbstractParser;
 
 /**
- * Base class that represents a row from the 'book' table.
+ * Base class that represents a row from the 'category' table.
  *
  *
  *
  * @package    propel.generator..Base
  */
-abstract class Book implements ActiveRecordInterface
+abstract class Category implements ActiveRecordInterface
 {
     /**
      * TableMap class name
      */
-    const TABLE_MAP = '\\Map\\BookTableMap';
+    const TABLE_MAP = '\\Map\\CategoryTableMap';
 
 
     /**
@@ -71,18 +72,18 @@ abstract class Book implements ActiveRecordInterface
     protected $id;
 
     /**
+     * The value for the parent field.
+     *
+     * @var        int
+     */
+    protected $parent;
+
+    /**
      * The value for the name field.
      *
      * @var        string
      */
     protected $name;
-
-    /**
-     * The value for the price field.
-     *
-     * @var        double
-     */
-    protected $price;
 
     /**
      * The value for the description field.
@@ -92,43 +93,10 @@ abstract class Book implements ActiveRecordInterface
     protected $description;
 
     /**
-     * The value for the image_url field.
-     *
-     * @var        int
+     * @var        ObjectCollection|ChildBook[] Collection to store aggregation of ChildBook objects.
      */
-    protected $image_url;
-
-    /**
-     * The value for the category_id field.
-     *
-     * @var        int
-     */
-    protected $category_id;
-
-    /**
-     * The value for the posted_by field.
-     *
-     * @var        int
-     */
-    protected $posted_by;
-
-    /**
-     * The value for the sold field.
-     *
-     * Note: this column has a database default value of: false
-     * @var        boolean
-     */
-    protected $sold;
-
-    /**
-     * @var        ChildUser
-     */
-    protected $aUser;
-
-    /**
-     * @var        ChildCategory
-     */
-    protected $aCategory;
+    protected $collBooks;
+    protected $collBooksPartial;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -139,23 +107,16 @@ abstract class Book implements ActiveRecordInterface
     protected $alreadyInSave = false;
 
     /**
-     * Applies default values to this object.
-     * This method should be called from the object's constructor (or
-     * equivalent initialization method).
-     * @see __construct()
+     * An array of objects scheduled for deletion.
+     * @var ObjectCollection|ChildBook[]
      */
-    public function applyDefaultValues()
-    {
-        $this->sold = false;
-    }
+    protected $booksScheduledForDeletion = null;
 
     /**
-     * Initializes internal state of Base\Book object.
-     * @see applyDefaults()
+     * Initializes internal state of Base\Category object.
      */
     public function __construct()
     {
-        $this->applyDefaultValues();
     }
 
     /**
@@ -247,9 +208,9 @@ abstract class Book implements ActiveRecordInterface
     }
 
     /**
-     * Compares this with another <code>Book</code> instance.  If
-     * <code>obj</code> is an instance of <code>Book</code>, delegates to
-     * <code>equals(Book)</code>.  Otherwise, returns <code>false</code>.
+     * Compares this with another <code>Category</code> instance.  If
+     * <code>obj</code> is an instance of <code>Category</code>, delegates to
+     * <code>equals(Category)</code>.  Otherwise, returns <code>false</code>.
      *
      * @param  mixed   $obj The object to compare to.
      * @return boolean Whether equal to the object specified.
@@ -315,7 +276,7 @@ abstract class Book implements ActiveRecordInterface
      * @param string $name  The virtual column name
      * @param mixed  $value The value to give to the virtual column
      *
-     * @return $this|Book The current object, for fluid interface
+     * @return $this|Category The current object, for fluid interface
      */
     public function setVirtualColumn($name, $value)
     {
@@ -387,6 +348,16 @@ abstract class Book implements ActiveRecordInterface
     }
 
     /**
+     * Get the [parent] column value.
+     *
+     * @return int
+     */
+    public function getParent()
+    {
+        return $this->parent;
+    }
+
+    /**
      * Get the [name] column value.
      *
      * @return string
@@ -394,16 +365,6 @@ abstract class Book implements ActiveRecordInterface
     public function getName()
     {
         return $this->name;
-    }
-
-    /**
-     * Get the [price] column value.
-     *
-     * @return double
-     */
-    public function getPrice()
-    {
-        return $this->price;
     }
 
     /**
@@ -417,60 +378,10 @@ abstract class Book implements ActiveRecordInterface
     }
 
     /**
-     * Get the [image_url] column value.
-     *
-     * @return int
-     */
-    public function getImageUrl()
-    {
-        return $this->image_url;
-    }
-
-    /**
-     * Get the [category_id] column value.
-     *
-     * @return int
-     */
-    public function getCategoryId()
-    {
-        return $this->category_id;
-    }
-
-    /**
-     * Get the [posted_by] column value.
-     *
-     * @return int
-     */
-    public function getPostedBy()
-    {
-        return $this->posted_by;
-    }
-
-    /**
-     * Get the [sold] column value.
-     *
-     * @return boolean
-     */
-    public function getSold()
-    {
-        return $this->sold;
-    }
-
-    /**
-     * Get the [sold] column value.
-     *
-     * @return boolean
-     */
-    public function isSold()
-    {
-        return $this->getSold();
-    }
-
-    /**
      * Set the value of [id] column.
      *
      * @param int $v new value
-     * @return $this|\Book The current object (for fluent API support)
+     * @return $this|\Category The current object (for fluent API support)
      */
     public function setId($v)
     {
@@ -480,17 +391,37 @@ abstract class Book implements ActiveRecordInterface
 
         if ($this->id !== $v) {
             $this->id = $v;
-            $this->modifiedColumns[BookTableMap::COL_ID] = true;
+            $this->modifiedColumns[CategoryTableMap::COL_ID] = true;
         }
 
         return $this;
     } // setId()
 
     /**
+     * Set the value of [parent] column.
+     *
+     * @param int $v new value
+     * @return $this|\Category The current object (for fluent API support)
+     */
+    public function setParent($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->parent !== $v) {
+            $this->parent = $v;
+            $this->modifiedColumns[CategoryTableMap::COL_PARENT] = true;
+        }
+
+        return $this;
+    } // setParent()
+
+    /**
      * Set the value of [name] column.
      *
      * @param string $v new value
-     * @return $this|\Book The current object (for fluent API support)
+     * @return $this|\Category The current object (for fluent API support)
      */
     public function setName($v)
     {
@@ -500,37 +431,17 @@ abstract class Book implements ActiveRecordInterface
 
         if ($this->name !== $v) {
             $this->name = $v;
-            $this->modifiedColumns[BookTableMap::COL_NAME] = true;
+            $this->modifiedColumns[CategoryTableMap::COL_NAME] = true;
         }
 
         return $this;
     } // setName()
 
     /**
-     * Set the value of [price] column.
-     *
-     * @param double $v new value
-     * @return $this|\Book The current object (for fluent API support)
-     */
-    public function setPrice($v)
-    {
-        if ($v !== null) {
-            $v = (double) $v;
-        }
-
-        if ($this->price !== $v) {
-            $this->price = $v;
-            $this->modifiedColumns[BookTableMap::COL_PRICE] = true;
-        }
-
-        return $this;
-    } // setPrice()
-
-    /**
      * Set the value of [description] column.
      *
      * @param string $v new value
-     * @return $this|\Book The current object (for fluent API support)
+     * @return $this|\Category The current object (for fluent API support)
      */
     public function setDescription($v)
     {
@@ -540,107 +451,11 @@ abstract class Book implements ActiveRecordInterface
 
         if ($this->description !== $v) {
             $this->description = $v;
-            $this->modifiedColumns[BookTableMap::COL_DESCRIPTION] = true;
+            $this->modifiedColumns[CategoryTableMap::COL_DESCRIPTION] = true;
         }
 
         return $this;
     } // setDescription()
-
-    /**
-     * Set the value of [image_url] column.
-     *
-     * @param int $v new value
-     * @return $this|\Book The current object (for fluent API support)
-     */
-    public function setImageUrl($v)
-    {
-        if ($v !== null) {
-            $v = (int) $v;
-        }
-
-        if ($this->image_url !== $v) {
-            $this->image_url = $v;
-            $this->modifiedColumns[BookTableMap::COL_IMAGE_URL] = true;
-        }
-
-        return $this;
-    } // setImageUrl()
-
-    /**
-     * Set the value of [category_id] column.
-     *
-     * @param int $v new value
-     * @return $this|\Book The current object (for fluent API support)
-     */
-    public function setCategoryId($v)
-    {
-        if ($v !== null) {
-            $v = (int) $v;
-        }
-
-        if ($this->category_id !== $v) {
-            $this->category_id = $v;
-            $this->modifiedColumns[BookTableMap::COL_CATEGORY_ID] = true;
-        }
-
-        if ($this->aCategory !== null && $this->aCategory->getId() !== $v) {
-            $this->aCategory = null;
-        }
-
-        return $this;
-    } // setCategoryId()
-
-    /**
-     * Set the value of [posted_by] column.
-     *
-     * @param int $v new value
-     * @return $this|\Book The current object (for fluent API support)
-     */
-    public function setPostedBy($v)
-    {
-        if ($v !== null) {
-            $v = (int) $v;
-        }
-
-        if ($this->posted_by !== $v) {
-            $this->posted_by = $v;
-            $this->modifiedColumns[BookTableMap::COL_POSTED_BY] = true;
-        }
-
-        if ($this->aUser !== null && $this->aUser->getId() !== $v) {
-            $this->aUser = null;
-        }
-
-        return $this;
-    } // setPostedBy()
-
-    /**
-     * Sets the value of the [sold] column.
-     * Non-boolean arguments are converted using the following rules:
-     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
-     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
-     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
-     *
-     * @param  boolean|integer|string $v The new value
-     * @return $this|\Book The current object (for fluent API support)
-     */
-    public function setSold($v)
-    {
-        if ($v !== null) {
-            if (is_string($v)) {
-                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
-            } else {
-                $v = (boolean) $v;
-            }
-        }
-
-        if ($this->sold !== $v) {
-            $this->sold = $v;
-            $this->modifiedColumns[BookTableMap::COL_SOLD] = true;
-        }
-
-        return $this;
-    } // setSold()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -652,10 +467,6 @@ abstract class Book implements ActiveRecordInterface
      */
     public function hasOnlyDefaultValues()
     {
-            if ($this->sold !== false) {
-                return false;
-            }
-
         // otherwise, everything was equal, so return TRUE
         return true;
     } // hasOnlyDefaultValues()
@@ -682,29 +493,17 @@ abstract class Book implements ActiveRecordInterface
     {
         try {
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : BookTableMap::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : CategoryTableMap::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
             $this->id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : BookTableMap::translateFieldName('Name', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : CategoryTableMap::translateFieldName('Parent', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->parent = (null !== $col) ? (int) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : CategoryTableMap::translateFieldName('Name', TableMap::TYPE_PHPNAME, $indexType)];
             $this->name = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : BookTableMap::translateFieldName('Price', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->price = (null !== $col) ? (double) $col : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : BookTableMap::translateFieldName('Description', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : CategoryTableMap::translateFieldName('Description', TableMap::TYPE_PHPNAME, $indexType)];
             $this->description = (null !== $col) ? (string) $col : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : BookTableMap::translateFieldName('ImageUrl', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->image_url = (null !== $col) ? (int) $col : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : BookTableMap::translateFieldName('CategoryId', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->category_id = (null !== $col) ? (int) $col : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : BookTableMap::translateFieldName('PostedBy', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->posted_by = (null !== $col) ? (int) $col : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 7 + $startcol : BookTableMap::translateFieldName('Sold', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->sold = (null !== $col) ? (boolean) $col : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -713,10 +512,10 @@ abstract class Book implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 8; // 8 = BookTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 4; // 4 = CategoryTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
-            throw new PropelException(sprintf('Error populating %s object', '\\Book'), 0, $e);
+            throw new PropelException(sprintf('Error populating %s object', '\\Category'), 0, $e);
         }
     }
 
@@ -735,12 +534,6 @@ abstract class Book implements ActiveRecordInterface
      */
     public function ensureConsistency()
     {
-        if ($this->aCategory !== null && $this->category_id !== $this->aCategory->getId()) {
-            $this->aCategory = null;
-        }
-        if ($this->aUser !== null && $this->posted_by !== $this->aUser->getId()) {
-            $this->aUser = null;
-        }
     } // ensureConsistency
 
     /**
@@ -764,13 +557,13 @@ abstract class Book implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getReadConnection(BookTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getReadConnection(CategoryTableMap::DATABASE_NAME);
         }
 
         // We don't need to alter the object instance pool; we're just modifying this instance
         // already in the pool.
 
-        $dataFetcher = ChildBookQuery::create(null, $this->buildPkeyCriteria())->setFormatter(ModelCriteria::FORMAT_STATEMENT)->find($con);
+        $dataFetcher = ChildCategoryQuery::create(null, $this->buildPkeyCriteria())->setFormatter(ModelCriteria::FORMAT_STATEMENT)->find($con);
         $row = $dataFetcher->fetch();
         $dataFetcher->close();
         if (!$row) {
@@ -780,8 +573,8 @@ abstract class Book implements ActiveRecordInterface
 
         if ($deep) {  // also de-associate any related objects?
 
-            $this->aUser = null;
-            $this->aCategory = null;
+            $this->collBooks = null;
+
         } // if (deep)
     }
 
@@ -791,8 +584,8 @@ abstract class Book implements ActiveRecordInterface
      * @param      ConnectionInterface $con
      * @return void
      * @throws PropelException
-     * @see Book::setDeleted()
-     * @see Book::isDeleted()
+     * @see Category::setDeleted()
+     * @see Category::isDeleted()
      */
     public function delete(ConnectionInterface $con = null)
     {
@@ -801,11 +594,11 @@ abstract class Book implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getWriteConnection(BookTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(CategoryTableMap::DATABASE_NAME);
         }
 
         $con->transaction(function () use ($con) {
-            $deleteQuery = ChildBookQuery::create()
+            $deleteQuery = ChildCategoryQuery::create()
                 ->filterByPrimaryKey($this->getPrimaryKey());
             $ret = $this->preDelete($con);
             if ($ret) {
@@ -840,7 +633,7 @@ abstract class Book implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getWriteConnection(BookTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(CategoryTableMap::DATABASE_NAME);
         }
 
         return $con->transaction(function () use ($con) {
@@ -859,7 +652,7 @@ abstract class Book implements ActiveRecordInterface
                     $this->postUpdate($con);
                 }
                 $this->postSave($con);
-                BookTableMap::addInstanceToPool($this);
+                CategoryTableMap::addInstanceToPool($this);
             } else {
                 $affectedRows = 0;
             }
@@ -885,25 +678,6 @@ abstract class Book implements ActiveRecordInterface
         if (!$this->alreadyInSave) {
             $this->alreadyInSave = true;
 
-            // We call the save method on the following object(s) if they
-            // were passed to this object by their corresponding set
-            // method.  This object relates to these object(s) by a
-            // foreign key reference.
-
-            if ($this->aUser !== null) {
-                if ($this->aUser->isModified() || $this->aUser->isNew()) {
-                    $affectedRows += $this->aUser->save($con);
-                }
-                $this->setUser($this->aUser);
-            }
-
-            if ($this->aCategory !== null) {
-                if ($this->aCategory->isModified() || $this->aCategory->isNew()) {
-                    $affectedRows += $this->aCategory->save($con);
-                }
-                $this->setCategory($this->aCategory);
-            }
-
             if ($this->isNew() || $this->isModified()) {
                 // persist changes
                 if ($this->isNew()) {
@@ -913,6 +687,23 @@ abstract class Book implements ActiveRecordInterface
                     $affectedRows += $this->doUpdate($con);
                 }
                 $this->resetModified();
+            }
+
+            if ($this->booksScheduledForDeletion !== null) {
+                if (!$this->booksScheduledForDeletion->isEmpty()) {
+                    \BookQuery::create()
+                        ->filterByPrimaryKeys($this->booksScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->booksScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collBooks !== null) {
+                foreach ($this->collBooks as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
             }
 
             $this->alreadyInSave = false;
@@ -935,39 +726,27 @@ abstract class Book implements ActiveRecordInterface
         $modifiedColumns = array();
         $index = 0;
 
-        $this->modifiedColumns[BookTableMap::COL_ID] = true;
+        $this->modifiedColumns[CategoryTableMap::COL_ID] = true;
         if (null !== $this->id) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key (' . BookTableMap::COL_ID . ')');
+            throw new PropelException('Cannot insert a value for auto-increment primary key (' . CategoryTableMap::COL_ID . ')');
         }
 
          // check the columns in natural order for more readable SQL queries
-        if ($this->isColumnModified(BookTableMap::COL_ID)) {
+        if ($this->isColumnModified(CategoryTableMap::COL_ID)) {
             $modifiedColumns[':p' . $index++]  = 'id';
         }
-        if ($this->isColumnModified(BookTableMap::COL_NAME)) {
+        if ($this->isColumnModified(CategoryTableMap::COL_PARENT)) {
+            $modifiedColumns[':p' . $index++]  = 'parent';
+        }
+        if ($this->isColumnModified(CategoryTableMap::COL_NAME)) {
             $modifiedColumns[':p' . $index++]  = 'name';
         }
-        if ($this->isColumnModified(BookTableMap::COL_PRICE)) {
-            $modifiedColumns[':p' . $index++]  = 'price';
-        }
-        if ($this->isColumnModified(BookTableMap::COL_DESCRIPTION)) {
+        if ($this->isColumnModified(CategoryTableMap::COL_DESCRIPTION)) {
             $modifiedColumns[':p' . $index++]  = 'description';
-        }
-        if ($this->isColumnModified(BookTableMap::COL_IMAGE_URL)) {
-            $modifiedColumns[':p' . $index++]  = 'image_url';
-        }
-        if ($this->isColumnModified(BookTableMap::COL_CATEGORY_ID)) {
-            $modifiedColumns[':p' . $index++]  = 'category_id';
-        }
-        if ($this->isColumnModified(BookTableMap::COL_POSTED_BY)) {
-            $modifiedColumns[':p' . $index++]  = 'posted_by';
-        }
-        if ($this->isColumnModified(BookTableMap::COL_SOLD)) {
-            $modifiedColumns[':p' . $index++]  = 'sold';
         }
 
         $sql = sprintf(
-            'INSERT INTO book (%s) VALUES (%s)',
+            'INSERT INTO category (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -979,26 +758,14 @@ abstract class Book implements ActiveRecordInterface
                     case 'id':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
+                    case 'parent':
+                        $stmt->bindValue($identifier, $this->parent, PDO::PARAM_INT);
+                        break;
                     case 'name':
                         $stmt->bindValue($identifier, $this->name, PDO::PARAM_STR);
                         break;
-                    case 'price':
-                        $stmt->bindValue($identifier, $this->price, PDO::PARAM_STR);
-                        break;
                     case 'description':
                         $stmt->bindValue($identifier, $this->description, PDO::PARAM_STR);
-                        break;
-                    case 'image_url':
-                        $stmt->bindValue($identifier, $this->image_url, PDO::PARAM_INT);
-                        break;
-                    case 'category_id':
-                        $stmt->bindValue($identifier, $this->category_id, PDO::PARAM_INT);
-                        break;
-                    case 'posted_by':
-                        $stmt->bindValue($identifier, $this->posted_by, PDO::PARAM_INT);
-                        break;
-                    case 'sold':
-                        $stmt->bindValue($identifier, (int) $this->sold, PDO::PARAM_INT);
                         break;
                 }
             }
@@ -1046,7 +813,7 @@ abstract class Book implements ActiveRecordInterface
      */
     public function getByName($name, $type = TableMap::TYPE_PHPNAME)
     {
-        $pos = BookTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
+        $pos = CategoryTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
         $field = $this->getByPosition($pos);
 
         return $field;
@@ -1066,25 +833,13 @@ abstract class Book implements ActiveRecordInterface
                 return $this->getId();
                 break;
             case 1:
-                return $this->getName();
+                return $this->getParent();
                 break;
             case 2:
-                return $this->getPrice();
+                return $this->getName();
                 break;
             case 3:
                 return $this->getDescription();
-                break;
-            case 4:
-                return $this->getImageUrl();
-                break;
-            case 5:
-                return $this->getCategoryId();
-                break;
-            case 6:
-                return $this->getPostedBy();
-                break;
-            case 7:
-                return $this->getSold();
                 break;
             default:
                 return null;
@@ -1110,20 +865,16 @@ abstract class Book implements ActiveRecordInterface
     public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
     {
 
-        if (isset($alreadyDumpedObjects['Book'][$this->hashCode()])) {
+        if (isset($alreadyDumpedObjects['Category'][$this->hashCode()])) {
             return '*RECURSION*';
         }
-        $alreadyDumpedObjects['Book'][$this->hashCode()] = true;
-        $keys = BookTableMap::getFieldNames($keyType);
+        $alreadyDumpedObjects['Category'][$this->hashCode()] = true;
+        $keys = CategoryTableMap::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getId(),
-            $keys[1] => $this->getName(),
-            $keys[2] => $this->getPrice(),
+            $keys[1] => $this->getParent(),
+            $keys[2] => $this->getName(),
             $keys[3] => $this->getDescription(),
-            $keys[4] => $this->getImageUrl(),
-            $keys[5] => $this->getCategoryId(),
-            $keys[6] => $this->getPostedBy(),
-            $keys[7] => $this->getSold(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1131,35 +882,20 @@ abstract class Book implements ActiveRecordInterface
         }
 
         if ($includeForeignObjects) {
-            if (null !== $this->aUser) {
+            if (null !== $this->collBooks) {
 
                 switch ($keyType) {
                     case TableMap::TYPE_CAMELNAME:
-                        $key = 'user';
+                        $key = 'books';
                         break;
                     case TableMap::TYPE_FIELDNAME:
-                        $key = 'user';
+                        $key = 'books';
                         break;
                     default:
-                        $key = 'User';
+                        $key = 'Books';
                 }
 
-                $result[$key] = $this->aUser->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
-            }
-            if (null !== $this->aCategory) {
-
-                switch ($keyType) {
-                    case TableMap::TYPE_CAMELNAME:
-                        $key = 'category';
-                        break;
-                    case TableMap::TYPE_FIELDNAME:
-                        $key = 'category';
-                        break;
-                    default:
-                        $key = 'Category';
-                }
-
-                $result[$key] = $this->aCategory->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+                $result[$key] = $this->collBooks->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
         }
 
@@ -1175,11 +911,11 @@ abstract class Book implements ActiveRecordInterface
      *                one of the class type constants TableMap::TYPE_PHPNAME, TableMap::TYPE_CAMELNAME
      *                TableMap::TYPE_COLNAME, TableMap::TYPE_FIELDNAME, TableMap::TYPE_NUM.
      *                Defaults to TableMap::TYPE_PHPNAME.
-     * @return $this|\Book
+     * @return $this|\Category
      */
     public function setByName($name, $value, $type = TableMap::TYPE_PHPNAME)
     {
-        $pos = BookTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
+        $pos = CategoryTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
 
         return $this->setByPosition($pos, $value);
     }
@@ -1190,7 +926,7 @@ abstract class Book implements ActiveRecordInterface
      *
      * @param  int $pos position in xml schema
      * @param  mixed $value field value
-     * @return $this|\Book
+     * @return $this|\Category
      */
     public function setByPosition($pos, $value)
     {
@@ -1199,25 +935,13 @@ abstract class Book implements ActiveRecordInterface
                 $this->setId($value);
                 break;
             case 1:
-                $this->setName($value);
+                $this->setParent($value);
                 break;
             case 2:
-                $this->setPrice($value);
+                $this->setName($value);
                 break;
             case 3:
                 $this->setDescription($value);
-                break;
-            case 4:
-                $this->setImageUrl($value);
-                break;
-            case 5:
-                $this->setCategoryId($value);
-                break;
-            case 6:
-                $this->setPostedBy($value);
-                break;
-            case 7:
-                $this->setSold($value);
                 break;
         } // switch()
 
@@ -1243,31 +967,19 @@ abstract class Book implements ActiveRecordInterface
      */
     public function fromArray($arr, $keyType = TableMap::TYPE_PHPNAME)
     {
-        $keys = BookTableMap::getFieldNames($keyType);
+        $keys = CategoryTableMap::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) {
             $this->setId($arr[$keys[0]]);
         }
         if (array_key_exists($keys[1], $arr)) {
-            $this->setName($arr[$keys[1]]);
+            $this->setParent($arr[$keys[1]]);
         }
         if (array_key_exists($keys[2], $arr)) {
-            $this->setPrice($arr[$keys[2]]);
+            $this->setName($arr[$keys[2]]);
         }
         if (array_key_exists($keys[3], $arr)) {
             $this->setDescription($arr[$keys[3]]);
-        }
-        if (array_key_exists($keys[4], $arr)) {
-            $this->setImageUrl($arr[$keys[4]]);
-        }
-        if (array_key_exists($keys[5], $arr)) {
-            $this->setCategoryId($arr[$keys[5]]);
-        }
-        if (array_key_exists($keys[6], $arr)) {
-            $this->setPostedBy($arr[$keys[6]]);
-        }
-        if (array_key_exists($keys[7], $arr)) {
-            $this->setSold($arr[$keys[7]]);
         }
     }
 
@@ -1288,7 +1000,7 @@ abstract class Book implements ActiveRecordInterface
      * @param string $data The source data to import from
      * @param string $keyType The type of keys the array uses.
      *
-     * @return $this|\Book The current object, for fluid interface
+     * @return $this|\Category The current object, for fluid interface
      */
     public function importFrom($parser, $data, $keyType = TableMap::TYPE_PHPNAME)
     {
@@ -1308,31 +1020,19 @@ abstract class Book implements ActiveRecordInterface
      */
     public function buildCriteria()
     {
-        $criteria = new Criteria(BookTableMap::DATABASE_NAME);
+        $criteria = new Criteria(CategoryTableMap::DATABASE_NAME);
 
-        if ($this->isColumnModified(BookTableMap::COL_ID)) {
-            $criteria->add(BookTableMap::COL_ID, $this->id);
+        if ($this->isColumnModified(CategoryTableMap::COL_ID)) {
+            $criteria->add(CategoryTableMap::COL_ID, $this->id);
         }
-        if ($this->isColumnModified(BookTableMap::COL_NAME)) {
-            $criteria->add(BookTableMap::COL_NAME, $this->name);
+        if ($this->isColumnModified(CategoryTableMap::COL_PARENT)) {
+            $criteria->add(CategoryTableMap::COL_PARENT, $this->parent);
         }
-        if ($this->isColumnModified(BookTableMap::COL_PRICE)) {
-            $criteria->add(BookTableMap::COL_PRICE, $this->price);
+        if ($this->isColumnModified(CategoryTableMap::COL_NAME)) {
+            $criteria->add(CategoryTableMap::COL_NAME, $this->name);
         }
-        if ($this->isColumnModified(BookTableMap::COL_DESCRIPTION)) {
-            $criteria->add(BookTableMap::COL_DESCRIPTION, $this->description);
-        }
-        if ($this->isColumnModified(BookTableMap::COL_IMAGE_URL)) {
-            $criteria->add(BookTableMap::COL_IMAGE_URL, $this->image_url);
-        }
-        if ($this->isColumnModified(BookTableMap::COL_CATEGORY_ID)) {
-            $criteria->add(BookTableMap::COL_CATEGORY_ID, $this->category_id);
-        }
-        if ($this->isColumnModified(BookTableMap::COL_POSTED_BY)) {
-            $criteria->add(BookTableMap::COL_POSTED_BY, $this->posted_by);
-        }
-        if ($this->isColumnModified(BookTableMap::COL_SOLD)) {
-            $criteria->add(BookTableMap::COL_SOLD, $this->sold);
+        if ($this->isColumnModified(CategoryTableMap::COL_DESCRIPTION)) {
+            $criteria->add(CategoryTableMap::COL_DESCRIPTION, $this->description);
         }
 
         return $criteria;
@@ -1350,8 +1050,8 @@ abstract class Book implements ActiveRecordInterface
      */
     public function buildPkeyCriteria()
     {
-        $criteria = ChildBookQuery::create();
-        $criteria->add(BookTableMap::COL_ID, $this->id);
+        $criteria = ChildCategoryQuery::create();
+        $criteria->add(CategoryTableMap::COL_ID, $this->id);
 
         return $criteria;
     }
@@ -1413,20 +1113,30 @@ abstract class Book implements ActiveRecordInterface
      * If desired, this method can also make copies of all associated (fkey referrers)
      * objects.
      *
-     * @param      object $copyObj An object of \Book (or compatible) type.
+     * @param      object $copyObj An object of \Category (or compatible) type.
      * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
      * @param      boolean $makeNew Whether to reset autoincrement PKs and make the object new.
      * @throws PropelException
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
+        $copyObj->setParent($this->getParent());
         $copyObj->setName($this->getName());
-        $copyObj->setPrice($this->getPrice());
         $copyObj->setDescription($this->getDescription());
-        $copyObj->setImageUrl($this->getImageUrl());
-        $copyObj->setCategoryId($this->getCategoryId());
-        $copyObj->setPostedBy($this->getPostedBy());
-        $copyObj->setSold($this->getSold());
+
+        if ($deepCopy) {
+            // important: temporarily setNew(false) because this affects the behavior of
+            // the getter/setter methods for fkey referrer objects.
+            $copyObj->setNew(false);
+
+            foreach ($this->getBooks() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addBook($relObj->copy($deepCopy));
+                }
+            }
+
+        } // if ($deepCopy)
+
         if ($makeNew) {
             $copyObj->setNew(true);
             $copyObj->setId(NULL); // this is a auto-increment column, so set to default value
@@ -1442,7 +1152,7 @@ abstract class Book implements ActiveRecordInterface
      * objects.
      *
      * @param  boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-     * @return \Book Clone of current object.
+     * @return \Category Clone of current object.
      * @throws PropelException
      */
     public function copy($deepCopy = false)
@@ -1455,106 +1165,271 @@ abstract class Book implements ActiveRecordInterface
         return $copyObj;
     }
 
+
     /**
-     * Declares an association between this object and a ChildUser object.
+     * Initializes a collection based on the name of a relation.
+     * Avoids crafting an 'init[$relationName]s' method name
+     * that wouldn't work when StandardEnglishPluralizer is used.
      *
-     * @param  ChildUser $v
-     * @return $this|\Book The current object (for fluent API support)
+     * @param      string $relationName The name of the relation to initialize
+     * @return void
+     */
+    public function initRelation($relationName)
+    {
+        if ('Book' == $relationName) {
+            $this->initBooks();
+            return;
+        }
+    }
+
+    /**
+     * Clears out the collBooks collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return void
+     * @see        addBooks()
+     */
+    public function clearBooks()
+    {
+        $this->collBooks = null; // important to set this to NULL since that means it is uninitialized
+    }
+
+    /**
+     * Reset is the collBooks collection loaded partially.
+     */
+    public function resetPartialBooks($v = true)
+    {
+        $this->collBooksPartial = $v;
+    }
+
+    /**
+     * Initializes the collBooks collection.
+     *
+     * By default this just sets the collBooks collection to an empty array (like clearcollBooks());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param      boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initBooks($overrideExisting = true)
+    {
+        if (null !== $this->collBooks && !$overrideExisting) {
+            return;
+        }
+
+        $collectionClassName = BookTableMap::getTableMap()->getCollectionClassName();
+
+        $this->collBooks = new $collectionClassName;
+        $this->collBooks->setModel('\Book');
+    }
+
+    /**
+     * Gets an array of ChildBook objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this ChildCategory is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @return ObjectCollection|ChildBook[] List of ChildBook objects
      * @throws PropelException
      */
-    public function setUser(ChildUser $v = null)
+    public function getBooks(Criteria $criteria = null, ConnectionInterface $con = null)
     {
-        if ($v === null) {
-            $this->setPostedBy(NULL);
-        } else {
-            $this->setPostedBy($v->getId());
+        $partial = $this->collBooksPartial && !$this->isNew();
+        if (null === $this->collBooks || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collBooks) {
+                // return empty collection
+                $this->initBooks();
+            } else {
+                $collBooks = ChildBookQuery::create(null, $criteria)
+                    ->filterByCategory($this)
+                    ->find($con);
+
+                if (null !== $criteria) {
+                    if (false !== $this->collBooksPartial && count($collBooks)) {
+                        $this->initBooks(false);
+
+                        foreach ($collBooks as $obj) {
+                            if (false == $this->collBooks->contains($obj)) {
+                                $this->collBooks->append($obj);
+                            }
+                        }
+
+                        $this->collBooksPartial = true;
+                    }
+
+                    return $collBooks;
+                }
+
+                if ($partial && $this->collBooks) {
+                    foreach ($this->collBooks as $obj) {
+                        if ($obj->isNew()) {
+                            $collBooks[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collBooks = $collBooks;
+                $this->collBooksPartial = false;
+            }
         }
 
-        $this->aUser = $v;
+        return $this->collBooks;
+    }
 
-        // Add binding for other direction of this n:n relationship.
-        // If this object has already been added to the ChildUser object, it will not be re-added.
-        if ($v !== null) {
-            $v->addBook($this);
+    /**
+     * Sets a collection of ChildBook objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param      Collection $books A Propel collection.
+     * @param      ConnectionInterface $con Optional connection object
+     * @return $this|ChildCategory The current object (for fluent API support)
+     */
+    public function setBooks(Collection $books, ConnectionInterface $con = null)
+    {
+        /** @var ChildBook[] $booksToDelete */
+        $booksToDelete = $this->getBooks(new Criteria(), $con)->diff($books);
+
+
+        $this->booksScheduledForDeletion = $booksToDelete;
+
+        foreach ($booksToDelete as $bookRemoved) {
+            $bookRemoved->setCategory(null);
         }
 
+        $this->collBooks = null;
+        foreach ($books as $book) {
+            $this->addBook($book);
+        }
+
+        $this->collBooks = $books;
+        $this->collBooksPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Book objects.
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct
+     * @param      ConnectionInterface $con
+     * @return int             Count of related Book objects.
+     * @throws PropelException
+     */
+    public function countBooks(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
+    {
+        $partial = $this->collBooksPartial && !$this->isNew();
+        if (null === $this->collBooks || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collBooks) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getBooks());
+            }
+
+            $query = ChildBookQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByCategory($this)
+                ->count($con);
+        }
+
+        return count($this->collBooks);
+    }
+
+    /**
+     * Method called to associate a ChildBook object to this object
+     * through the ChildBook foreign key attribute.
+     *
+     * @param  ChildBook $l ChildBook
+     * @return $this|\Category The current object (for fluent API support)
+     */
+    public function addBook(ChildBook $l)
+    {
+        if ($this->collBooks === null) {
+            $this->initBooks();
+            $this->collBooksPartial = true;
+        }
+
+        if (!$this->collBooks->contains($l)) {
+            $this->doAddBook($l);
+
+            if ($this->booksScheduledForDeletion and $this->booksScheduledForDeletion->contains($l)) {
+                $this->booksScheduledForDeletion->remove($this->booksScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param ChildBook $book The ChildBook object to add.
+     */
+    protected function doAddBook(ChildBook $book)
+    {
+        $this->collBooks[]= $book;
+        $book->setCategory($this);
+    }
+
+    /**
+     * @param  ChildBook $book The ChildBook object to remove.
+     * @return $this|ChildCategory The current object (for fluent API support)
+     */
+    public function removeBook(ChildBook $book)
+    {
+        if ($this->getBooks()->contains($book)) {
+            $pos = $this->collBooks->search($book);
+            $this->collBooks->remove($pos);
+            if (null === $this->booksScheduledForDeletion) {
+                $this->booksScheduledForDeletion = clone $this->collBooks;
+                $this->booksScheduledForDeletion->clear();
+            }
+            $this->booksScheduledForDeletion[]= clone $book;
+            $book->setCategory(null);
+        }
 
         return $this;
     }
 
 
     /**
-     * Get the associated ChildUser object
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Category is new, it will return
+     * an empty collection; or if this Category has previously
+     * been saved, it will retrieve related Books from storage.
      *
-     * @param  ConnectionInterface $con Optional Connection object.
-     * @return ChildUser The associated ChildUser object.
-     * @throws PropelException
-     */
-    public function getUser(ConnectionInterface $con = null)
-    {
-        if ($this->aUser === null && ($this->posted_by != 0)) {
-            $this->aUser = ChildUserQuery::create()->findPk($this->posted_by, $con);
-            /* The following can be used additionally to
-                guarantee the related object contains a reference
-                to this object.  This level of coupling may, however, be
-                undesirable since it could result in an only partially populated collection
-                in the referenced object.
-                $this->aUser->addBooks($this);
-             */
-        }
-
-        return $this->aUser;
-    }
-
-    /**
-     * Declares an association between this object and a ChildCategory object.
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Category.
      *
-     * @param  ChildCategory $v
-     * @return $this|\Book The current object (for fluent API support)
-     * @throws PropelException
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return ObjectCollection|ChildBook[] List of ChildBook objects
      */
-    public function setCategory(ChildCategory $v = null)
+    public function getBooksJoinUser(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
     {
-        if ($v === null) {
-            $this->setCategoryId(NULL);
-        } else {
-            $this->setCategoryId($v->getId());
-        }
+        $query = ChildBookQuery::create(null, $criteria);
+        $query->joinWith('User', $joinBehavior);
 
-        $this->aCategory = $v;
-
-        // Add binding for other direction of this n:n relationship.
-        // If this object has already been added to the ChildCategory object, it will not be re-added.
-        if ($v !== null) {
-            $v->addBook($this);
-        }
-
-
-        return $this;
-    }
-
-
-    /**
-     * Get the associated ChildCategory object
-     *
-     * @param  ConnectionInterface $con Optional Connection object.
-     * @return ChildCategory The associated ChildCategory object.
-     * @throws PropelException
-     */
-    public function getCategory(ConnectionInterface $con = null)
-    {
-        if ($this->aCategory === null && ($this->category_id != 0)) {
-            $this->aCategory = ChildCategoryQuery::create()->findPk($this->category_id, $con);
-            /* The following can be used additionally to
-                guarantee the related object contains a reference
-                to this object.  This level of coupling may, however, be
-                undesirable since it could result in an only partially populated collection
-                in the referenced object.
-                $this->aCategory->addBooks($this);
-             */
-        }
-
-        return $this->aCategory;
+        return $this->getBooks($query, $con);
     }
 
     /**
@@ -1564,23 +1439,12 @@ abstract class Book implements ActiveRecordInterface
      */
     public function clear()
     {
-        if (null !== $this->aUser) {
-            $this->aUser->removeBook($this);
-        }
-        if (null !== $this->aCategory) {
-            $this->aCategory->removeBook($this);
-        }
         $this->id = null;
+        $this->parent = null;
         $this->name = null;
-        $this->price = null;
         $this->description = null;
-        $this->image_url = null;
-        $this->category_id = null;
-        $this->posted_by = null;
-        $this->sold = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
-        $this->applyDefaultValues();
         $this->resetModified();
         $this->setNew(true);
         $this->setDeleted(false);
@@ -1597,10 +1461,14 @@ abstract class Book implements ActiveRecordInterface
     public function clearAllReferences($deep = false)
     {
         if ($deep) {
+            if ($this->collBooks) {
+                foreach ($this->collBooks as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
         } // if ($deep)
 
-        $this->aUser = null;
-        $this->aCategory = null;
+        $this->collBooks = null;
     }
 
     /**
@@ -1610,7 +1478,7 @@ abstract class Book implements ActiveRecordInterface
      */
     public function __toString()
     {
-        return (string) $this->exportTo(BookTableMap::DEFAULT_STRING_FORMAT);
+        return (string) $this->exportTo(CategoryTableMap::DEFAULT_STRING_FORMAT);
     }
 
     /**

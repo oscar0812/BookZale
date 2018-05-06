@@ -25,6 +25,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildBookQuery orderByPrice($order = Criteria::ASC) Order by the price column
  * @method     ChildBookQuery orderByDescription($order = Criteria::ASC) Order by the description column
  * @method     ChildBookQuery orderByImageUrl($order = Criteria::ASC) Order by the image_url column
+ * @method     ChildBookQuery orderByCategoryId($order = Criteria::ASC) Order by the category_id column
  * @method     ChildBookQuery orderByPostedBy($order = Criteria::ASC) Order by the posted_by column
  * @method     ChildBookQuery orderBySold($order = Criteria::ASC) Order by the sold column
  *
@@ -33,6 +34,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildBookQuery groupByPrice() Group by the price column
  * @method     ChildBookQuery groupByDescription() Group by the description column
  * @method     ChildBookQuery groupByImageUrl() Group by the image_url column
+ * @method     ChildBookQuery groupByCategoryId() Group by the category_id column
  * @method     ChildBookQuery groupByPostedBy() Group by the posted_by column
  * @method     ChildBookQuery groupBySold() Group by the sold column
  *
@@ -54,7 +56,17 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildBookQuery rightJoinWithUser() Adds a RIGHT JOIN clause and with to the query using the User relation
  * @method     ChildBookQuery innerJoinWithUser() Adds a INNER JOIN clause and with to the query using the User relation
  *
- * @method     \UserQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
+ * @method     ChildBookQuery leftJoinCategory($relationAlias = null) Adds a LEFT JOIN clause to the query using the Category relation
+ * @method     ChildBookQuery rightJoinCategory($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Category relation
+ * @method     ChildBookQuery innerJoinCategory($relationAlias = null) Adds a INNER JOIN clause to the query using the Category relation
+ *
+ * @method     ChildBookQuery joinWithCategory($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the Category relation
+ *
+ * @method     ChildBookQuery leftJoinWithCategory() Adds a LEFT JOIN clause and with to the query using the Category relation
+ * @method     ChildBookQuery rightJoinWithCategory() Adds a RIGHT JOIN clause and with to the query using the Category relation
+ * @method     ChildBookQuery innerJoinWithCategory() Adds a INNER JOIN clause and with to the query using the Category relation
+ *
+ * @method     \UserQuery|\CategoryQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
  *
  * @method     ChildBook findOne(ConnectionInterface $con = null) Return the first ChildBook matching the query
  * @method     ChildBook findOneOrCreate(ConnectionInterface $con = null) Return the first ChildBook matching the query, or a new ChildBook object populated from the query conditions when no match is found
@@ -64,6 +76,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildBook findOneByPrice(double $price) Return the first ChildBook filtered by the price column
  * @method     ChildBook findOneByDescription(string $description) Return the first ChildBook filtered by the description column
  * @method     ChildBook findOneByImageUrl(int $image_url) Return the first ChildBook filtered by the image_url column
+ * @method     ChildBook findOneByCategoryId(int $category_id) Return the first ChildBook filtered by the category_id column
  * @method     ChildBook findOneByPostedBy(int $posted_by) Return the first ChildBook filtered by the posted_by column
  * @method     ChildBook findOneBySold(boolean $sold) Return the first ChildBook filtered by the sold column *
 
@@ -75,6 +88,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildBook requireOneByPrice(double $price) Return the first ChildBook filtered by the price column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildBook requireOneByDescription(string $description) Return the first ChildBook filtered by the description column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildBook requireOneByImageUrl(int $image_url) Return the first ChildBook filtered by the image_url column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildBook requireOneByCategoryId(int $category_id) Return the first ChildBook filtered by the category_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildBook requireOneByPostedBy(int $posted_by) Return the first ChildBook filtered by the posted_by column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildBook requireOneBySold(boolean $sold) Return the first ChildBook filtered by the sold column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
@@ -84,6 +98,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildBook[]|ObjectCollection findByPrice(double $price) Return ChildBook objects filtered by the price column
  * @method     ChildBook[]|ObjectCollection findByDescription(string $description) Return ChildBook objects filtered by the description column
  * @method     ChildBook[]|ObjectCollection findByImageUrl(int $image_url) Return ChildBook objects filtered by the image_url column
+ * @method     ChildBook[]|ObjectCollection findByCategoryId(int $category_id) Return ChildBook objects filtered by the category_id column
  * @method     ChildBook[]|ObjectCollection findByPostedBy(int $posted_by) Return ChildBook objects filtered by the posted_by column
  * @method     ChildBook[]|ObjectCollection findBySold(boolean $sold) Return ChildBook objects filtered by the sold column
  * @method     ChildBook[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
@@ -184,7 +199,7 @@ abstract class BookQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT id, name, price, description, image_url, posted_by, sold FROM book WHERE id = :p0';
+        $sql = 'SELECT id, name, price, description, image_url, category_id, posted_by, sold FROM book WHERE id = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -448,6 +463,49 @@ abstract class BookQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query on the category_id column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByCategoryId(1234); // WHERE category_id = 1234
+     * $query->filterByCategoryId(array(12, 34)); // WHERE category_id IN (12, 34)
+     * $query->filterByCategoryId(array('min' => 12)); // WHERE category_id > 12
+     * </code>
+     *
+     * @see       filterByCategory()
+     *
+     * @param     mixed $categoryId The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildBookQuery The current query, for fluid interface
+     */
+    public function filterByCategoryId($categoryId = null, $comparison = null)
+    {
+        if (is_array($categoryId)) {
+            $useMinMax = false;
+            if (isset($categoryId['min'])) {
+                $this->addUsingAlias(BookTableMap::COL_CATEGORY_ID, $categoryId['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($categoryId['max'])) {
+                $this->addUsingAlias(BookTableMap::COL_CATEGORY_ID, $categoryId['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(BookTableMap::COL_CATEGORY_ID, $categoryId, $comparison);
+    }
+
+    /**
      * Filter the query on the posted_by column
      *
      * Example usage:
@@ -592,6 +650,83 @@ abstract class BookQuery extends ModelCriteria
         return $this
             ->joinUser($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'User', '\UserQuery');
+    }
+
+    /**
+     * Filter the query by a related \Category object
+     *
+     * @param \Category|ObjectCollection $category The related object(s) to use as filter
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @throws \Propel\Runtime\Exception\PropelException
+     *
+     * @return ChildBookQuery The current query, for fluid interface
+     */
+    public function filterByCategory($category, $comparison = null)
+    {
+        if ($category instanceof \Category) {
+            return $this
+                ->addUsingAlias(BookTableMap::COL_CATEGORY_ID, $category->getId(), $comparison);
+        } elseif ($category instanceof ObjectCollection) {
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+
+            return $this
+                ->addUsingAlias(BookTableMap::COL_CATEGORY_ID, $category->toKeyValue('PrimaryKey', 'Id'), $comparison);
+        } else {
+            throw new PropelException('filterByCategory() only accepts arguments of type \Category or Collection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Category relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this|ChildBookQuery The current query, for fluid interface
+     */
+    public function joinCategory($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Category');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Category');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Category relation Category object
+     *
+     * @see useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return \CategoryQuery A secondary query class using the current class as primary query
+     */
+    public function useCategoryQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinCategory($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Category', '\CategoryQuery');
     }
 
     /**
