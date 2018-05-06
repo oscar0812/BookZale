@@ -27,41 +27,41 @@
         <div class="panel-body">
           <ul class="nav nav-pills nav-stacked category-menu">
             <li>
-              <a href="category">Men <span class="badge pull-right">42</span></a>
+              <a href="books">Men <span class="badge pull-right">42</span></a>
               <ul>
-                <li><a href="category">T-shirts</a>
+                <li><a href="books">T-shirts</a>
                 </li>
-                <li><a href="category">Shirts</a>
+                <li><a href="books">Shirts</a>
                 </li>
-                <li><a href="category">Pants</a>
+                <li><a href="books">Pants</a>
                 </li>
-                <li><a href="category">Accessories</a>
+                <li><a href="books">Accessories</a>
                 </li>
               </ul>
             </li>
             <li class="active">
-              <a href="category">Ladies  <span class="badge pull-right">123</span></a>
+              <a href="books">Ladies  <span class="badge pull-right">123</span></a>
               <ul>
-                <li><a href="category">T-shirts</a>
+                <li><a href="books">T-shirts</a>
                 </li>
-                <li><a href="category">Skirts</a>
+                <li><a href="books">Skirts</a>
                 </li>
-                <li><a href="category">Pants</a>
+                <li><a href="books">Pants</a>
                 </li>
-                <li><a href="category">Accessories</a>
+                <li><a href="books">Accessories</a>
                 </li>
               </ul>
             </li>
             <li>
-              <a href="category">Kids  <span class="badge pull-right">11</span></a>
+              <a href="books">Kids  <span class="badge pull-right">11</span></a>
               <ul>
-                <li><a href="category">T-shirts</a>
+                <li><a href="books">T-shirts</a>
                 </li>
-                <li><a href="category">Skirts</a>
+                <li><a href="books">Skirts</a>
                 </li>
-                <li><a href="category">Pants</a>
+                <li><a href="books">Pants</a>
                 </li>
-                <li><a href="category">Accessories</a>
+                <li><a href="books">Accessories</a>
                 </li>
               </ul>
             </li>

@@ -25,52 +25,52 @@
               <a href="category?section=students">Students <span class="badge pull-right">2</span></a>
             </li>
             <li>
-              <a href="category">Nonfiction <span class="badge pull-right">42</span></a>
+              <a href="books">Nonfiction <span class="badge pull-right">42</span></a>
               <ul>
-                <li><a href="category">Persuasive Writing</a>
+                <li><a href="books">Persuasive Writing</a>
                 </li>
-                <li><a href="category">Information Writing</a>
+                <li><a href="books">Information Writing</a>
                 </li>
-                <li><a href="category">Autobiography</a>
+                <li><a href="books">Autobiography</a>
                 </li>
-                <li><a href="category">Biography</a>
+                <li><a href="books">Biography</a>
                 </li>
               </ul>
             </li>
             <li class="active">
-              <a href="category">Fiction  <span class="badge pull-right">123</span></a>
+              <a href="books">Fiction  <span class="badge pull-right">123</span></a>
               <ul>
-                <li><a href="category">Historical Fiction</a>
+                <li><a href="books">Historical Fiction</a>
                 </li>
-                <li><a href="category">Science Fiction</a>
+                <li><a href="books">Science Fiction</a>
                 </li>
-                <li><a href="category">Realistic Fiction</a>
+                <li><a href="books">Realistic Fiction</a>
                 </li>
-                <li><a href="category">Fantasy</a>
+                <li><a href="books">Fantasy</a>
                 </li>
               </ul>
             </li>
             <li>
-              <a href="category">Folklore  <span class="badge pull-right">11</span></a>
+              <a href="books">Folklore  <span class="badge pull-right">11</span></a>
               <ul>
-                <li><a href="category">Fable</a>
+                <li><a href="books">Fable</a>
                 </li>
-                <li><a href="category">Myth</a>
+                <li><a href="books">Myth</a>
                 </li>
-                <li><a href="category">Tall Tale</a>
+                <li><a href="books">Tall Tale</a>
                 </li>
-                <li><a href="category">Legend</a>
+                <li><a href="books">Legend</a>
                 </li>
-                <li><a href="category">Fairytale</a>
+                <li><a href="books">Fairytale</a>
                 </li>
               </ul>
             </li>
             <li>
-              <a href="category">Drama  <span class="badge pull-right">11</span></a>
+              <a href="books">Drama  <span class="badge pull-right">11</span></a>
               <ul>
-                <li><a href="category">Comedy</a>
+                <li><a href="books">Comedy</a>
                 </li>
-                <li><a href="category">Tragedy</a>
+                <li><a href="books">Tragedy</a>
                 </li>
               </ul>
             </li>

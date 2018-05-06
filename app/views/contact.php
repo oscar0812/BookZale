@@ -194,23 +194,23 @@
                         <h5>Men</h5>
 
                         <ul>
-                            <li><a href="category">T-shirts</a>
+                            <li><a href="books">T-shirts</a>
                             </li>
-                            <li><a href="category">Shirts</a>
+                            <li><a href="books">Shirts</a>
                             </li>
-                            <li><a href="category">Accessories</a>
+                            <li><a href="books">Accessories</a>
                             </li>
                         </ul>
 
                         <h5>Ladies</h5>
                         <ul>
-                            <li><a href="category">T-shirts</a>
+                            <li><a href="books">T-shirts</a>
                             </li>
-                            <li><a href="category">Skirts</a>
+                            <li><a href="books">Skirts</a>
                             </li>
-                            <li><a href="category">Pants</a>
+                            <li><a href="books">Pants</a>
                             </li>
-                            <li><a href="category">Accessories</a>
+                            <li><a href="books">Accessories</a>
                             </li>
                         </ul>
 

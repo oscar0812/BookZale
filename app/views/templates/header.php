@@ -98,7 +98,7 @@
           <!-- add class active to li for color -->
 
           <li>
-            <a href="category" data-hover="dropdown" data-delay="">Books</a>
+            <a href="books" data-hover="dropdown" data-delay="">Books</a>
           </li>
         </ul>
 
