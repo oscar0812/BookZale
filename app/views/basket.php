@@ -36,7 +36,7 @@
                                                     <img src="img/detailsquare.jpg" alt="White Blouse Armani">
                                                 </a>
                   </td>
-                  <td><a href="#">White Blouse Armani</a>
+                  <td><a href="#">Some Book</a>
                   </td>
                   <td>
                     <input type="number" value="2" class="form-control">
@@ -53,7 +53,7 @@
                                                     <img src="img/basketsquare.jpg" alt="Black Blouse Armani">
                                                 </a>
                   </td>
-                  <td><a href="#">Black Blouse Armani</a>
+                  <td><a href="#">Some other book</a>
                   </td>
                   <td>
                     <input type="number" value="1" class="form-control">
@@ -120,7 +120,7 @@
                                     <img src="img/product2.jpg" alt="" class="img-responsive">
                                 </a>
             <div class="text">
-              <h3>Fur coat</h3>
+              <h3>Book 1</h3>
               <p class="price">$143</p>
             </div>
           </div>
@@ -147,7 +147,7 @@
                                     <img src="img/product1.jpg" alt="" class="img-responsive">
                                 </a>
             <div class="text">
-              <h3>Fur coat</h3>
+              <h3>Book 2</h3>
               <p class="price">$143</p>
             </div>
           </div>
@@ -175,7 +175,7 @@
                                     <img src="img/product3.jpg" alt="" class="img-responsive">
                                 </a>
             <div class="text">
-              <h3>Fur coat</h3>
+              <h3>Book 3</h3>
               <p class="price">$143</p>
 
             </div>
