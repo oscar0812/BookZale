@@ -7,7 +7,7 @@
       <ul class="breadcrumb">
         <li><a href="home">Home</a>
         </li>
-        <li><a href="#">My orders</a>
+        <li><a href="customer-orders">My orders</a>
         </li>
         <li>Order # 1735</li>
       </ul>
@@ -74,7 +74,7 @@
                                                 <img src="img/detailsquare.jpg" alt="White Blouse Armani">
                                             </a>
                 </td>
-                <td><a href="#">White Blouse Armani</a>
+                <td><a href="#">Some book</a>
                 </td>
                 <td>2</td>
                 <td>$123.00</td>
@@ -87,7 +87,7 @@
                                                 <img src="img/basketsquare.jpg" alt="Black Blouse Armani">
                                             </a>
                 </td>
-                <td><a href="#">Black Blouse Armani</a>
+                <td><a href="#">Other book</a>
                 </td>
                 <td>1</td>
                 <td>$200.00</td>

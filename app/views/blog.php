@@ -18,7 +18,7 @@
 
       <ul class="breadcrumb">
 
-        <li><a href="#">Home</a>
+        <li><a href="home">Home</a>
         </li>
         <li>Blog listing</li>
       </ul>
