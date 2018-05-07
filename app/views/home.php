@@ -180,7 +180,7 @@
                     <div class="col-md-12">
                         <h3 class="text-uppercase">From our blog</h3>
 
-                        <p class="lead">What's new in the world of fashion? <a href="blog">Check our blog!</a>
+                        <p class="lead">What's new in the world of Bookz? <a href="blog">Check our blog!</a>
                         </p>
                     </div>
                 </div>
@@ -193,8 +193,8 @@
                     <div id="blog-homepage" class="row">
                         <div class="col-sm-6">
                             <div class="post">
-                                <h4><a href="post">Fashion now</a></h4>
-                                <p class="author-category">By <a href="#">John Slim</a> in <a href="">Fashion and style</a>
+                                <h4><a href="post">Bookz now</a></h4>
+                                <p class="author-category">By <a href="#">John Slim</a> in <a href="">Bookz and style</a>
                                 </p>
                                 <hr>
                                 <p class="intro">Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean

@@ -32,8 +32,8 @@
       </div>
 
       <div class="post">
-        <h2><a href="post">Fashion now</a></h2>
-        <p class="author-category">By <a href="#">John Slim</a> in <a href="">Fashion and style</a>
+        <h2><a href="post">Bookz now</a></h2>
+        <p class="author-category">By <a href="#">John Slim</a> in <a href="">Bookz and style</a>
         </p>
         <hr>
         <p class="date-comments">
@@ -103,7 +103,7 @@
               <a href="blog">About us</a>
             </li>
             <li class="active">
-              <a href="blog">Fashion</a>
+              <a href="blog">Bookz</a>
             </li>
             <li>
               <a href="blog">News and gossip</a>

@@ -19,7 +19,7 @@
 
       <div class="box">
 
-        <h1>Fashion now</h1>
+        <h1>Bookz now</h1>
         <p class="author-date">By <a href="#">John Slim</a> | June 20, 2013</p>
         <p class="lead">This is the lead paragraph of the article. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget.</p>
 
@@ -182,7 +182,7 @@
               <a href="blog">About us</a>
             </li>
             <li class="active">
-              <a href="blog">Fashion</a>
+              <a href="blog">Bookz</a>
             </li>
             <li>
               <a href="blog">News and gossip</a>

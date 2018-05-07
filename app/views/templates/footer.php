@@ -37,26 +37,20 @@
 
         <h4>Top categories</h4>
 
-        <h5>Men</h5>
+        <h5>Fiction</h5>
 
         <ul>
-          <li><a href="books">T-shirts</a>
+          <li><a href="books">Historical</a>
           </li>
-          <li><a href="books">Shirts</a>
-          </li>
-          <li><a href="books">Accessories</a>
+          <li><a href="books">Science</a>
           </li>
         </ul>
 
-        <h5>Ladies</h5>
+        <h5>Nonfiction</h5>
         <ul>
-          <li><a href="books">T-shirts</a>
+          <li><a href="books">Autobiography</a>
           </li>
-          <li><a href="books">Skirts</a>
-          </li>
-          <li><a href="books">Pants</a>
-          </li>
-          <li><a href="books">Accessories</a>
+          <li><a href="books">Biography</a>
           </li>
         </ul>
 
