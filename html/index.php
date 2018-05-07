@@ -25,10 +25,11 @@ $app->get('/books', function ($request, $response, $args) {
     $category = \CategoryQuery::create()->findOneById($category);
     // parameter was illegal if $category == null
     $category = $category == null?\CategoryQuery::create()->findOneById(1):$category;
+    $books = \BookQuery::create()->findByCategory($category);
 
     return $this->view->render($response, "books.php",
     ['router' => $this->router, 'user'=>currentUser(), 'category'=>$category,
-     'categories'=>\CategoryQuery::create()->findByParent(0)]);
+     'categories'=>\CategoryQuery::create()->findByParent(0), 'books'=>$books]);
 })->setName("books");
 
 $app->get('/logout', function ($request, $response, $args) {

@@ -87,23 +87,23 @@
                     <div class="product-slider">
                       <?php foreach (\BookQuery::create() as $book) { ?>
                         <div class="item">
-                            <div class="product">
+                            <div class="product ">
                                 <div class="flip-container">
                                     <div class="flipper">
                                         <div class="front">
                                             <a href="detail">
-                                                <img src="<?=$book->getImageUrl()?>" alt="" class="img-responsive">
+                                                <img src="<?=$book->getImageUrl()?>" alt="" class="img-responsive clip-image">
                                             </a>
                                         </div>
                                         <div class="back">
                                             <a href="detail">
-                                                <img src="<?=$book->getImageUrl()?>" alt="" class="img-responsive">
+                                                <img src="<?=$book->getImageUrl()?>" alt="" class="img-responsive clip-image">
                                             </a>
                                         </div>
                                     </div>
                                 </div>
                                 <a href="detail" class="invisible">
-                                    <img src="<?=$book->getImageUrl()?>" alt="" class="img-responsive">
+                                    <img src="<?=$book->getImageUrl()?>" alt="" class="img-responsive clip-image">
                                 </a>
                                 <div class="text">
                                     <h3><a href="detail"><?=$book->getName()?></a></h3>
@@ -145,6 +145,7 @@
 
             <!-- *** GET INSPIRED ***
  _________________________________________________________ -->
+            <!--
             <div class="container" data-animate="fadeInUpBig">
                 <div class="col-md-12">
                     <div class="box slideshow">
@@ -170,6 +171,7 @@
                     </div>
                 </div>
             </div>
+          -->
             <!-- *** GET INSPIRED END *** -->
 
             <!-- *** BLOG HOMEPAGE ***

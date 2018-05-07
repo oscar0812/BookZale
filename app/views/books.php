@@ -6,7 +6,9 @@
       <ul class="breadcrumb">
         <li><a href="home">Home</a>
         </li>
-        <li><?=$category->getName()?></li>
+        <li>
+          <?=$category->getName()?>
+        </li>
       </ul>
     </div>
     <?php require_once("templates/book-right-column.php") ?>
@@ -14,7 +16,9 @@
     <div class="col-md-9">
       <div class="box">
         <h1><?=$category->getName()?></h1>
-        <p><?=$category->getDescription()?></p>
+        <p>
+          <?=$category->getDescription()?>
+        </p>
       </div>
 
       <div class="box info-bar">
@@ -48,234 +52,41 @@
       </div>
 
       <div class="row products">
-
-        <div class="col-md-4 col-sm-6">
-          <div class="product">
-            <div class="flip-container">
-              <div class="flipper">
-                <div class="front">
-                  <a href="detail">
-                                                <img src="img/product1.jpg" alt="" class="img-responsive">
-                                            </a>
-                </div>
-                <div class="back">
-                  <a href="detail">
-                                                <img src="img/product1_2.jpg" alt="" class="img-responsive">
-                                            </a>
-                </div>
-              </div>
-            </div>
-            <a href="detail" class="invisible">
-                                    <img src="img/product1.jpg" alt="" class="img-responsive">
-                                </a>
-            <div class="text">
-              <h3><a href="detail">Fur coat with very but very very long name</a></h3>
-              <p class="price">$143.00</p>
-              <p class="buttons">
-                <a href="detail" class="btn btn-default">View detail</a>
-                <a href="basket" class="btn btn-primary"><i class="fa fa-shopping-cart"></i>Add to cart</a>
-              </p>
-            </div>
-            <!-- /.text -->
-          </div>
-          <!-- /.product -->
-        </div>
-
-        <div class="col-md-4 col-sm-6">
-          <div class="product">
-            <div class="flip-container">
-              <div class="flipper">
-                <div class="front">
-                  <a href="detail">
-                                                <img src="img/product2.jpg" alt="" class="img-responsive">
-                                            </a>
-                </div>
-                <div class="back">
-                  <a href="detail">
-                                                <img src="img/product2_2.jpg" alt="" class="img-responsive">
-                                            </a>
+        <?php foreach ($books as $book) { ?>
+          <div class="col-md-4 col-sm-6">
+            <div class="product">
+              <div class="flip-container">
+                <div class="flipper">
+                  <div class="front">
+                    <a href="detail">
+                                                  <img src="<?=$book->getImageUrl()?>" alt="" class="img-responsive clip-image">
+                                              </a>
+                  </div>
+                  <div class="back">
+                    <a href="detail">
+                                                  <img src="<?=$book->getImageUrl()?>" alt="" class="img-responsive clip-image">
+                                              </a>
+                  </div>
                 </div>
               </div>
-            </div>
-            <a href="detail" class="invisible">
-                                    <img src="img/product2.jpg" alt="" class="img-responsive">
-                                </a>
-            <div class="text">
-              <h3><a href="detail">White Blouse Armani</a></h3>
-              <p class="price"><del>$280</del> $143.00</p>
-              <p class="buttons">
-                <a href="detail" class="btn btn-default">View detail</a>
-                <a href="basket" class="btn btn-primary"><i class="fa fa-shopping-cart"></i>Add to cart</a>
-              </p>
-            </div>
-            <!-- /.text -->
-
-            <div class="ribbon sale">
-              <div class="theribbon">SALE</div>
-              <div class="ribbon-background"></div>
-            </div>
-            <!-- /.ribbon -->
-
-            <div class="ribbon new">
-              <div class="theribbon">NEW</div>
-              <div class="ribbon-background"></div>
-            </div>
-            <!-- /.ribbon -->
-
-            <div class="ribbon gift">
-              <div class="theribbon">GIFT</div>
-              <div class="ribbon-background"></div>
-            </div>
-            <!-- /.ribbon -->
-          </div>
-          <!-- /.product -->
-        </div>
-
-        <div class="col-md-4 col-sm-6">
-          <div class="product">
-            <div class="flip-container">
-              <div class="flipper">
-                <div class="front">
-                  <a href="detail">
-                                                <img src="img/product3.jpg" alt="" class="img-responsive">
-                                            </a>
-                </div>
-                <div class="back">
-                  <a href="detail">
-                                                <img src="img/product3_2.jpg" alt="" class="img-responsive">
-                                            </a>
-                </div>
+              <a href="detail" class="invisible">
+                                      <img src="<?=$book->getImageUrl()?>" alt="" class="img-responsive clip-image">
+                                  </a>
+              <div class="text">
+                <h3><a href="detail"><?=$book->getName()?></a></h3>
+                <p class="price"><?=$book->getPrice()?></p>
+                <p class="buttons">
+                  <a href="detail" class="btn btn-default">View detail</a>
+                  <a href="basket" class="btn btn-primary"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+                </p>
               </div>
+              <!-- /.text -->
             </div>
-            <a href="detail" class="invisible">
-                                    <img src="img/product3.jpg" alt="" class="img-responsive">
-                                </a>
-            <div class="text">
-              <h3><a href="detail">Black Blouse Versace</a></h3>
-              <p class="price">$143.00</p>
-              <p class="buttons">
-                <a href="detail" class="btn btn-default">View detail</a>
-                <a href="basket" class="btn btn-primary"><i class="fa fa-shopping-cart"></i>Add to cart</a>
-              </p>
-
-            </div>
-            <!-- /.text -->
+            <!-- /.product -->
           </div>
-          <!-- /.product -->
-        </div>
 
-        <div class="col-md-4 col-sm-6">
-          <div class="product">
-            <div class="flip-container">
-              <div class="flipper">
-                <div class="front">
-                  <a href="detail">
-                                                <img src="img/product3.jpg" alt="" class="img-responsive">
-                                            </a>
-                </div>
-                <div class="back">
-                  <a href="detail">
-                                                <img src="img/product3_2.jpg" alt="" class="img-responsive">
-                                            </a>
-                </div>
-              </div>
-            </div>
-            <a href="detail" class="invisible">
-                                    <img src="img/product3.jpg" alt="" class="img-responsive">
-                                </a>
-            <div class="text">
-              <h3><a href="detail">Black Blouse Versace</a></h3>
-              <p class="price">$143.00</p>
-              <p class="buttons">
-                <a href="detail" class="btn btn-default">View detail</a>
-                <a href="basket" class="btn btn-primary"><i class="fa fa-shopping-cart"></i>Add to cart</a>
-              </p>
+        <?php } ?>
 
-            </div>
-            <!-- /.text -->
-          </div>
-          <!-- /.product -->
-        </div>
-
-        <div class="col-md-4 col-sm-6">
-          <div class="product">
-            <div class="flip-container">
-              <div class="flipper">
-                <div class="front">
-                  <a href="detail">
-                                                <img src="img/product2.jpg" alt="" class="img-responsive">
-                                            </a>
-                </div>
-                <div class="back">
-                  <a href="detail">
-                                                <img src="img/product2_2.jpg" alt="" class="img-responsive">
-                                            </a>
-                </div>
-              </div>
-            </div>
-            <a href="detail" class="invisible">
-                                    <img src="img/product2.jpg" alt="" class="img-responsive">
-                                </a>
-            <div class="text">
-              <h3><a href="detail">White Blouse Versace</a></h3>
-              <p class="price">$143.00</p>
-              <p class="buttons">
-                <a href="detail" class="btn btn-default">View detail</a>
-                <a href="basket" class="btn btn-primary"><i class="fa fa-shopping-cart"></i>Add to cart</a>
-              </p>
-
-            </div>
-            <!-- /.text -->
-
-            <div class="ribbon new">
-              <div class="theribbon">NEW</div>
-              <div class="ribbon-background"></div>
-            </div>
-            <!-- /.ribbon -->
-          </div>
-          <!-- /.product -->
-        </div>
-
-        <div class="col-md-4 col-sm-6">
-          <div class="product">
-            <div class="flip-container">
-              <div class="flipper">
-                <div class="front">
-                  <a href="detail">
-                                                <img src="img/product1.jpg" alt="" class="img-responsive">
-                                            </a>
-                </div>
-                <div class="back">
-                  <a href="detail">
-                                                <img src="img/product1_2.jpg" alt="" class="img-responsive">
-                                            </a>
-                </div>
-              </div>
-            </div>
-            <a href="detail" class="invisible">
-                                    <img src="img/product1.jpg" alt="" class="img-responsive">
-                                </a>
-            <div class="text">
-              <h3><a href="detail">Fur coat</a></h3>
-              <p class="price">$143.00</p>
-              <p class="buttons">
-                <a href="detail" class="btn btn-default">View detail</a>
-                <a href="basket" class="btn btn-primary"><i class="fa fa-shopping-cart"></i>Add to cart</a>
-              </p>
-
-            </div>
-            <!-- /.text -->
-
-            <div class="ribbon gift">
-              <div class="theribbon">GIFT</div>
-              <div class="ribbon-background"></div>
-            </div>
-            <!-- /.ribbon -->
-
-          </div>
-          <!-- /.product -->
-        </div>
-        <!-- /.col-md-4 -->
       </div>
       <!-- /.products -->
 
@@ -312,4 +123,5 @@
 <!-- /#content -->
 <?php require_once("templates/footer.php")?>
 </body>
+
 </html>
