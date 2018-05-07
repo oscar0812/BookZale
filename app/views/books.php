@@ -74,7 +74,7 @@
                                   </a>
               <div class="text">
                 <h3><a href="detail"><?=$book->getName()?></a></h3>
-                <p class="price"><?=$book->getPrice()?></p>
+                <p class="price">$<?=$book->getPrice()?></p>
                 <p class="buttons">
                   <a href="detail" class="btn btn-default">View detail</a>
                   <a href="basket" class="btn btn-primary"><i class="fa fa-shopping-cart"></i>Add to cart</a>
