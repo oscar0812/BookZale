@@ -66,7 +66,17 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildBookQuery rightJoinWithCategory() Adds a RIGHT JOIN clause and with to the query using the Category relation
  * @method     ChildBookQuery innerJoinWithCategory() Adds a INNER JOIN clause and with to the query using the Category relation
  *
- * @method     \UserQuery|\CategoryQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
+ * @method     ChildBookQuery leftJoinWishlist($relationAlias = null) Adds a LEFT JOIN clause to the query using the Wishlist relation
+ * @method     ChildBookQuery rightJoinWishlist($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Wishlist relation
+ * @method     ChildBookQuery innerJoinWishlist($relationAlias = null) Adds a INNER JOIN clause to the query using the Wishlist relation
+ *
+ * @method     ChildBookQuery joinWithWishlist($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the Wishlist relation
+ *
+ * @method     ChildBookQuery leftJoinWithWishlist() Adds a LEFT JOIN clause and with to the query using the Wishlist relation
+ * @method     ChildBookQuery rightJoinWithWishlist() Adds a RIGHT JOIN clause and with to the query using the Wishlist relation
+ * @method     ChildBookQuery innerJoinWithWishlist() Adds a INNER JOIN clause and with to the query using the Wishlist relation
+ *
+ * @method     \UserQuery|\CategoryQuery|\WishlistQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
  *
  * @method     ChildBook findOne(ConnectionInterface $con = null) Return the first ChildBook matching the query
  * @method     ChildBook findOneOrCreate(ConnectionInterface $con = null) Return the first ChildBook matching the query, or a new ChildBook object populated from the query conditions when no match is found
@@ -711,6 +721,96 @@ abstract class BookQuery extends ModelCriteria
         return $this
             ->joinCategory($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'Category', '\CategoryQuery');
+    }
+
+    /**
+     * Filter the query by a related \Wishlist object
+     *
+     * @param \Wishlist|ObjectCollection $wishlist the related object to use as filter
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildBookQuery The current query, for fluid interface
+     */
+    public function filterByWishlist($wishlist, $comparison = null)
+    {
+        if ($wishlist instanceof \Wishlist) {
+            return $this
+                ->addUsingAlias(BookTableMap::COL_ID, $wishlist->getBookId(), $comparison);
+        } elseif ($wishlist instanceof ObjectCollection) {
+            return $this
+                ->useWishlistQuery()
+                ->filterByPrimaryKeys($wishlist->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByWishlist() only accepts arguments of type \Wishlist or Collection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Wishlist relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this|ChildBookQuery The current query, for fluid interface
+     */
+    public function joinWishlist($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Wishlist');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Wishlist');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Wishlist relation Wishlist object
+     *
+     * @see useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return \WishlistQuery A secondary query class using the current class as primary query
+     */
+    public function useWishlistQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinWishlist($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Wishlist', '\WishlistQuery');
+    }
+
+    /**
+     * Filter the query by a related User object
+     * using the wishlist table as cross reference
+     *
+     * @param User $user the related object to use as filter
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildBookQuery The current query, for fluid interface
+     */
+    public function filterByUser($user, $comparison = Criteria::EQUAL)
+    {
+        return $this
+            ->useWishlistQuery()
+            ->filterByUser($user, $comparison)
+            ->endUse();
     }
 
     /**

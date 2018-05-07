@@ -2,8 +2,8 @@
 
 namespace Map;
 
-use \Book;
-use \BookQuery;
+use \Wishlist;
+use \WishlistQuery;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\InstancePoolTrait;
@@ -16,7 +16,7 @@ use Propel\Runtime\Map\TableMapTrait;
 
 
 /**
- * This class defines the structure of the 'book' table.
+ * This class defines the structure of the 'wishlist' table.
  *
  *
  *
@@ -26,7 +26,7 @@ use Propel\Runtime\Map\TableMapTrait;
  * (i.e. if it's a text column type).
  *
  */
-class BookTableMap extends TableMap
+class WishlistTableMap extends TableMap
 {
     use InstancePoolTrait;
     use TableMapTrait;
@@ -34,7 +34,7 @@ class BookTableMap extends TableMap
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = '.Map.BookTableMap';
+    const CLASS_NAME = '.Map.WishlistTableMap';
 
     /**
      * The default database name for this class
@@ -44,22 +44,22 @@ class BookTableMap extends TableMap
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'book';
+    const TABLE_NAME = 'wishlist';
 
     /**
      * The related Propel class for this table
      */
-    const OM_CLASS = '\\Book';
+    const OM_CLASS = '\\Wishlist';
 
     /**
      * A class that can be returned by this tableMap
      */
-    const CLASS_DEFAULT = 'Book';
+    const CLASS_DEFAULT = 'Wishlist';
 
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 8;
+    const NUM_COLUMNS = 2;
 
     /**
      * The number of lazy-loaded columns
@@ -69,47 +69,17 @@ class BookTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 8;
+    const NUM_HYDRATE_COLUMNS = 2;
 
     /**
-     * the column name for the id field
+     * the column name for the user_id field
      */
-    const COL_ID = 'book.id';
+    const COL_USER_ID = 'wishlist.user_id';
 
     /**
-     * the column name for the name field
+     * the column name for the book_id field
      */
-    const COL_NAME = 'book.name';
-
-    /**
-     * the column name for the price field
-     */
-    const COL_PRICE = 'book.price';
-
-    /**
-     * the column name for the description field
-     */
-    const COL_DESCRIPTION = 'book.description';
-
-    /**
-     * the column name for the image_url field
-     */
-    const COL_IMAGE_URL = 'book.image_url';
-
-    /**
-     * the column name for the category_id field
-     */
-    const COL_CATEGORY_ID = 'book.category_id';
-
-    /**
-     * the column name for the posted_by field
-     */
-    const COL_POSTED_BY = 'book.posted_by';
-
-    /**
-     * the column name for the sold field
-     */
-    const COL_SOLD = 'book.sold';
+    const COL_BOOK_ID = 'wishlist.book_id';
 
     /**
      * The default string format for model objects of the related table
@@ -123,11 +93,11 @@ class BookTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'Name', 'Price', 'Description', 'ImageUrl', 'CategoryId', 'PostedBy', 'Sold', ),
-        self::TYPE_CAMELNAME     => array('id', 'name', 'price', 'description', 'imageUrl', 'categoryId', 'postedBy', 'sold', ),
-        self::TYPE_COLNAME       => array(BookTableMap::COL_ID, BookTableMap::COL_NAME, BookTableMap::COL_PRICE, BookTableMap::COL_DESCRIPTION, BookTableMap::COL_IMAGE_URL, BookTableMap::COL_CATEGORY_ID, BookTableMap::COL_POSTED_BY, BookTableMap::COL_SOLD, ),
-        self::TYPE_FIELDNAME     => array('id', 'name', 'price', 'description', 'image_url', 'category_id', 'posted_by', 'sold', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, )
+        self::TYPE_PHPNAME       => array('UserId', 'BookId', ),
+        self::TYPE_CAMELNAME     => array('userId', 'bookId', ),
+        self::TYPE_COLNAME       => array(WishlistTableMap::COL_USER_ID, WishlistTableMap::COL_BOOK_ID, ),
+        self::TYPE_FIELDNAME     => array('user_id', 'book_id', ),
+        self::TYPE_NUM           => array(0, 1, )
     );
 
     /**
@@ -137,11 +107,11 @@ class BookTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'Name' => 1, 'Price' => 2, 'Description' => 3, 'ImageUrl' => 4, 'CategoryId' => 5, 'PostedBy' => 6, 'Sold' => 7, ),
-        self::TYPE_CAMELNAME     => array('id' => 0, 'name' => 1, 'price' => 2, 'description' => 3, 'imageUrl' => 4, 'categoryId' => 5, 'postedBy' => 6, 'sold' => 7, ),
-        self::TYPE_COLNAME       => array(BookTableMap::COL_ID => 0, BookTableMap::COL_NAME => 1, BookTableMap::COL_PRICE => 2, BookTableMap::COL_DESCRIPTION => 3, BookTableMap::COL_IMAGE_URL => 4, BookTableMap::COL_CATEGORY_ID => 5, BookTableMap::COL_POSTED_BY => 6, BookTableMap::COL_SOLD => 7, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'name' => 1, 'price' => 2, 'description' => 3, 'image_url' => 4, 'category_id' => 5, 'posted_by' => 6, 'sold' => 7, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, )
+        self::TYPE_PHPNAME       => array('UserId' => 0, 'BookId' => 1, ),
+        self::TYPE_CAMELNAME     => array('userId' => 0, 'bookId' => 1, ),
+        self::TYPE_COLNAME       => array(WishlistTableMap::COL_USER_ID => 0, WishlistTableMap::COL_BOOK_ID => 1, ),
+        self::TYPE_FIELDNAME     => array('user_id' => 0, 'book_id' => 1, ),
+        self::TYPE_NUM           => array(0, 1, )
     );
 
     /**
@@ -154,21 +124,16 @@ class BookTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('book');
-        $this->setPhpName('Book');
+        $this->setName('wishlist');
+        $this->setPhpName('Wishlist');
         $this->setIdentifierQuoting(false);
-        $this->setClassName('\\Book');
+        $this->setClassName('\\Wishlist');
         $this->setPackage('');
-        $this->setUseIdGenerator(true);
+        $this->setUseIdGenerator(false);
+        $this->setIsCrossRef(true);
         // columns
-        $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
-        $this->addColumn('name', 'Name', 'VARCHAR', true, 64, null);
-        $this->addColumn('price', 'Price', 'DOUBLE', true, 8, null);
-        $this->addColumn('description', 'Description', 'VARCHAR', true, 4098, null);
-        $this->addColumn('image_url', 'ImageUrl', 'VARCHAR', true, 128, null);
-        $this->addForeignKey('category_id', 'CategoryId', 'INTEGER', 'category', 'id', true, null, null);
-        $this->addForeignKey('posted_by', 'PostedBy', 'INTEGER', 'user', 'id', true, null, null);
-        $this->addColumn('sold', 'Sold', 'BOOLEAN', true, 1, false);
+        $this->addForeignPrimaryKey('user_id', 'UserId', 'INTEGER' , 'user', 'id', true, null, null);
+        $this->addForeignPrimaryKey('book_id', 'BookId', 'INTEGER' , 'book', 'id', true, null, null);
     } // initialize()
 
     /**
@@ -176,29 +141,74 @@ class BookTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('User', '\\User', RelationMap::MANY_TO_ONE, array (
-  0 =>
-  array (
-    0 => ':posted_by',
-    1 => ':id',
-  ),
-), null, null, null, false);
-        $this->addRelation('Category', '\\Category', RelationMap::MANY_TO_ONE, array (
-  0 =>
-  array (
-    0 => ':category_id',
-    1 => ':id',
-  ),
-), null, null, null, false);
-        $this->addRelation('Wishlist', '\\Wishlist', RelationMap::ONE_TO_MANY, array (
+        $this->addRelation('Book', '\\Book', RelationMap::MANY_TO_ONE, array (
   0 =>
   array (
     0 => ':book_id',
     1 => ':id',
   ),
-), null, null, 'Wishlists', false);
-        $this->addRelation('User', '\\User', RelationMap::MANY_TO_MANY, array(), null, null, 'Users');
+), null, null, null, false);
+        $this->addRelation('User', '\\User', RelationMap::MANY_TO_ONE, array (
+  0 =>
+  array (
+    0 => ':user_id',
+    1 => ':id',
+  ),
+), null, null, null, false);
     } // buildRelations()
+
+    /**
+     * Adds an object to the instance pool.
+     *
+     * Propel keeps cached copies of objects in an instance pool when they are retrieved
+     * from the database. In some cases you may need to explicitly add objects
+     * to the cache in order to ensure that the same objects are always returned by find*()
+     * and findPk*() calls.
+     *
+     * @param \Wishlist $obj A \Wishlist object.
+     * @param string $key             (optional) key to use for instance map (for performance boost if key was already calculated externally).
+     */
+    public static function addInstanceToPool($obj, $key = null)
+    {
+        if (Propel::isInstancePoolingEnabled()) {
+            if (null === $key) {
+                $key = serialize([(null === $obj->getUserId() || is_scalar($obj->getUserId()) || is_callable([$obj->getUserId(), '__toString']) ? (string) $obj->getUserId() : $obj->getUserId()), (null === $obj->getBookId() || is_scalar($obj->getBookId()) || is_callable([$obj->getBookId(), '__toString']) ? (string) $obj->getBookId() : $obj->getBookId())]);
+            } // if key === null
+            self::$instances[$key] = $obj;
+        }
+    }
+
+    /**
+     * Removes an object from the instance pool.
+     *
+     * Propel keeps cached copies of objects in an instance pool when they are retrieved
+     * from the database.  In some cases -- especially when you override doDelete
+     * methods in your stub classes -- you may need to explicitly remove objects
+     * from the cache in order to prevent returning objects that no longer exist.
+     *
+     * @param mixed $value A \Wishlist object or a primary key value.
+     */
+    public static function removeInstanceFromPool($value)
+    {
+        if (Propel::isInstancePoolingEnabled() && null !== $value) {
+            if (is_object($value) && $value instanceof \Wishlist) {
+                $key = serialize([(null === $value->getUserId() || is_scalar($value->getUserId()) || is_callable([$value->getUserId(), '__toString']) ? (string) $value->getUserId() : $value->getUserId()), (null === $value->getBookId() || is_scalar($value->getBookId()) || is_callable([$value->getBookId(), '__toString']) ? (string) $value->getBookId() : $value->getBookId())]);
+
+            } elseif (is_array($value) && count($value) === 2) {
+                // assume we've been passed a primary key";
+                $key = serialize([(null === $value[0] || is_scalar($value[0]) || is_callable([$value[0], '__toString']) ? (string) $value[0] : $value[0]), (null === $value[1] || is_scalar($value[1]) || is_callable([$value[1], '__toString']) ? (string) $value[1] : $value[1])]);
+            } elseif ($value instanceof Criteria) {
+                self::$instances = [];
+
+                return;
+            } else {
+                $e = new PropelException("Invalid value passed to removeInstanceFromPool().  Expected primary key or \Wishlist object; got " . (is_object($value) ? get_class($value) . ' object.' : var_export($value, true)));
+                throw $e;
+            }
+
+            unset(self::$instances[$key]);
+        }
+    }
 
     /**
      * Retrieves a string version of the primary key from the DB resultset row that can be used to uniquely identify a row in this table.
@@ -216,11 +226,11 @@ class BookTableMap extends TableMap
     public static function getPrimaryKeyHashFromRow($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
         // If the PK cannot be derived from the row, return NULL.
-        if ($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)] === null) {
+        if ($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('UserId', TableMap::TYPE_PHPNAME, $indexType)] === null && $row[TableMap::TYPE_NUM == $indexType ? 1 + $offset : static::translateFieldName('BookId', TableMap::TYPE_PHPNAME, $indexType)] === null) {
             return null;
         }
 
-        return null === $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)] || is_scalar($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)]) || is_callable([$row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)], '__toString']) ? (string) $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)] : $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
+        return serialize([(null === $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('UserId', TableMap::TYPE_PHPNAME, $indexType)] || is_scalar($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('UserId', TableMap::TYPE_PHPNAME, $indexType)]) || is_callable([$row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('UserId', TableMap::TYPE_PHPNAME, $indexType)], '__toString']) ? (string) $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('UserId', TableMap::TYPE_PHPNAME, $indexType)] : $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('UserId', TableMap::TYPE_PHPNAME, $indexType)]), (null === $row[TableMap::TYPE_NUM == $indexType ? 1 + $offset : static::translateFieldName('BookId', TableMap::TYPE_PHPNAME, $indexType)] || is_scalar($row[TableMap::TYPE_NUM == $indexType ? 1 + $offset : static::translateFieldName('BookId', TableMap::TYPE_PHPNAME, $indexType)]) || is_callable([$row[TableMap::TYPE_NUM == $indexType ? 1 + $offset : static::translateFieldName('BookId', TableMap::TYPE_PHPNAME, $indexType)], '__toString']) ? (string) $row[TableMap::TYPE_NUM == $indexType ? 1 + $offset : static::translateFieldName('BookId', TableMap::TYPE_PHPNAME, $indexType)] : $row[TableMap::TYPE_NUM == $indexType ? 1 + $offset : static::translateFieldName('BookId', TableMap::TYPE_PHPNAME, $indexType)])]);
     }
 
     /**
@@ -237,11 +247,20 @@ class BookTableMap extends TableMap
      */
     public static function getPrimaryKeyFromRow($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
-        return (int) $row[
+            $pks = [];
+
+        $pks[] = (int) $row[
             $indexType == TableMap::TYPE_NUM
                 ? 0 + $offset
-                : self::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)
+                : self::translateFieldName('UserId', TableMap::TYPE_PHPNAME, $indexType)
         ];
+        $pks[] = (int) $row[
+            $indexType == TableMap::TYPE_NUM
+                ? 1 + $offset
+                : self::translateFieldName('BookId', TableMap::TYPE_PHPNAME, $indexType)
+        ];
+
+        return $pks;
     }
 
     /**
@@ -257,7 +276,7 @@ class BookTableMap extends TableMap
      */
     public static function getOMClass($withPrefix = true)
     {
-        return $withPrefix ? BookTableMap::CLASS_DEFAULT : BookTableMap::OM_CLASS;
+        return $withPrefix ? WishlistTableMap::CLASS_DEFAULT : WishlistTableMap::OM_CLASS;
     }
 
     /**
@@ -271,22 +290,22 @@ class BookTableMap extends TableMap
      *
      * @throws PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
-     * @return array           (Book object, last column rank)
+     * @return array           (Wishlist object, last column rank)
      */
     public static function populateObject($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
-        $key = BookTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
-        if (null !== ($obj = BookTableMap::getInstanceFromPool($key))) {
+        $key = WishlistTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
+        if (null !== ($obj = WishlistTableMap::getInstanceFromPool($key))) {
             // We no longer rehydrate the object, since this can cause data loss.
             // See http://www.propelorm.org/ticket/509
             // $obj->hydrate($row, $offset, true); // rehydrate
-            $col = $offset + BookTableMap::NUM_HYDRATE_COLUMNS;
+            $col = $offset + WishlistTableMap::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = BookTableMap::OM_CLASS;
-            /** @var Book $obj */
+            $cls = WishlistTableMap::OM_CLASS;
+            /** @var Wishlist $obj */
             $obj = new $cls();
             $col = $obj->hydrate($row, $offset, false, $indexType);
-            BookTableMap::addInstanceToPool($obj, $key);
+            WishlistTableMap::addInstanceToPool($obj, $key);
         }
 
         return array($obj, $col);
@@ -309,18 +328,18 @@ class BookTableMap extends TableMap
         $cls = static::getOMClass(false);
         // populate the object(s)
         while ($row = $dataFetcher->fetch()) {
-            $key = BookTableMap::getPrimaryKeyHashFromRow($row, 0, $dataFetcher->getIndexType());
-            if (null !== ($obj = BookTableMap::getInstanceFromPool($key))) {
+            $key = WishlistTableMap::getPrimaryKeyHashFromRow($row, 0, $dataFetcher->getIndexType());
+            if (null !== ($obj = WishlistTableMap::getInstanceFromPool($key))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj->hydrate($row, 0, true); // rehydrate
                 $results[] = $obj;
             } else {
-                /** @var Book $obj */
+                /** @var Wishlist $obj */
                 $obj = new $cls();
                 $obj->hydrate($row);
                 $results[] = $obj;
-                BookTableMap::addInstanceToPool($obj, $key);
+                WishlistTableMap::addInstanceToPool($obj, $key);
             } // if key exists
         }
 
@@ -341,23 +360,11 @@ class BookTableMap extends TableMap
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
         if (null === $alias) {
-            $criteria->addSelectColumn(BookTableMap::COL_ID);
-            $criteria->addSelectColumn(BookTableMap::COL_NAME);
-            $criteria->addSelectColumn(BookTableMap::COL_PRICE);
-            $criteria->addSelectColumn(BookTableMap::COL_DESCRIPTION);
-            $criteria->addSelectColumn(BookTableMap::COL_IMAGE_URL);
-            $criteria->addSelectColumn(BookTableMap::COL_CATEGORY_ID);
-            $criteria->addSelectColumn(BookTableMap::COL_POSTED_BY);
-            $criteria->addSelectColumn(BookTableMap::COL_SOLD);
+            $criteria->addSelectColumn(WishlistTableMap::COL_USER_ID);
+            $criteria->addSelectColumn(WishlistTableMap::COL_BOOK_ID);
         } else {
-            $criteria->addSelectColumn($alias . '.id');
-            $criteria->addSelectColumn($alias . '.name');
-            $criteria->addSelectColumn($alias . '.price');
-            $criteria->addSelectColumn($alias . '.description');
-            $criteria->addSelectColumn($alias . '.image_url');
-            $criteria->addSelectColumn($alias . '.category_id');
-            $criteria->addSelectColumn($alias . '.posted_by');
-            $criteria->addSelectColumn($alias . '.sold');
+            $criteria->addSelectColumn($alias . '.user_id');
+            $criteria->addSelectColumn($alias . '.book_id');
         }
     }
 
@@ -370,7 +377,7 @@ class BookTableMap extends TableMap
      */
     public static function getTableMap()
     {
-        return Propel::getServiceContainer()->getDatabaseMap(BookTableMap::DATABASE_NAME)->getTable(BookTableMap::TABLE_NAME);
+        return Propel::getServiceContainer()->getDatabaseMap(WishlistTableMap::DATABASE_NAME)->getTable(WishlistTableMap::TABLE_NAME);
     }
 
     /**
@@ -378,16 +385,16 @@ class BookTableMap extends TableMap
      */
     public static function buildTableMap()
     {
-        $dbMap = Propel::getServiceContainer()->getDatabaseMap(BookTableMap::DATABASE_NAME);
-        if (!$dbMap->hasTable(BookTableMap::TABLE_NAME)) {
-            $dbMap->addTableObject(new BookTableMap());
+        $dbMap = Propel::getServiceContainer()->getDatabaseMap(WishlistTableMap::DATABASE_NAME);
+        if (!$dbMap->hasTable(WishlistTableMap::TABLE_NAME)) {
+            $dbMap->addTableObject(new WishlistTableMap());
         }
     }
 
     /**
-     * Performs a DELETE on the database, given a Book or Criteria object OR a primary key value.
+     * Performs a DELETE on the database, given a Wishlist or Criteria object OR a primary key value.
      *
-     * @param mixed               $values Criteria or Book object or primary key or array of primary keys
+     * @param mixed               $values Criteria or Wishlist object or primary key or array of primary keys
      *              which is used to create the DELETE statement
      * @param  ConnectionInterface $con the connection to use
      * @return int             The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
@@ -398,27 +405,37 @@ class BookTableMap extends TableMap
      public static function doDelete($values, ConnectionInterface $con = null)
      {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(BookTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(WishlistTableMap::DATABASE_NAME);
         }
 
         if ($values instanceof Criteria) {
             // rename for clarity
             $criteria = $values;
-        } elseif ($values instanceof \Book) { // it's a model object
+        } elseif ($values instanceof \Wishlist) { // it's a model object
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
-            $criteria = new Criteria(BookTableMap::DATABASE_NAME);
-            $criteria->add(BookTableMap::COL_ID, (array) $values, Criteria::IN);
+            $criteria = new Criteria(WishlistTableMap::DATABASE_NAME);
+            // primary key is composite; we therefore, expect
+            // the primary key passed to be an array of pkey values
+            if (count($values) == count($values, COUNT_RECURSIVE)) {
+                // array is not multi-dimensional
+                $values = array($values);
+            }
+            foreach ($values as $value) {
+                $criterion = $criteria->getNewCriterion(WishlistTableMap::COL_USER_ID, $value[0]);
+                $criterion->addAnd($criteria->getNewCriterion(WishlistTableMap::COL_BOOK_ID, $value[1]));
+                $criteria->addOr($criterion);
+            }
         }
 
-        $query = BookQuery::create()->mergeWith($criteria);
+        $query = WishlistQuery::create()->mergeWith($criteria);
 
         if ($values instanceof Criteria) {
-            BookTableMap::clearInstancePool();
+            WishlistTableMap::clearInstancePool();
         } elseif (!is_object($values)) { // it's a primary key, or an array of pks
             foreach ((array) $values as $singleval) {
-                BookTableMap::removeInstanceFromPool($singleval);
+                WishlistTableMap::removeInstanceFromPool($singleval);
             }
         }
 
@@ -426,20 +443,20 @@ class BookTableMap extends TableMap
     }
 
     /**
-     * Deletes all rows from the book table.
+     * Deletes all rows from the wishlist table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).
      */
     public static function doDeleteAll(ConnectionInterface $con = null)
     {
-        return BookQuery::create()->doDeleteAll($con);
+        return WishlistQuery::create()->doDeleteAll($con);
     }
 
     /**
-     * Performs an INSERT on the database, given a Book or Criteria object.
+     * Performs an INSERT on the database, given a Wishlist or Criteria object.
      *
-     * @param mixed               $criteria Criteria or Book object containing data that is used to create the INSERT statement.
+     * @param mixed               $criteria Criteria or Wishlist object containing data that is used to create the INSERT statement.
      * @param ConnectionInterface $con the ConnectionInterface connection to use
      * @return mixed           The new primary key.
      * @throws PropelException Any exceptions caught during processing will be
@@ -448,22 +465,18 @@ class BookTableMap extends TableMap
     public static function doInsert($criteria, ConnectionInterface $con = null)
     {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(BookTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(WishlistTableMap::DATABASE_NAME);
         }
 
         if ($criteria instanceof Criteria) {
             $criteria = clone $criteria; // rename for clarity
         } else {
-            $criteria = $criteria->buildCriteria(); // build Criteria from Book object
-        }
-
-        if ($criteria->containsKey(BookTableMap::COL_ID) && $criteria->keyContainsValue(BookTableMap::COL_ID) ) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key ('.BookTableMap::COL_ID.')');
+            $criteria = $criteria->buildCriteria(); // build Criteria from Wishlist object
         }
 
 
         // Set the correct dbName
-        $query = BookQuery::create()->mergeWith($criteria);
+        $query = WishlistQuery::create()->mergeWith($criteria);
 
         // use transaction because $criteria could contain info
         // for more than one table (I guess, conceivably)
@@ -472,7 +485,7 @@ class BookTableMap extends TableMap
         });
     }
 
-} // BookTableMap
+} // WishlistTableMap
 // This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-BookTableMap::buildTableMap();
+WishlistTableMap::buildTableMap();
