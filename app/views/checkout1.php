@@ -160,3 +160,5 @@
 </div>
 <!-- /#content -->
 <?php require_once("templates/footer.php")?>
+</body>
+</html>

@@ -15,7 +15,7 @@
 
     </div>
     <?php require_once("templates/book-right-column.php") ?>
-    
+
     <div class="col-md-9">
 
       <div class="row" id="productMain">
@@ -298,3 +298,5 @@
 </div>
 <!-- /#content -->
 <?php require_once("templates/footer.php")?>
+</body>
+</html>

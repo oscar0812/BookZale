@@ -142,16 +142,13 @@
 <div id="copyright">
   <div class="container">
     <div class="col-md-6">
-      <p class="pull-left">© 2018 BookZale.</p>
+      <p class="pull-left">© 2018 BookZlae.</p>
 
     </div>
     <!-- no copyright since donation has been given -->
   </div>
 </div>
 <!-- *** COPYRIGHT END *** -->
-
-
-
 </div>
 <!-- /#all -->
 
@@ -168,9 +165,3 @@
 <script src="js/bootstrap-hover-dropdown.js"></script>
 <script src="js/owl.carousel.min.js"></script>
 <script src="js/front.js"></script>
-
-
-
-</body>
-
-</html>
