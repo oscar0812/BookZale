@@ -145,7 +145,7 @@
 
         <h4>Where to find us</h4>
 
-        <p><strong>Obaju Ltd.</strong>
+        <p><strong>BookZale Ltd.</strong>
           <br>13/25 New Avenue
           <br>New Heaven
           <br>45Y 73J
