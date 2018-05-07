@@ -27,7 +27,8 @@ $app->get('/books', function ($request, $response, $args) {
     $category = $category == null?\CategoryQuery::create()->findOneById(1):$category;
 
     return $this->view->render($response, "books.php",
-    ['router' => $this->router, 'user'=>currentUser(), 'category'=>$category]);
+    ['router' => $this->router, 'user'=>currentUser(), 'category'=>$category,
+     'categories'=>\CategoryQuery::create()->findByParent(0)]);
 })->setName("books");
 
 $app->get('/logout', function ($request, $response, $args) {

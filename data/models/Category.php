@@ -14,5 +14,7 @@ use Base\Category as BaseCategory;
  */
 class Category extends BaseCategory
 {
-
+  public function getChildren(){
+    return \CategoryQuery::create()->findByParent($this->getId());
+  }
 }
