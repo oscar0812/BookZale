@@ -39,7 +39,7 @@ _________________________________________________________ -->
   <div class="panel panel-default sidebar-menu">
 
     <div class="panel-heading">
-      <h3 class="panel-title">Brands <a class="btn btn-xs btn-danger pull-right" href="#"><i class="fa fa-times-circle"></i> Clear</a></h3>
+      <h3 class="panel-title">Authors <a class="btn btn-xs btn-danger pull-right" href="#"><i class="fa fa-times-circle"></i> Clear</a></h3>
     </div>
 
     <div class="panel-body">
@@ -48,22 +48,22 @@ _________________________________________________________ -->
         <div class="form-group">
           <div class="checkbox">
             <label>
-                                        <input type="checkbox">Armani (10)
+                                        <input type="checkbox">Steven King (10)
                                     </label>
           </div>
           <div class="checkbox">
             <label>
-                                        <input type="checkbox">Versace (12)
+                                        <input type="checkbox">JP Morgan (12)
                                     </label>
           </div>
           <div class="checkbox">
             <label>
-                                        <input type="checkbox">Carlo Bruni (15)
+                                        <input type="checkbox">Verdon (15)
                                     </label>
           </div>
           <div class="checkbox">
             <label>
-                                        <input type="checkbox">Jack Honey (14)
+                                        <input type="checkbox">Jack Dan (14)
                                     </label>
           </div>
         </div>
