@@ -80,12 +80,12 @@ abstract class Wishlist implements ActiveRecordInterface
     /**
      * @var        ChildBook
      */
-    protected $aBook;
+    protected $acurrentBook;
 
     /**
      * @var        ChildUser
      */
-    protected $aUser;
+    protected $acurrentUser;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -357,8 +357,8 @@ abstract class Wishlist implements ActiveRecordInterface
             $this->modifiedColumns[WishlistTableMap::COL_USER_ID] = true;
         }
 
-        if ($this->aUser !== null && $this->aUser->getId() !== $v) {
-            $this->aUser = null;
+        if ($this->acurrentUser !== null && $this->acurrentUser->getId() !== $v) {
+            $this->acurrentUser = null;
         }
 
         return $this;
@@ -381,8 +381,8 @@ abstract class Wishlist implements ActiveRecordInterface
             $this->modifiedColumns[WishlistTableMap::COL_BOOK_ID] = true;
         }
 
-        if ($this->aBook !== null && $this->aBook->getId() !== $v) {
-            $this->aBook = null;
+        if ($this->acurrentBook !== null && $this->acurrentBook->getId() !== $v) {
+            $this->acurrentBook = null;
         }
 
         return $this;
@@ -459,11 +459,11 @@ abstract class Wishlist implements ActiveRecordInterface
      */
     public function ensureConsistency()
     {
-        if ($this->aUser !== null && $this->user_id !== $this->aUser->getId()) {
-            $this->aUser = null;
+        if ($this->acurrentUser !== null && $this->user_id !== $this->acurrentUser->getId()) {
+            $this->acurrentUser = null;
         }
-        if ($this->aBook !== null && $this->book_id !== $this->aBook->getId()) {
-            $this->aBook = null;
+        if ($this->acurrentBook !== null && $this->book_id !== $this->acurrentBook->getId()) {
+            $this->acurrentBook = null;
         }
     } // ensureConsistency
 
@@ -504,8 +504,8 @@ abstract class Wishlist implements ActiveRecordInterface
 
         if ($deep) {  // also de-associate any related objects?
 
-            $this->aBook = null;
-            $this->aUser = null;
+            $this->acurrentBook = null;
+            $this->acurrentUser = null;
         } // if (deep)
     }
 
@@ -614,18 +614,18 @@ abstract class Wishlist implements ActiveRecordInterface
             // method.  This object relates to these object(s) by a
             // foreign key reference.
 
-            if ($this->aBook !== null) {
-                if ($this->aBook->isModified() || $this->aBook->isNew()) {
-                    $affectedRows += $this->aBook->save($con);
+            if ($this->acurrentBook !== null) {
+                if ($this->acurrentBook->isModified() || $this->acurrentBook->isNew()) {
+                    $affectedRows += $this->acurrentBook->save($con);
                 }
-                $this->setBook($this->aBook);
+                $this->setcurrentBook($this->acurrentBook);
             }
 
-            if ($this->aUser !== null) {
-                if ($this->aUser->isModified() || $this->aUser->isNew()) {
-                    $affectedRows += $this->aUser->save($con);
+            if ($this->acurrentUser !== null) {
+                if ($this->acurrentUser->isModified() || $this->acurrentUser->isNew()) {
+                    $affectedRows += $this->acurrentUser->save($con);
                 }
-                $this->setUser($this->aUser);
+                $this->setcurrentUser($this->acurrentUser);
             }
 
             if ($this->isNew() || $this->isModified()) {
@@ -784,7 +784,7 @@ abstract class Wishlist implements ActiveRecordInterface
         }
 
         if ($includeForeignObjects) {
-            if (null !== $this->aBook) {
+            if (null !== $this->acurrentBook) {
 
                 switch ($keyType) {
                     case TableMap::TYPE_CAMELNAME:
@@ -794,12 +794,12 @@ abstract class Wishlist implements ActiveRecordInterface
                         $key = 'book';
                         break;
                     default:
-                        $key = 'Book';
+                        $key = 'currentBook';
                 }
 
-                $result[$key] = $this->aBook->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+                $result[$key] = $this->acurrentBook->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
-            if (null !== $this->aUser) {
+            if (null !== $this->acurrentUser) {
 
                 switch ($keyType) {
                     case TableMap::TYPE_CAMELNAME:
@@ -809,10 +809,10 @@ abstract class Wishlist implements ActiveRecordInterface
                         $key = 'user';
                         break;
                     default:
-                        $key = 'User';
+                        $key = 'currentUser';
                 }
 
-                $result[$key] = $this->aUser->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+                $result[$key] = $this->acurrentUser->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
         }
 
@@ -971,14 +971,14 @@ abstract class Wishlist implements ActiveRecordInterface
         $primaryKeyFKs = [];
 
         //relation wishlist_ibfk_1 to table book
-        if ($this->aBook && $hash = spl_object_hash($this->aBook)) {
+        if ($this->acurrentBook && $hash = spl_object_hash($this->acurrentBook)) {
             $primaryKeyFKs[] = $hash;
         } else {
             $validPrimaryKeyFKs = false;
         }
 
         //relation wishlist_ibfk_2 to table user
-        if ($this->aUser && $hash = spl_object_hash($this->aUser)) {
+        if ($this->acurrentUser && $hash = spl_object_hash($this->acurrentUser)) {
             $primaryKeyFKs[] = $hash;
         } else {
             $validPrimaryKeyFKs = false;
@@ -1077,7 +1077,7 @@ abstract class Wishlist implements ActiveRecordInterface
      * @return $this|\Wishlist The current object (for fluent API support)
      * @throws PropelException
      */
-    public function setBook(ChildBook $v = null)
+    public function setcurrentBook(ChildBook $v = null)
     {
         if ($v === null) {
             $this->setBookId(NULL);
@@ -1085,7 +1085,7 @@ abstract class Wishlist implements ActiveRecordInterface
             $this->setBookId($v->getId());
         }
 
-        $this->aBook = $v;
+        $this->acurrentBook = $v;
 
         // Add binding for other direction of this n:n relationship.
         // If this object has already been added to the ChildBook object, it will not be re-added.
@@ -1105,20 +1105,20 @@ abstract class Wishlist implements ActiveRecordInterface
      * @return ChildBook The associated ChildBook object.
      * @throws PropelException
      */
-    public function getBook(ConnectionInterface $con = null)
+    public function getcurrentBook(ConnectionInterface $con = null)
     {
-        if ($this->aBook === null && ($this->book_id != 0)) {
-            $this->aBook = ChildBookQuery::create()->findPk($this->book_id, $con);
+        if ($this->acurrentBook === null && ($this->book_id != 0)) {
+            $this->acurrentBook = ChildBookQuery::create()->findPk($this->book_id, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference
                 to this object.  This level of coupling may, however, be
                 undesirable since it could result in an only partially populated collection
                 in the referenced object.
-                $this->aBook->addWishlists($this);
+                $this->acurrentBook->addWishlists($this);
              */
         }
 
-        return $this->aBook;
+        return $this->acurrentBook;
     }
 
     /**
@@ -1128,7 +1128,7 @@ abstract class Wishlist implements ActiveRecordInterface
      * @return $this|\Wishlist The current object (for fluent API support)
      * @throws PropelException
      */
-    public function setUser(ChildUser $v = null)
+    public function setcurrentUser(ChildUser $v = null)
     {
         if ($v === null) {
             $this->setUserId(NULL);
@@ -1136,7 +1136,7 @@ abstract class Wishlist implements ActiveRecordInterface
             $this->setUserId($v->getId());
         }
 
-        $this->aUser = $v;
+        $this->acurrentUser = $v;
 
         // Add binding for other direction of this n:n relationship.
         // If this object has already been added to the ChildUser object, it will not be re-added.
@@ -1156,20 +1156,20 @@ abstract class Wishlist implements ActiveRecordInterface
      * @return ChildUser The associated ChildUser object.
      * @throws PropelException
      */
-    public function getUser(ConnectionInterface $con = null)
+    public function getcurrentUser(ConnectionInterface $con = null)
     {
-        if ($this->aUser === null && ($this->user_id != 0)) {
-            $this->aUser = ChildUserQuery::create()->findPk($this->user_id, $con);
+        if ($this->acurrentUser === null && ($this->user_id != 0)) {
+            $this->acurrentUser = ChildUserQuery::create()->findPk($this->user_id, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference
                 to this object.  This level of coupling may, however, be
                 undesirable since it could result in an only partially populated collection
                 in the referenced object.
-                $this->aUser->addWishlists($this);
+                $this->acurrentUser->addWishlists($this);
              */
         }
 
-        return $this->aUser;
+        return $this->acurrentUser;
     }
 
     /**
@@ -1179,11 +1179,11 @@ abstract class Wishlist implements ActiveRecordInterface
      */
     public function clear()
     {
-        if (null !== $this->aBook) {
-            $this->aBook->removeWishlist($this);
+        if (null !== $this->acurrentBook) {
+            $this->acurrentBook->removeWishlist($this);
         }
-        if (null !== $this->aUser) {
-            $this->aUser->removeWishlist($this);
+        if (null !== $this->acurrentUser) {
+            $this->acurrentUser->removeWishlist($this);
         }
         $this->user_id = null;
         $this->book_id = null;
@@ -1207,8 +1207,8 @@ abstract class Wishlist implements ActiveRecordInterface
         if ($deep) {
         } // if ($deep)
 
-        $this->aBook = null;
-        $this->aUser = null;
+        $this->acurrentBook = null;
+        $this->acurrentUser = null;
     }
 
     /**

@@ -805,11 +805,11 @@ abstract class BookQuery extends ModelCriteria
      *
      * @return ChildBookQuery The current query, for fluid interface
      */
-    public function filterByUser($user, $comparison = Criteria::EQUAL)
+    public function filterBycurrentUser($user, $comparison = Criteria::EQUAL)
     {
         return $this
             ->useWishlistQuery()
-            ->filterByUser($user, $comparison)
+            ->filterBycurrentUser($user, $comparison)
             ->endUse();
     }
 

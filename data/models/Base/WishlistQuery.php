@@ -34,25 +34,25 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildWishlistQuery rightJoinWith($relation) Adds a RIGHT JOIN clause and with to the query
  * @method     ChildWishlistQuery innerJoinWith($relation) Adds a INNER JOIN clause and with to the query
  *
- * @method     ChildWishlistQuery leftJoinBook($relationAlias = null) Adds a LEFT JOIN clause to the query using the Book relation
- * @method     ChildWishlistQuery rightJoinBook($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Book relation
- * @method     ChildWishlistQuery innerJoinBook($relationAlias = null) Adds a INNER JOIN clause to the query using the Book relation
+ * @method     ChildWishlistQuery leftJoincurrentBook($relationAlias = null) Adds a LEFT JOIN clause to the query using the currentBook relation
+ * @method     ChildWishlistQuery rightJoincurrentBook($relationAlias = null) Adds a RIGHT JOIN clause to the query using the currentBook relation
+ * @method     ChildWishlistQuery innerJoincurrentBook($relationAlias = null) Adds a INNER JOIN clause to the query using the currentBook relation
  *
- * @method     ChildWishlistQuery joinWithBook($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the Book relation
+ * @method     ChildWishlistQuery joinWithcurrentBook($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the currentBook relation
  *
- * @method     ChildWishlistQuery leftJoinWithBook() Adds a LEFT JOIN clause and with to the query using the Book relation
- * @method     ChildWishlistQuery rightJoinWithBook() Adds a RIGHT JOIN clause and with to the query using the Book relation
- * @method     ChildWishlistQuery innerJoinWithBook() Adds a INNER JOIN clause and with to the query using the Book relation
+ * @method     ChildWishlistQuery leftJoinWithcurrentBook() Adds a LEFT JOIN clause and with to the query using the currentBook relation
+ * @method     ChildWishlistQuery rightJoinWithcurrentBook() Adds a RIGHT JOIN clause and with to the query using the currentBook relation
+ * @method     ChildWishlistQuery innerJoinWithcurrentBook() Adds a INNER JOIN clause and with to the query using the currentBook relation
  *
- * @method     ChildWishlistQuery leftJoinUser($relationAlias = null) Adds a LEFT JOIN clause to the query using the User relation
- * @method     ChildWishlistQuery rightJoinUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the User relation
- * @method     ChildWishlistQuery innerJoinUser($relationAlias = null) Adds a INNER JOIN clause to the query using the User relation
+ * @method     ChildWishlistQuery leftJoincurrentUser($relationAlias = null) Adds a LEFT JOIN clause to the query using the currentUser relation
+ * @method     ChildWishlistQuery rightJoincurrentUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the currentUser relation
+ * @method     ChildWishlistQuery innerJoincurrentUser($relationAlias = null) Adds a INNER JOIN clause to the query using the currentUser relation
  *
- * @method     ChildWishlistQuery joinWithUser($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the User relation
+ * @method     ChildWishlistQuery joinWithcurrentUser($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the currentUser relation
  *
- * @method     ChildWishlistQuery leftJoinWithUser() Adds a LEFT JOIN clause and with to the query using the User relation
- * @method     ChildWishlistQuery rightJoinWithUser() Adds a RIGHT JOIN clause and with to the query using the User relation
- * @method     ChildWishlistQuery innerJoinWithUser() Adds a INNER JOIN clause and with to the query using the User relation
+ * @method     ChildWishlistQuery leftJoinWithcurrentUser() Adds a LEFT JOIN clause and with to the query using the currentUser relation
+ * @method     ChildWishlistQuery rightJoinWithcurrentUser() Adds a RIGHT JOIN clause and with to the query using the currentUser relation
+ * @method     ChildWishlistQuery innerJoinWithcurrentUser() Adds a INNER JOIN clause and with to the query using the currentUser relation
  *
  * @method     \BookQuery|\UserQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
  *
@@ -281,7 +281,7 @@ abstract class WishlistQuery extends ModelCriteria
      * $query->filterByUserId(array('min' => 12)); // WHERE user_id > 12
      * </code>
      *
-     * @see       filterByUser()
+     * @see       filterBycurrentUser()
      *
      * @param     mixed $userId The value to use as filter.
      *              Use scalar values for equality.
@@ -324,7 +324,7 @@ abstract class WishlistQuery extends ModelCriteria
      * $query->filterByBookId(array('min' => 12)); // WHERE book_id > 12
      * </code>
      *
-     * @see       filterByBook()
+     * @see       filterBycurrentBook()
      *
      * @param     mixed $bookId The value to use as filter.
      *              Use scalar values for equality.
@@ -367,7 +367,7 @@ abstract class WishlistQuery extends ModelCriteria
      *
      * @return ChildWishlistQuery The current query, for fluid interface
      */
-    public function filterByBook($book, $comparison = null)
+    public function filterBycurrentBook($book, $comparison = null)
     {
         if ($book instanceof \Book) {
             return $this
@@ -380,22 +380,22 @@ abstract class WishlistQuery extends ModelCriteria
             return $this
                 ->addUsingAlias(WishlistTableMap::COL_BOOK_ID, $book->toKeyValue('PrimaryKey', 'Id'), $comparison);
         } else {
-            throw new PropelException('filterByBook() only accepts arguments of type \Book or Collection');
+            throw new PropelException('filterBycurrentBook() only accepts arguments of type \Book or Collection');
         }
     }
 
     /**
-     * Adds a JOIN clause to the query using the Book relation
+     * Adds a JOIN clause to the query using the currentBook relation
      *
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return $this|ChildWishlistQuery The current query, for fluid interface
      */
-    public function joinBook($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joincurrentBook($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('Book');
+        $relationMap = $tableMap->getRelation('currentBook');
 
         // create a ModelJoin object for this join
         $join = new ModelJoin();
@@ -410,14 +410,14 @@ abstract class WishlistQuery extends ModelCriteria
             $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
             $this->addJoinObject($join, $relationAlias);
         } else {
-            $this->addJoinObject($join, 'Book');
+            $this->addJoinObject($join, 'currentBook');
         }
 
         return $this;
     }
 
     /**
-     * Use the Book relation Book object
+     * Use the currentBook relation Book object
      *
      * @see useQuery()
      *
@@ -427,11 +427,11 @@ abstract class WishlistQuery extends ModelCriteria
      *
      * @return \BookQuery A secondary query class using the current class as primary query
      */
-    public function useBookQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function usecurrentBookQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         return $this
-            ->joinBook($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'Book', '\BookQuery');
+            ->joincurrentBook($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'currentBook', '\BookQuery');
     }
 
     /**
@@ -444,7 +444,7 @@ abstract class WishlistQuery extends ModelCriteria
      *
      * @return ChildWishlistQuery The current query, for fluid interface
      */
-    public function filterByUser($user, $comparison = null)
+    public function filterBycurrentUser($user, $comparison = null)
     {
         if ($user instanceof \User) {
             return $this
@@ -457,22 +457,22 @@ abstract class WishlistQuery extends ModelCriteria
             return $this
                 ->addUsingAlias(WishlistTableMap::COL_USER_ID, $user->toKeyValue('PrimaryKey', 'Id'), $comparison);
         } else {
-            throw new PropelException('filterByUser() only accepts arguments of type \User or Collection');
+            throw new PropelException('filterBycurrentUser() only accepts arguments of type \User or Collection');
         }
     }
 
     /**
-     * Adds a JOIN clause to the query using the User relation
+     * Adds a JOIN clause to the query using the currentUser relation
      *
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return $this|ChildWishlistQuery The current query, for fluid interface
      */
-    public function joinUser($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joincurrentUser($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('User');
+        $relationMap = $tableMap->getRelation('currentUser');
 
         // create a ModelJoin object for this join
         $join = new ModelJoin();
@@ -487,14 +487,14 @@ abstract class WishlistQuery extends ModelCriteria
             $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
             $this->addJoinObject($join, $relationAlias);
         } else {
-            $this->addJoinObject($join, 'User');
+            $this->addJoinObject($join, 'currentUser');
         }
 
         return $this;
     }
 
     /**
-     * Use the User relation User object
+     * Use the currentUser relation User object
      *
      * @see useQuery()
      *
@@ -504,11 +504,11 @@ abstract class WishlistQuery extends ModelCriteria
      *
      * @return \UserQuery A secondary query class using the current class as primary query
      */
-    public function useUserQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function usecurrentUserQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         return $this
-            ->joinUser($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'User', '\UserQuery');
+            ->joincurrentUser($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'currentUser', '\UserQuery');
     }
 
     /**

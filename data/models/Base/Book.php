@@ -144,12 +144,12 @@ abstract class Book implements ActiveRecordInterface
     /**
      * @var        ObjectCollection|ChildUser[] Cross Collection to store aggregation of ChildUser objects.
      */
-    protected $collUsers;
+    protected $collcurrentUsers;
 
     /**
      * @var bool
      */
-    protected $collUsersPartial;
+    protected $collcurrentUsersPartial;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -163,7 +163,7 @@ abstract class Book implements ActiveRecordInterface
      * An array of objects scheduled for deletion.
      * @var ObjectCollection|ChildUser[]
      */
-    protected $usersScheduledForDeletion = null;
+    protected $currentUsersScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -817,7 +817,7 @@ abstract class Book implements ActiveRecordInterface
             $this->aCategory = null;
             $this->collWishlists = null;
 
-            $this->collUsers = null;
+            $this->collcurrentUsers = null;
         } // if (deep)
     }
 
@@ -951,10 +951,10 @@ abstract class Book implements ActiveRecordInterface
                 $this->resetModified();
             }
 
-            if ($this->usersScheduledForDeletion !== null) {
-                if (!$this->usersScheduledForDeletion->isEmpty()) {
+            if ($this->currentUsersScheduledForDeletion !== null) {
+                if (!$this->currentUsersScheduledForDeletion->isEmpty()) {
                     $pks = array();
-                    foreach ($this->usersScheduledForDeletion as $entry) {
+                    foreach ($this->currentUsersScheduledForDeletion as $entry) {
                         $entryPk = [];
 
                         $entryPk[1] = $this->getId();
@@ -966,15 +966,15 @@ abstract class Book implements ActiveRecordInterface
                         ->filterByPrimaryKeys($pks)
                         ->delete($con);
 
-                    $this->usersScheduledForDeletion = null;
+                    $this->currentUsersScheduledForDeletion = null;
                 }
 
             }
 
-            if ($this->collUsers) {
-                foreach ($this->collUsers as $user) {
-                    if (!$user->isDeleted() && ($user->isNew() || $user->isModified())) {
-                        $user->save($con);
+            if ($this->collcurrentUsers) {
+                foreach ($this->collcurrentUsers as $currentUser) {
+                    if (!$currentUser->isDeleted() && ($currentUser->isNew() || $currentUser->isModified())) {
+                        $currentUser->save($con);
                     }
                 }
             }
@@ -1754,7 +1754,7 @@ abstract class Book implements ActiveRecordInterface
                 $this->initWishlists();
             } else {
                 $collWishlists = ChildWishlistQuery::create(null, $criteria)
-                    ->filterByBook($this)
+                    ->filterBycurrentBook($this)
                     ->find($con);
 
                 if (null !== $criteria) {
@@ -1811,7 +1811,7 @@ abstract class Book implements ActiveRecordInterface
         $this->wishlistsScheduledForDeletion = clone $wishlistsToDelete;
 
         foreach ($wishlistsToDelete as $wishlistRemoved) {
-            $wishlistRemoved->setBook(null);
+            $wishlistRemoved->setcurrentBook(null);
         }
 
         $this->collWishlists = null;
@@ -1852,7 +1852,7 @@ abstract class Book implements ActiveRecordInterface
             }
 
             return $query
-                ->filterByBook($this)
+                ->filterBycurrentBook($this)
                 ->count($con);
         }
 
@@ -1890,7 +1890,7 @@ abstract class Book implements ActiveRecordInterface
     protected function doAddWishlist(ChildWishlist $wishlist)
     {
         $this->collWishlists[]= $wishlist;
-        $wishlist->setBook($this);
+        $wishlist->setcurrentBook($this);
     }
 
     /**
@@ -1907,7 +1907,7 @@ abstract class Book implements ActiveRecordInterface
                 $this->wishlistsScheduledForDeletion->clear();
             }
             $this->wishlistsScheduledForDeletion[]= clone $wishlist;
-            $wishlist->setBook(null);
+            $wishlist->setcurrentBook(null);
         }
 
         return $this;
@@ -1930,54 +1930,54 @@ abstract class Book implements ActiveRecordInterface
      * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
      * @return ObjectCollection|ChildWishlist[] List of ChildWishlist objects
      */
-    public function getWishlistsJoinUser(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    public function getWishlistsJoincurrentUser(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
     {
         $query = ChildWishlistQuery::create(null, $criteria);
-        $query->joinWith('User', $joinBehavior);
+        $query->joinWith('currentUser', $joinBehavior);
 
         return $this->getWishlists($query, $con);
     }
 
     /**
-     * Clears out the collUsers collection
+     * Clears out the collcurrentUsers collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
      * them to be refetched by subsequent calls to accessor method.
      *
      * @return void
-     * @see        addUsers()
+     * @see        addcurrentUsers()
      */
-    public function clearUsers()
+    public function clearcurrentUsers()
     {
-        $this->collUsers = null; // important to set this to NULL since that means it is uninitialized
+        $this->collcurrentUsers = null; // important to set this to NULL since that means it is uninitialized
     }
 
     /**
-     * Initializes the collUsers crossRef collection.
+     * Initializes the collcurrentUsers crossRef collection.
      *
-     * By default this just sets the collUsers collection to an empty collection (like clearUsers());
+     * By default this just sets the collcurrentUsers collection to an empty collection (like clearcurrentUsers());
      * however, you may wish to override this method in your stub class to provide setting appropriate
      * to your application -- for example, setting the initial array to the values stored in database.
      *
      * @return void
      */
-    public function initUsers()
+    public function initcurrentUsers()
     {
         $collectionClassName = WishlistTableMap::getTableMap()->getCollectionClassName();
 
-        $this->collUsers = new $collectionClassName;
-        $this->collUsersPartial = true;
-        $this->collUsers->setModel('\User');
+        $this->collcurrentUsers = new $collectionClassName;
+        $this->collcurrentUsersPartial = true;
+        $this->collcurrentUsers->setModel('\User');
     }
 
     /**
-     * Checks if the collUsers collection is loaded.
+     * Checks if the collcurrentUsers collection is loaded.
      *
      * @return bool
      */
-    public function isUsersLoaded()
+    public function iscurrentUsersLoaded()
     {
-        return null !== $this->collUsers;
+        return null !== $this->collcurrentUsers;
     }
 
     /**
@@ -1995,39 +1995,39 @@ abstract class Book implements ActiveRecordInterface
      *
      * @return ObjectCollection|ChildUser[] List of ChildUser objects
      */
-    public function getUsers(Criteria $criteria = null, ConnectionInterface $con = null)
+    public function getcurrentUsers(Criteria $criteria = null, ConnectionInterface $con = null)
     {
-        $partial = $this->collUsersPartial && !$this->isNew();
-        if (null === $this->collUsers || null !== $criteria || $partial) {
+        $partial = $this->collcurrentUsersPartial && !$this->isNew();
+        if (null === $this->collcurrentUsers || null !== $criteria || $partial) {
             if ($this->isNew()) {
                 // return empty collection
-                if (null === $this->collUsers) {
-                    $this->initUsers();
+                if (null === $this->collcurrentUsers) {
+                    $this->initcurrentUsers();
                 }
             } else {
 
                 $query = ChildUserQuery::create(null, $criteria)
-                    ->filterByBook($this);
-                $collUsers = $query->find($con);
+                    ->filterBycurrentBook($this);
+                $collcurrentUsers = $query->find($con);
                 if (null !== $criteria) {
-                    return $collUsers;
+                    return $collcurrentUsers;
                 }
 
-                if ($partial && $this->collUsers) {
+                if ($partial && $this->collcurrentUsers) {
                     //make sure that already added objects gets added to the list of the database.
-                    foreach ($this->collUsers as $obj) {
-                        if (!$collUsers->contains($obj)) {
-                            $collUsers[] = $obj;
+                    foreach ($this->collcurrentUsers as $obj) {
+                        if (!$collcurrentUsers->contains($obj)) {
+                            $collcurrentUsers[] = $obj;
                         }
                     }
                 }
 
-                $this->collUsers = $collUsers;
-                $this->collUsersPartial = false;
+                $this->collcurrentUsers = $collcurrentUsers;
+                $this->collcurrentUsersPartial = false;
             }
         }
 
-        return $this->collUsers;
+        return $this->collcurrentUsers;
     }
 
     /**
@@ -2036,29 +2036,29 @@ abstract class Book implements ActiveRecordInterface
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param  Collection $users A Propel collection.
+     * @param  Collection $currentUsers A Propel collection.
      * @param  ConnectionInterface $con Optional connection object
      * @return $this|ChildBook The current object (for fluent API support)
      */
-    public function setUsers(Collection $users, ConnectionInterface $con = null)
+    public function setcurrentUsers(Collection $currentUsers, ConnectionInterface $con = null)
     {
-        $this->clearUsers();
-        $currentUsers = $this->getUsers();
+        $this->clearcurrentUsers();
+        $currentcurrentUsers = $this->getcurrentUsers();
 
-        $usersScheduledForDeletion = $currentUsers->diff($users);
+        $currentUsersScheduledForDeletion = $currentcurrentUsers->diff($currentUsers);
 
-        foreach ($usersScheduledForDeletion as $toDelete) {
-            $this->removeUser($toDelete);
+        foreach ($currentUsersScheduledForDeletion as $toDelete) {
+            $this->removecurrentUser($toDelete);
         }
 
-        foreach ($users as $user) {
-            if (!$currentUsers->contains($user)) {
-                $this->doAddUser($user);
+        foreach ($currentUsers as $currentUser) {
+            if (!$currentcurrentUsers->contains($currentUser)) {
+                $this->doAddcurrentUser($currentUser);
             }
         }
 
-        $this->collUsersPartial = false;
-        $this->collUsers = $users;
+        $this->collcurrentUsersPartial = false;
+        $this->collcurrentUsers = $currentUsers;
 
         return $this;
     }
@@ -2073,16 +2073,16 @@ abstract class Book implements ActiveRecordInterface
      *
      * @return int the number of related User objects
      */
-    public function countUsers(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
+    public function countcurrentUsers(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
     {
-        $partial = $this->collUsersPartial && !$this->isNew();
-        if (null === $this->collUsers || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collUsers) {
+        $partial = $this->collcurrentUsersPartial && !$this->isNew();
+        if (null === $this->collcurrentUsers || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collcurrentUsers) {
                 return 0;
             } else {
 
                 if ($partial && !$criteria) {
-                    return count($this->getUsers());
+                    return count($this->getcurrentUsers());
                 }
 
                 $query = ChildUserQuery::create(null, $criteria);
@@ -2091,11 +2091,11 @@ abstract class Book implements ActiveRecordInterface
                 }
 
                 return $query
-                    ->filterByBook($this)
+                    ->filterBycurrentBook($this)
                     ->count($con);
             }
         } else {
-            return count($this->collUsers);
+            return count($this->collcurrentUsers);
         }
     }
 
@@ -2103,19 +2103,19 @@ abstract class Book implements ActiveRecordInterface
      * Associate a ChildUser to this object
      * through the wishlist cross reference table.
      *
-     * @param ChildUser $user
+     * @param ChildUser $currentUser
      * @return ChildBook The current object (for fluent API support)
      */
-    public function addUser(ChildUser $user)
+    public function addcurrentUser(ChildUser $currentUser)
     {
-        if ($this->collUsers === null) {
-            $this->initUsers();
+        if ($this->collcurrentUsers === null) {
+            $this->initCurrentUsers();
         }
 
-        if (!$this->getUsers()->contains($user)) {
+        if (!$this->getCurrentUsers()->contains($currentUser)) {
             // only add it if the **same** object is not already associated
-            $this->collUsers->push($user);
-            $this->doAddUser($user);
+            $this->collcurrentUsers->push($currentUser);
+            $this->doAddCurrentUser($currentUser);
         }
 
         return $this;
@@ -2123,58 +2123,58 @@ abstract class Book implements ActiveRecordInterface
 
     /**
      *
-     * @param ChildUser $user
+     * @param ChildUser $currentUser
      */
-    protected function doAddUser(ChildUser $user)
+    protected function doAddcurrentUser(ChildUser $currentUser)
     {
         $wishlist = new ChildWishlist();
 
-        $wishlist->setUser($user);
+        $wishlist->setcurrentUser($currentUser);
 
-        $wishlist->setBook($this);
+        $wishlist->setcurrentBook($this);
 
         $this->addWishlist($wishlist);
 
         // set the back reference to this object directly as using provided method either results
         // in endless loop or in multiple relations
-        if (!$user->isBooksLoaded()) {
-            $user->initBooks();
-            $user->getBooks()->push($this);
-        } elseif (!$user->getBooks()->contains($this)) {
-            $user->getBooks()->push($this);
+        if (!$currentUser->iscurrentBooksLoaded()) {
+            $currentUser->initcurrentBooks();
+            $currentUser->getcurrentBooks()->push($this);
+        } elseif (!$currentUser->getcurrentBooks()->contains($this)) {
+            $currentUser->getcurrentBooks()->push($this);
         }
 
     }
 
     /**
-     * Remove user of this object
+     * Remove currentUser of this object
      * through the wishlist cross reference table.
      *
-     * @param ChildUser $user
+     * @param ChildUser $currentUser
      * @return ChildBook The current object (for fluent API support)
      */
-    public function removeUser(ChildUser $user)
+    public function removecurrentUser(ChildUser $currentUser)
     {
-        if ($this->getUsers()->contains($user)) {
+        if ($this->getcurrentUsers()->contains($currentUser)) {
             $wishlist = new ChildWishlist();
-            $wishlist->setUser($user);
-            if ($user->isBooksLoaded()) {
+            $wishlist->setcurrentUser($currentUser);
+            if ($currentUser->iscurrentBooksLoaded()) {
                 //remove the back reference if available
-                $user->getBooks()->removeObject($this);
+                $currentUser->getcurrentBooks()->removeObject($this);
             }
 
-            $wishlist->setBook($this);
+            $wishlist->setcurrentBook($this);
             $this->removeWishlist(clone $wishlist);
             $wishlist->clear();
 
-            $this->collUsers->remove($this->collUsers->search($user));
+            $this->collcurrentUsers->remove($this->collcurrentUsers->search($currentUser));
 
-            if (null === $this->usersScheduledForDeletion) {
-                $this->usersScheduledForDeletion = clone $this->collUsers;
-                $this->usersScheduledForDeletion->clear();
+            if (null === $this->currentUsersScheduledForDeletion) {
+                $this->currentUsersScheduledForDeletion = clone $this->collcurrentUsers;
+                $this->currentUsersScheduledForDeletion->clear();
             }
 
-            $this->usersScheduledForDeletion->push($user);
+            $this->currentUsersScheduledForDeletion->push($currentUser);
         }
 
 
@@ -2226,15 +2226,15 @@ abstract class Book implements ActiveRecordInterface
                     $o->clearAllReferences($deep);
                 }
             }
-            if ($this->collUsers) {
-                foreach ($this->collUsers as $o) {
+            if ($this->collcurrentUsers) {
+                foreach ($this->collcurrentUsers as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
         } // if ($deep)
 
         $this->collWishlists = null;
-        $this->collUsers = null;
+        $this->collcurrentUsers = null;
         $this->aUser = null;
         $this->aCategory = null;
     }
