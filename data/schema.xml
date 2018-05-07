@@ -29,7 +29,7 @@
     <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="parent" phpName="Parent" type="INTEGER" required="true"/>
     <column name="name" phpName="Name" type="VARCHAR" size="32" required="true"/>
-    <column name="description" phpName="Description" type="VARCHAR" size="128" required="true"/>
+    <column name="description" phpName="Description" type="VARCHAR" size="256" required="true"/>
     <vendor type="mysql">
       <parameter name="Engine" value="InnoDB"/>
     </vendor>
