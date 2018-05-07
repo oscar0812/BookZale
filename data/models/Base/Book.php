@@ -94,7 +94,7 @@ abstract class Book implements ActiveRecordInterface
     /**
      * The value for the image_url field.
      *
-     * @var        int
+     * @var        string
      */
     protected $image_url;
 
@@ -419,7 +419,7 @@ abstract class Book implements ActiveRecordInterface
     /**
      * Get the [image_url] column value.
      *
-     * @return int
+     * @return string
      */
     public function getImageUrl()
     {
@@ -549,13 +549,13 @@ abstract class Book implements ActiveRecordInterface
     /**
      * Set the value of [image_url] column.
      *
-     * @param int $v new value
+     * @param string $v new value
      * @return $this|\Book The current object (for fluent API support)
      */
     public function setImageUrl($v)
     {
         if ($v !== null) {
-            $v = (int) $v;
+            $v = (string) $v;
         }
 
         if ($this->image_url !== $v) {
@@ -695,7 +695,7 @@ abstract class Book implements ActiveRecordInterface
             $this->description = (null !== $col) ? (string) $col : null;
 
             $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : BookTableMap::translateFieldName('ImageUrl', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->image_url = (null !== $col) ? (int) $col : null;
+            $this->image_url = (null !== $col) ? (string) $col : null;
 
             $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : BookTableMap::translateFieldName('CategoryId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->category_id = (null !== $col) ? (int) $col : null;
@@ -989,7 +989,7 @@ abstract class Book implements ActiveRecordInterface
                         $stmt->bindValue($identifier, $this->description, PDO::PARAM_STR);
                         break;
                     case 'image_url':
-                        $stmt->bindValue($identifier, $this->image_url, PDO::PARAM_INT);
+                        $stmt->bindValue($identifier, $this->image_url, PDO::PARAM_STR);
                         break;
                     case 'category_id':
                         $stmt->bindValue($identifier, $this->category_id, PDO::PARAM_INT);

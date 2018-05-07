@@ -75,7 +75,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildBook findOneByName(string $name) Return the first ChildBook filtered by the name column
  * @method     ChildBook findOneByPrice(double $price) Return the first ChildBook filtered by the price column
  * @method     ChildBook findOneByDescription(string $description) Return the first ChildBook filtered by the description column
- * @method     ChildBook findOneByImageUrl(int $image_url) Return the first ChildBook filtered by the image_url column
+ * @method     ChildBook findOneByImageUrl(string $image_url) Return the first ChildBook filtered by the image_url column
  * @method     ChildBook findOneByCategoryId(int $category_id) Return the first ChildBook filtered by the category_id column
  * @method     ChildBook findOneByPostedBy(int $posted_by) Return the first ChildBook filtered by the posted_by column
  * @method     ChildBook findOneBySold(boolean $sold) Return the first ChildBook filtered by the sold column *
@@ -87,7 +87,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildBook requireOneByName(string $name) Return the first ChildBook filtered by the name column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildBook requireOneByPrice(double $price) Return the first ChildBook filtered by the price column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildBook requireOneByDescription(string $description) Return the first ChildBook filtered by the description column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildBook requireOneByImageUrl(int $image_url) Return the first ChildBook filtered by the image_url column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildBook requireOneByImageUrl(string $image_url) Return the first ChildBook filtered by the image_url column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildBook requireOneByCategoryId(int $category_id) Return the first ChildBook filtered by the category_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildBook requireOneByPostedBy(int $posted_by) Return the first ChildBook filtered by the posted_by column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildBook requireOneBySold(boolean $sold) Return the first ChildBook filtered by the sold column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
@@ -97,7 +97,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildBook[]|ObjectCollection findByName(string $name) Return ChildBook objects filtered by the name column
  * @method     ChildBook[]|ObjectCollection findByPrice(double $price) Return ChildBook objects filtered by the price column
  * @method     ChildBook[]|ObjectCollection findByDescription(string $description) Return ChildBook objects filtered by the description column
- * @method     ChildBook[]|ObjectCollection findByImageUrl(int $image_url) Return ChildBook objects filtered by the image_url column
+ * @method     ChildBook[]|ObjectCollection findByImageUrl(string $image_url) Return ChildBook objects filtered by the image_url column
  * @method     ChildBook[]|ObjectCollection findByCategoryId(int $category_id) Return ChildBook objects filtered by the category_id column
  * @method     ChildBook[]|ObjectCollection findByPostedBy(int $posted_by) Return ChildBook objects filtered by the posted_by column
  * @method     ChildBook[]|ObjectCollection findBySold(boolean $sold) Return ChildBook objects filtered by the sold column
@@ -426,35 +426,19 @@ abstract class BookQuery extends ModelCriteria
      *
      * Example usage:
      * <code>
-     * $query->filterByImageUrl(1234); // WHERE image_url = 1234
-     * $query->filterByImageUrl(array(12, 34)); // WHERE image_url IN (12, 34)
-     * $query->filterByImageUrl(array('min' => 12)); // WHERE image_url > 12
+     * $query->filterByImageUrl('fooValue');   // WHERE image_url = 'fooValue'
+     * $query->filterByImageUrl('%fooValue%', Criteria::LIKE); // WHERE image_url LIKE '%fooValue%'
      * </code>
      *
-     * @param     mixed $imageUrl The value to use as filter.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $imageUrl The value to use as filter.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return $this|ChildBookQuery The current query, for fluid interface
      */
     public function filterByImageUrl($imageUrl = null, $comparison = null)
     {
-        if (is_array($imageUrl)) {
-            $useMinMax = false;
-            if (isset($imageUrl['min'])) {
-                $this->addUsingAlias(BookTableMap::COL_IMAGE_URL, $imageUrl['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($imageUrl['max'])) {
-                $this->addUsingAlias(BookTableMap::COL_IMAGE_URL, $imageUrl['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
+        if (null === $comparison) {
+            if (is_array($imageUrl)) {
                 $comparison = Criteria::IN;
             }
         }

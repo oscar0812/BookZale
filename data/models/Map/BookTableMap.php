@@ -165,7 +165,7 @@ class BookTableMap extends TableMap
         $this->addColumn('name', 'Name', 'VARCHAR', true, 64, null);
         $this->addColumn('price', 'Price', 'DOUBLE', true, 8, null);
         $this->addColumn('description', 'Description', 'VARCHAR', true, 4098, null);
-        $this->addColumn('image_url', 'ImageUrl', 'INTEGER', true, 128, null);
+        $this->addColumn('image_url', 'ImageUrl', 'VARCHAR', true, 128, null);
         $this->addForeignKey('category_id', 'CategoryId', 'INTEGER', 'category', 'id', true, null, null);
         $this->addForeignKey('posted_by', 'PostedBy', 'INTEGER', 'user', 'id', true, null, null);
         $this->addColumn('sold', 'Sold', 'BOOLEAN', true, 1, false);
