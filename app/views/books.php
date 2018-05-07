@@ -13,8 +13,8 @@
 
     <div class="col-md-9">
       <div class="box">
-        <h1>Ladies</h1>
-        <p>In our Ladies department we offer wide selection of the best products we have found and carefully selected worldwide.</p>
+        <h1><?=$category->getName()?></h1>
+        <p><?=$category->getDescription()?></p>
       </div>
 
       <div class="box info-bar">

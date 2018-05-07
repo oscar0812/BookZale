@@ -10,74 +10,74 @@ _________________________________________________________ -->
     <div class="panel-body">
       <ul class="nav nav-pills nav-stacked category-menu">
         <li>
-          <a href="<?=modifyUrl(array('category'=>'Students'), url("books"))?>">
+          <a href="<?=modifyUrl(array('category'=>'1'), url("books"))?>">
             Students <span class="badge pull-right">2</span></a>
         </li>
         <li>
-          <a href="<?=modifyUrl(array('category'=>'Nonfiction'), url("books"))?>">
+          <a href="<?=modifyUrl(array('category'=>'2'), url("books"))?>">
             Nonfiction <span class="badge pull-right">42</span></a>
           <ul>
-            <li><a href="<?=modifyUrl(array('category'=>'Pursuasive Writing'), url("books"))?>">
+            <li><a href="<?=modifyUrl(array('category'=>'6'), url("books"))?>">
               Persuasive Writing</a>
             </li>
-            <li><a href="<?=modifyUrl(array('category'=>'Information Writing'), url("books"))?>">
+            <li><a href="<?=modifyUrl(array('category'=>'7'), url("books"))?>">
               Information Writing</a>
             </li>
-            <li><a href="<?=modifyUrl(array('category'=>'Autobiography'), url("books"))?>">
+            <li><a href="<?=modifyUrl(array('category'=>'8'), url("books"))?>">
               Autobiography</a>
             </li>
-            <li><a href="<?=modifyUrl(array('category'=>'Biography'), url("books"))?>">
+            <li><a href="<?=modifyUrl(array('category'=>'9'), url("books"))?>">
               Biography</a>
             </li>
           </ul>
         </li>
         <li class="active">
-          <a href="<?=modifyUrl(array('category'=>'Fiction'), url("books"))?>">
+          <a href="<?=modifyUrl(array('category'=>'3'), url("books"))?>">
             Fiction  <span class="badge pull-right">123</span></a>
           <ul>
-            <li><a href="<?=modifyUrl(array('category'=>'Historical Fiction'), url("books"))?>">
+            <li><a href="<?=modifyUrl(array('category'=>'10'), url("books"))?>">
               Historical Fiction</a>
             </li>
-            <li><a href="<?=modifyUrl(array('category'=>'Science Fiction'), url("books"))?>">
+            <li><a href="<?=modifyUrl(array('category'=>'11'), url("books"))?>">
               Science Fiction</a>
             </li>
-            <li><a href="<?=modifyUrl(array('category'=>'Realistic Fiction'), url("books"))?>">
+            <li><a href="<?=modifyUrl(array('category'=>'12'), url("books"))?>">
               Realistic Fiction</a>
             </li>
-            <li><a href="<?=modifyUrl(array('category'=>'Fantasy'), url("books"))?>">
+            <li><a href="<?=modifyUrl(array('category'=>'13'), url("books"))?>">
               Fantasy</a>
             </li>
           </ul>
         </li>
         <li>
-          <a href="<?=modifyUrl(array('category'=>'Folklore'), url("books"))?>">
+          <a href="<?=modifyUrl(array('category'=>'4'), url("books"))?>">
             Folklore  <span class="badge pull-right">11</span></a>
           <ul>
-            <li><a href="<?=modifyUrl(array('category'=>'Fable'), url("books"))?>">
+            <li><a href="<?=modifyUrl(array('category'=>'14'), url("books"))?>">
               Fable</a>
             </li>
-            <li><a href="<?=modifyUrl(array('category'=>'Myth'), url("books"))?>">
+            <li><a href="<?=modifyUrl(array('category'=>'15'), url("books"))?>">
               Myth</a>
             </li>
-            <li><a href="<?=modifyUrl(array('category'=>'Tall Tale'), url("books"))?>">
+            <li><a href="<?=modifyUrl(array('category'=>'16'), url("books"))?>">
               Tall Tale</a>
             </li>
-            <li><a href="<?=modifyUrl(array('category'=>'Legend'), url("books"))?>">
+            <li><a href="<?=modifyUrl(array('category'=>'17'), url("books"))?>">
               Legend</a>
             </li>
-            <li><a href="<?=modifyUrl(array('category'=>'Fairytale'), url("books"))?>">
+            <li><a href="<?=modifyUrl(array('category'=>'18'), url("books"))?>">
               Fairytale</a>
             </li>
           </ul>
         </li>
         <li>
-          <a href="<?=modifyUrl(array('category'=>'Drama'), url("books"))?>">
+          <a href="<?=modifyUrl(array('category'=>'5'), url("books"))?>">
             Drama <span class="badge pull-right">11</span></a>
           <ul>
-            <li><a href="<?=modifyUrl(array('category'=>'Comedy'), url("books"))?>">
+            <li><a href="<?=modifyUrl(array('category'=>'19'), url("books"))?>">
               Comedy</a>
             </li>
-            <li><a href="<?=modifyUrl(array('category'=>'Tragedy'), url("books"))?>">
+            <li><a href="<?=modifyUrl(array('category'=>'20'), url("books"))?>">
               Tragedy</a>
             </li>
           </ul>

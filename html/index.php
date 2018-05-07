@@ -13,10 +13,22 @@ $container['view'] = new \Slim\Views\PhpRenderer("../app/views/");
 // if url is not found (404)
 $container['notFoundHandler'] = function ($c) {
     return function ($request, $response) use ($c) {
-        return $c['view']->render($response->withStatus(404), '404.php',
+        return $c['view']->render($response->withStatus(404),'404.php',
         ['router' => $c->router, 'user'=>currentUser()]);
     };
 };
+
+$app->get('/books', function ($request, $response, $args) {
+    $get = $request->getParams();
+    // get book category
+    $category = isset($get['category'])?$get['category']:1;
+    $category = \CategoryQuery::create()->findOneById($category);
+    // parameter was illegal if $category == null
+    $category = $category == null?\CategoryQuery::create()->findOneById(1):$category;
+
+    return $this->view->render($response, "books.php",
+    ['router' => $this->router, 'user'=>currentUser(), 'category'=>$category]);
+})->setName("books");
 
 $app->get('/logout', function ($request, $response, $args) {
     // just log out and redirect home
@@ -24,7 +36,6 @@ $app->get('/logout', function ($request, $response, $args) {
     return $response->withRedirect("home");
 });
 
-$name = "";
 $app->get('/{name}', function ($request, $response, $args) {
     try {
         if (startsWith($args["name"], "customer") && currentUser() == null) {
@@ -34,10 +45,12 @@ $app->get('/{name}', function ($request, $response, $args) {
             // user already signed in and seeing register page, dont allow
             $response = $response->withRedirect("customer-orders");
         } else {
-            $response = $this->view->render($response, $args["name"].".php",
-            ['router' => $this->router, 'user'=>currentUser()]);
+            $response = $this->view->render(
+                $response,
+                $args["name"].".php",
+            ['router' => $this->router, 'user'=>currentUser()]
+            );
         }
-        $GLOBALS['name'] = $args['name'];
         return $response;
     } catch (\RuntimeException $e) {
         // route doesn't exist? 404 it
