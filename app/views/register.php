@@ -219,7 +219,9 @@ $(function() {
       },
       url: window.location.href,
       success: function(data) {
-        console.log(data);
+        if(data['success']){
+          window.location = "customer-orders";
+        }
       }
     });
   }
