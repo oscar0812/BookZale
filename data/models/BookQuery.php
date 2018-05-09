@@ -14,5 +14,13 @@ use Base\BookQuery as BaseBookQuery;
  */
 class BookQuery extends BaseBookQuery
 {
-
+    public function findByCategory($category)
+    {
+        // if parent category is clicked, show all the child categories as well
+        if ($category->getParent() == 0) {
+            return parent::filterByCategory($category->getChildren())->_or()
+              ->filterByCategory($category)->find();
+        }
+        return parent::findByCategory($category);
+    }
 }
