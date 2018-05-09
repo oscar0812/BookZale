@@ -190,6 +190,13 @@ class BookTableMap extends TableMap
     1 => ':id',
   ),
 ), null, null, null, false);
+        $this->addRelation('Cart', '\\Cart', RelationMap::ONE_TO_MANY, array (
+  0 =>
+  array (
+    0 => ':book_id',
+    1 => ':id',
+  ),
+), null, null, 'Carts', false);
         $this->addRelation('Wishlist', '\\Wishlist', RelationMap::ONE_TO_MANY, array (
   0 =>
   array (

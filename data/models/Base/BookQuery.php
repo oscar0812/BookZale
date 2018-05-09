@@ -66,6 +66,16 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildBookQuery rightJoinWithCategory() Adds a RIGHT JOIN clause and with to the query using the Category relation
  * @method     ChildBookQuery innerJoinWithCategory() Adds a INNER JOIN clause and with to the query using the Category relation
  *
+ * @method     ChildBookQuery leftJoinCart($relationAlias = null) Adds a LEFT JOIN clause to the query using the Cart relation
+ * @method     ChildBookQuery rightJoinCart($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Cart relation
+ * @method     ChildBookQuery innerJoinCart($relationAlias = null) Adds a INNER JOIN clause to the query using the Cart relation
+ *
+ * @method     ChildBookQuery joinWithCart($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the Cart relation
+ *
+ * @method     ChildBookQuery leftJoinWithCart() Adds a LEFT JOIN clause and with to the query using the Cart relation
+ * @method     ChildBookQuery rightJoinWithCart() Adds a RIGHT JOIN clause and with to the query using the Cart relation
+ * @method     ChildBookQuery innerJoinWithCart() Adds a INNER JOIN clause and with to the query using the Cart relation
+ *
  * @method     ChildBookQuery leftJoinWishlist($relationAlias = null) Adds a LEFT JOIN clause to the query using the Wishlist relation
  * @method     ChildBookQuery rightJoinWishlist($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Wishlist relation
  * @method     ChildBookQuery innerJoinWishlist($relationAlias = null) Adds a INNER JOIN clause to the query using the Wishlist relation
@@ -76,7 +86,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildBookQuery rightJoinWithWishlist() Adds a RIGHT JOIN clause and with to the query using the Wishlist relation
  * @method     ChildBookQuery innerJoinWithWishlist() Adds a INNER JOIN clause and with to the query using the Wishlist relation
  *
- * @method     \UserQuery|\CategoryQuery|\WishlistQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
+ * @method     \UserQuery|\CategoryQuery|\CartQuery|\WishlistQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
  *
  * @method     ChildBook findOne(ConnectionInterface $con = null) Return the first ChildBook matching the query
  * @method     ChildBook findOneOrCreate(ConnectionInterface $con = null) Return the first ChildBook matching the query, or a new ChildBook object populated from the query conditions when no match is found
@@ -721,6 +731,79 @@ abstract class BookQuery extends ModelCriteria
         return $this
             ->joinCategory($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'Category', '\CategoryQuery');
+    }
+
+    /**
+     * Filter the query by a related \Cart object
+     *
+     * @param \Cart|ObjectCollection $cart the related object to use as filter
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildBookQuery The current query, for fluid interface
+     */
+    public function filterByCart($cart, $comparison = null)
+    {
+        if ($cart instanceof \Cart) {
+            return $this
+                ->addUsingAlias(BookTableMap::COL_ID, $cart->getBookId(), $comparison);
+        } elseif ($cart instanceof ObjectCollection) {
+            return $this
+                ->useCartQuery()
+                ->filterByPrimaryKeys($cart->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByCart() only accepts arguments of type \Cart or Collection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Cart relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this|ChildBookQuery The current query, for fluid interface
+     */
+    public function joinCart($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Cart');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Cart');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Cart relation Cart object
+     *
+     * @see useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return \CartQuery A secondary query class using the current class as primary query
+     */
+    public function useCartQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinCart($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Cart', '\CartQuery');
     }
 
     /**
