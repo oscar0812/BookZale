@@ -59,55 +59,10 @@
       </div>
 
       <div class="row products">
-        <?php foreach (\WishlistQuery::create()->findByCurrentUser($user) as $book) { ?>
+        <?php foreach (\WishlistQuery::create()->findByCurrentUser($user) as $wish) {
+          $book = $wish->getCurrentBook()?>
           <div class="col-md-3 col-sm-4">
-            <div class="product">
-              <div class="flip-container">
-                <div class="flipper">
-                  <div class="front">
-                    <a href="detail">
-                                                  <img src="<?=$book->getCurrentBook()->getImageUrl()?>" alt="" class="img-responsive clip-image">
-                                              </a>
-                  </div>
-                  <div class="back">
-                    <a href="detail">
-                                                  <img src="<?=$book->getCurrentBook()->getImageUrl()?>" alt="" class="img-responsive clip-image">
-                                              </a>
-                  </div>
-                </div>
-              </div>
-              <a href="detail" class="invisible">
-                                      <img src="<?=$book->getCurrentBook()->getImageUrl()?>" alt="" class="img-responsive clip-image">
-                                  </a>
-              <div class="text">
-                <h3><a href="detail"><?=$book->getCurrentBook()->getName()?></a></h3>
-                <p class="price"><del>$280</del> $<?=$book->getCurrentBook()->getPrice()?></p>
-                <p class="buttons">
-                  <a href="detail" class="btn btn-default">View detail</a>
-                  <a href="basket" class="btn btn-primary"><i class="fa fa-shopping-cart"></i>Add to cart</a>
-                </p>
-              </div>
-              <!-- /.text -->
-
-              <div class="ribbon sale">
-                <div class="theribbon">SALE</div>
-                <div class="ribbon-background"></div>
-              </div>
-              <!-- /.ribbon -->
-
-              <div class="ribbon new">
-                <div class="theribbon">NEW</div>
-                <div class="ribbon-background"></div>
-              </div>
-              <!-- /.ribbon -->
-
-              <div class="ribbon gift">
-                <div class="theribbon">GIFT</div>
-                <div class="ribbon-background"></div>
-              </div>
-              <!-- /.ribbon -->
-            </div>
-            <!-- /.product -->
+            <?php require("templates/product-with-btn.php")?>
           </div>
         <?php } ?>
 

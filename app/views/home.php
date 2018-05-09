@@ -87,7 +87,7 @@
                     <div class="product-slider">
                       <?php foreach (\BookQuery::create() as $book) { ?>
                         <div class="item">
-                            <div class="product ">
+                            <div class="product">
                                 <div class="flip-container">
                                     <div class="flipper">
                                         <div class="front">

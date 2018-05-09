@@ -8,7 +8,7 @@
         </li>
         <li><a href="books">Books</a>
         </li>
-        <li><a href=""><?=$category->getName()?></a>
+        <li><a href="books?category=<?=$category->getId()?>"><?=$category->getName()?></a>
         </li>
         <li><?=$current_book->getName()?></li>
       </ul>
