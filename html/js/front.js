@@ -8,6 +8,7 @@ $(function() {
   carousels();
   utils();
   setRibbons();
+  addToCartButtons();
 });
 
 
@@ -235,5 +236,22 @@ function setRibbons() {
         new_.css("top", 0);
       }
     }
+  });
+}
+
+function addToCartButtons() {
+  $('.add-to-cart').on('click', function(){
+    id = $(this).attr('data-book-id');
+    $.ajax({
+      type: "POST",
+      data: {
+        id: id
+      },
+      url: "add-to-cart",
+      success: function(data) {
+        console.log(data);
+      }
+    });
+    return false;
   });
 }

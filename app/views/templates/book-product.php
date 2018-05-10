@@ -23,8 +23,14 @@
     </p>
     <?php if(isset($btn)) { ?>
     <p class="buttons">
-      <a href="detail?book_id=<?=$book->getId()?>" class="btn btn-default">View detail</a>
-      <a href="basket" class="btn btn-primary"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+      <a href="detail?book_id=<?=$book->getId()?>" class="btn btn-default ">View detail</a>
+      <a href="#" class="btn btn-primary add-to-cart" data-book-id="<?=$book->getId()?>">
+        <i class="fa fa-shopping-cart"></i>
+        <?php if($user->hasBook($book)){
+          echo "Book In Cart";
+        } else echo "Add To Cart";
+         ?>
+        </a>
     </p>
     <?php } ?>
   </div>

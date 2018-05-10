@@ -25,4 +25,9 @@ class User extends BaseUser
     {
         return PHPassLib\Hash\BCrypt::verify($password, $this->getPassword());
     }
+
+    public function hasBook($book)
+    {
+        return \CartQuery::create()->filterByCartUser(currentUser())->filterByCartBook($book)->count() !=0;
+    }
 }

@@ -108,7 +108,8 @@
       <div class="navbar-buttons">
 
         <div class="navbar-collapse collapse right" id="basket-overview">
-          <a href="basket" class="btn btn-primary navbar-btn"><i class="fa fa-shopping-cart"></i><span class="hidden-sm">3 items in cart</span></a>
+          <?php if($user == null) $books_in_cart = 0; else $books_in_cart= $user->getBooks()->count()?>
+          <a href="basket" class="btn btn-primary navbar-btn"><i class="fa fa-shopping-cart"></i><span class="hidden-sm"><?=$books_in_cart?> items in cart</span></a>
         </div>
         <!--/.nav-collapse -->
       </div>

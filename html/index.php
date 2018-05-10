@@ -103,6 +103,28 @@ $app->post('/register', function ($request, $response, $args) {
     return $response;
 });
 
+$app->post("/add-to-cart", function ($request, $response, $args) {
+    $id = $request->getParsedBody()['id'];
+    if (!isset($id)) {
+        return $response->withJson(['success'=>false]);
+    }
+    $book = \BookQuery::create()->findPk($id);
+    if ($book == null) {
+        // book doesnt exist
+        return $response->withJson(['success'=>false]);
+    }
+
+    $cart = new \Cart();
+    $cart->setUserId(currentUser()->getId());
+    $cart->setBookId($book->getId());
+    if(currentUser()->hasBook($book)){
+      // user already has book in cart
+      return $response->withJson(['success'=>false]);
+    }
+    $cart->save();
+    return $response->withJson(['success'=>true]);
+});
+
 // if the route doesnt fall in the previous routes, handle here
 $app->get('/{name}', function ($request, $response, $args) {
     try {
