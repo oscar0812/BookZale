@@ -23,10 +23,10 @@ $container['notFoundHandler'] = function ($c) {
 
 $app->get('/', function ($request, $response, $args) {
     return $this->view->render(
-                $response,
-                "home.php",
-            ['router' => $this->router, 'user'=>currentUser()]
-            );
+        $response,
+        "home.php",
+    ['router' => $this->router, 'user'=>currentUser()]
+    );
 });
 
 $app->get('/books', function ($request, $response, $args) {

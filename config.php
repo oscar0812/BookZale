@@ -125,6 +125,20 @@ function timeAgo($timestamp)
     return "unknown";
 }
 
+// get the difference between 2 dates
+// $date2 >= $date1
+function dateDifference($date1, $date2)
+{
+    if (is_int($date1)) {
+        $date1 = timestampToDate($date1);
+    }
+    if (is_int($date2)) {
+        $date2 = timestampToDate($date2);
+    }
+
+    return $date1->diff($date2);
+}
+
 function getCurrentDateTime()
 {
     $dt = new DateTime();

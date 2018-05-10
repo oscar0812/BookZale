@@ -14,5 +14,16 @@ use Base\Book as BaseBook;
  */
 class Book extends BaseBook
 {
+    public function isNew()
+    {
+        // the book is considered new if its newer than 8 days
+        $diff = dateDifference($this->getDatePosted(), getCurrentTime());
+        return $diff->format("%a") < 8;
+    }
 
+    public function isCheap()
+    {
+        // book is cheap if less than $20
+        return $this->price < 20;
+    }
 }

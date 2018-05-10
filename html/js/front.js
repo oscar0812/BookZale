@@ -3,12 +3,11 @@ if ($.cookie("theme_csspath")) {
 }
 
 $(function() {
-
   animations();
   productDetailGallery(4000);
   carousels();
   utils();
-  demo();
+  setRibbons();
 });
 
 
@@ -21,32 +20,6 @@ $(window).resize(function() {
     $(this).alignElementsSameHeight();
   }, 150);
 });
-
-/* for demo purpose only - can be deleted */
-
-function demo() {
-
-  if ($.cookie("theme_csspath")) {
-    $('link#theme-stylesheet').attr("href", $.cookie("theme_csspath"));
-  }
-
-  $("#colour").change(function() {
-
-    if ($(this).val() !== '') {
-
-      var theme_csspath = 'css/style.' + $(this).val() + '.css';
-
-      $('link#theme-stylesheet').attr("href", theme_csspath);
-
-      $.cookie("theme_csspath", theme_csspath, {
-        expires: 365,
-        path: '/'
-      });
-    }
-
-    return false;
-  });
-}
 
 /* product detail gallery */
 
@@ -248,5 +221,20 @@ function ajaxForm(form, callback) {
     data: data,
     processData: false,
     success: callback
+  });
+}
+
+function setRibbons() {
+  $.each($('.product'), function(i, v) {
+    sale_ = $(this).find('.ribbon.sale');
+    new_ = $(this).find('.ribbon.new');
+    console.log(new_);
+    if (new_.length) {
+      // new exist
+      if (!sale_.length) {
+        // sale doesnt exist, move new up
+        new_.css("top", 0);
+      }
+    }
   });
 }
