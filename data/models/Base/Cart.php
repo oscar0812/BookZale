@@ -80,12 +80,12 @@ abstract class Cart implements ActiveRecordInterface
     /**
      * @var        ChildBook
      */
-    protected $aBook;
+    protected $acartBook;
 
     /**
      * @var        ChildUser
      */
-    protected $aUser;
+    protected $acartUser;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -357,8 +357,8 @@ abstract class Cart implements ActiveRecordInterface
             $this->modifiedColumns[CartTableMap::COL_USER_ID] = true;
         }
 
-        if ($this->aUser !== null && $this->aUser->getId() !== $v) {
-            $this->aUser = null;
+        if ($this->acartUser !== null && $this->acartUser->getId() !== $v) {
+            $this->acartUser = null;
         }
 
         return $this;
@@ -381,8 +381,8 @@ abstract class Cart implements ActiveRecordInterface
             $this->modifiedColumns[CartTableMap::COL_BOOK_ID] = true;
         }
 
-        if ($this->aBook !== null && $this->aBook->getId() !== $v) {
-            $this->aBook = null;
+        if ($this->acartBook !== null && $this->acartBook->getId() !== $v) {
+            $this->acartBook = null;
         }
 
         return $this;
@@ -459,11 +459,11 @@ abstract class Cart implements ActiveRecordInterface
      */
     public function ensureConsistency()
     {
-        if ($this->aUser !== null && $this->user_id !== $this->aUser->getId()) {
-            $this->aUser = null;
+        if ($this->acartUser !== null && $this->user_id !== $this->acartUser->getId()) {
+            $this->acartUser = null;
         }
-        if ($this->aBook !== null && $this->book_id !== $this->aBook->getId()) {
-            $this->aBook = null;
+        if ($this->acartBook !== null && $this->book_id !== $this->acartBook->getId()) {
+            $this->acartBook = null;
         }
     } // ensureConsistency
 
@@ -504,8 +504,8 @@ abstract class Cart implements ActiveRecordInterface
 
         if ($deep) {  // also de-associate any related objects?
 
-            $this->aBook = null;
-            $this->aUser = null;
+            $this->acartBook = null;
+            $this->acartUser = null;
         } // if (deep)
     }
 
@@ -614,18 +614,18 @@ abstract class Cart implements ActiveRecordInterface
             // method.  This object relates to these object(s) by a
             // foreign key reference.
 
-            if ($this->aBook !== null) {
-                if ($this->aBook->isModified() || $this->aBook->isNew()) {
-                    $affectedRows += $this->aBook->save($con);
+            if ($this->acartBook !== null) {
+                if ($this->acartBook->isModified() || $this->acartBook->isNew()) {
+                    $affectedRows += $this->acartBook->save($con);
                 }
-                $this->setBook($this->aBook);
+                $this->setcartBook($this->acartBook);
             }
 
-            if ($this->aUser !== null) {
-                if ($this->aUser->isModified() || $this->aUser->isNew()) {
-                    $affectedRows += $this->aUser->save($con);
+            if ($this->acartUser !== null) {
+                if ($this->acartUser->isModified() || $this->acartUser->isNew()) {
+                    $affectedRows += $this->acartUser->save($con);
                 }
-                $this->setUser($this->aUser);
+                $this->setcartUser($this->acartUser);
             }
 
             if ($this->isNew() || $this->isModified()) {
@@ -784,7 +784,7 @@ abstract class Cart implements ActiveRecordInterface
         }
 
         if ($includeForeignObjects) {
-            if (null !== $this->aBook) {
+            if (null !== $this->acartBook) {
 
                 switch ($keyType) {
                     case TableMap::TYPE_CAMELNAME:
@@ -794,12 +794,12 @@ abstract class Cart implements ActiveRecordInterface
                         $key = 'book';
                         break;
                     default:
-                        $key = 'Book';
+                        $key = 'cartBook';
                 }
 
-                $result[$key] = $this->aBook->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+                $result[$key] = $this->acartBook->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
-            if (null !== $this->aUser) {
+            if (null !== $this->acartUser) {
 
                 switch ($keyType) {
                     case TableMap::TYPE_CAMELNAME:
@@ -809,10 +809,10 @@ abstract class Cart implements ActiveRecordInterface
                         $key = 'user';
                         break;
                     default:
-                        $key = 'User';
+                        $key = 'cartUser';
                 }
 
-                $result[$key] = $this->aUser->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+                $result[$key] = $this->acartUser->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
         }
 
@@ -971,14 +971,14 @@ abstract class Cart implements ActiveRecordInterface
         $primaryKeyFKs = [];
 
         //relation cart_ibfk_1 to table book
-        if ($this->aBook && $hash = spl_object_hash($this->aBook)) {
+        if ($this->acartBook && $hash = spl_object_hash($this->acartBook)) {
             $primaryKeyFKs[] = $hash;
         } else {
             $validPrimaryKeyFKs = false;
         }
 
         //relation cart_ibfk_2 to table user
-        if ($this->aUser && $hash = spl_object_hash($this->aUser)) {
+        if ($this->acartUser && $hash = spl_object_hash($this->acartUser)) {
             $primaryKeyFKs[] = $hash;
         } else {
             $validPrimaryKeyFKs = false;
@@ -1077,7 +1077,7 @@ abstract class Cart implements ActiveRecordInterface
      * @return $this|\Cart The current object (for fluent API support)
      * @throws PropelException
      */
-    public function setBook(ChildBook $v = null)
+    public function setcartBook(ChildBook $v = null)
     {
         if ($v === null) {
             $this->setBookId(NULL);
@@ -1085,7 +1085,7 @@ abstract class Cart implements ActiveRecordInterface
             $this->setBookId($v->getId());
         }
 
-        $this->aBook = $v;
+        $this->acartBook = $v;
 
         // Add binding for other direction of this n:n relationship.
         // If this object has already been added to the ChildBook object, it will not be re-added.
@@ -1105,20 +1105,20 @@ abstract class Cart implements ActiveRecordInterface
      * @return ChildBook The associated ChildBook object.
      * @throws PropelException
      */
-    public function getBook(ConnectionInterface $con = null)
+    public function getcartBook(ConnectionInterface $con = null)
     {
-        if ($this->aBook === null && ($this->book_id != 0)) {
-            $this->aBook = ChildBookQuery::create()->findPk($this->book_id, $con);
+        if ($this->acartBook === null && ($this->book_id != 0)) {
+            $this->acartBook = ChildBookQuery::create()->findPk($this->book_id, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference
                 to this object.  This level of coupling may, however, be
                 undesirable since it could result in an only partially populated collection
                 in the referenced object.
-                $this->aBook->addCarts($this);
+                $this->acartBook->addCarts($this);
              */
         }
 
-        return $this->aBook;
+        return $this->acartBook;
     }
 
     /**
@@ -1128,7 +1128,7 @@ abstract class Cart implements ActiveRecordInterface
      * @return $this|\Cart The current object (for fluent API support)
      * @throws PropelException
      */
-    public function setUser(ChildUser $v = null)
+    public function setcartUser(ChildUser $v = null)
     {
         if ($v === null) {
             $this->setUserId(NULL);
@@ -1136,7 +1136,7 @@ abstract class Cart implements ActiveRecordInterface
             $this->setUserId($v->getId());
         }
 
-        $this->aUser = $v;
+        $this->acartUser = $v;
 
         // Add binding for other direction of this n:n relationship.
         // If this object has already been added to the ChildUser object, it will not be re-added.
@@ -1156,20 +1156,20 @@ abstract class Cart implements ActiveRecordInterface
      * @return ChildUser The associated ChildUser object.
      * @throws PropelException
      */
-    public function getUser(ConnectionInterface $con = null)
+    public function getcartUser(ConnectionInterface $con = null)
     {
-        if ($this->aUser === null && ($this->user_id != 0)) {
-            $this->aUser = ChildUserQuery::create()->findPk($this->user_id, $con);
+        if ($this->acartUser === null && ($this->user_id != 0)) {
+            $this->acartUser = ChildUserQuery::create()->findPk($this->user_id, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference
                 to this object.  This level of coupling may, however, be
                 undesirable since it could result in an only partially populated collection
                 in the referenced object.
-                $this->aUser->addCarts($this);
+                $this->acartUser->addCarts($this);
              */
         }
 
-        return $this->aUser;
+        return $this->acartUser;
     }
 
     /**
@@ -1179,11 +1179,11 @@ abstract class Cart implements ActiveRecordInterface
      */
     public function clear()
     {
-        if (null !== $this->aBook) {
-            $this->aBook->removeCart($this);
+        if (null !== $this->acartBook) {
+            $this->acartBook->removeCart($this);
         }
-        if (null !== $this->aUser) {
-            $this->aUser->removeCart($this);
+        if (null !== $this->acartUser) {
+            $this->acartUser->removeCart($this);
         }
         $this->user_id = null;
         $this->book_id = null;
@@ -1207,8 +1207,8 @@ abstract class Cart implements ActiveRecordInterface
         if ($deep) {
         } // if ($deep)
 
-        $this->aBook = null;
-        $this->aUser = null;
+        $this->acartBook = null;
+        $this->acartUser = null;
     }
 
     /**

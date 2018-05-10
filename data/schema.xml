@@ -29,10 +29,10 @@
   <table name="cart" idMethod="native" phpName="Cart" isCrossRef="true">
     <column name="user_id" phpName="UserId" type="INTEGER" primaryKey="true" required="true"/>
     <column name="book_id" phpName="BookId" type="INTEGER" primaryKey="true" required="true"/>
-    <foreign-key foreignTable="book" name="cart_ibfk_1">
+    <foreign-key foreignTable="book" name="cart_ibfk_1" phpName="cartBook">
       <reference local="book_id" foreign="id"/>
     </foreign-key>
-    <foreign-key foreignTable="user" name="cart_ibfk_2">
+    <foreign-key foreignTable="user" name="cart_ibfk_2" phpName="cartUser">
       <reference local="user_id" foreign="id"/>
     </foreign-key>
     <index name="book_id">

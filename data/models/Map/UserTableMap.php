@@ -179,7 +179,7 @@ class UserTableMap extends TableMap
     1 => ':id',
   ),
 ), null, null, 'Wishlists', false);
-        $this->addRelation('Book', '\\Book', RelationMap::MANY_TO_MANY, array(), null, null, 'Books');
+        $this->addRelation('cartBook', '\\Book', RelationMap::MANY_TO_MANY, array(), null, null, 'cartBooks');
         $this->addRelation('currentBook', '\\Book', RelationMap::MANY_TO_MANY, array(), null, null, 'currentBooks');
     } // buildRelations()
 

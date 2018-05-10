@@ -138,12 +138,12 @@ abstract class User implements ActiveRecordInterface
     /**
      * @var        ObjectCollection|ChildBook[] Cross Collection to store aggregation of ChildBook objects.
      */
-    protected $collBooks;
+    protected $collcartBooks;
 
     /**
      * @var bool
      */
-    protected $collBooksPartial;
+    protected $collcartBooksPartial;
 
     /**
      * @var        ObjectCollection|ChildBook[] Cross Collection to store aggregation of ChildBook objects.
@@ -184,7 +184,7 @@ abstract class User implements ActiveRecordInterface
      * An array of objects scheduled for deletion.
      * @var ObjectCollection|ChildBook[]
      */
-    protected $booksScheduledForDeletion = null;
+    protected $cartBooksScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -710,7 +710,7 @@ abstract class User implements ActiveRecordInterface
 
             $this->collWishlists = null;
 
-            $this->collBooks = null;
+            $this->collcartBooks = null;
             $this->collcurrentBooks = null;
         } // if (deep)
     }
@@ -826,10 +826,10 @@ abstract class User implements ActiveRecordInterface
                 $this->resetModified();
             }
 
-            if ($this->booksScheduledForDeletion !== null) {
-                if (!$this->booksScheduledForDeletion->isEmpty()) {
+            if ($this->cartBooksScheduledForDeletion !== null) {
+                if (!$this->cartBooksScheduledForDeletion->isEmpty()) {
                     $pks = array();
-                    foreach ($this->booksScheduledForDeletion as $entry) {
+                    foreach ($this->cartBooksScheduledForDeletion as $entry) {
                         $entryPk = [];
 
                         $entryPk[0] = $this->getId();
@@ -841,15 +841,15 @@ abstract class User implements ActiveRecordInterface
                         ->filterByPrimaryKeys($pks)
                         ->delete($con);
 
-                    $this->booksScheduledForDeletion = null;
+                    $this->cartBooksScheduledForDeletion = null;
                 }
 
             }
 
-            if ($this->collBooks) {
-                foreach ($this->collBooks as $book) {
-                    if (!$book->isDeleted() && ($book->isNew() || $book->isModified())) {
-                        $book->save($con);
+            if ($this->collcartBooks) {
+                foreach ($this->collcartBooks as $cartBook) {
+                    if (!$cartBook->isDeleted() && ($cartBook->isNew() || $cartBook->isModified())) {
+                        $cartBook->save($con);
                     }
                 }
             }
@@ -1800,7 +1800,7 @@ abstract class User implements ActiveRecordInterface
                 $this->initCarts();
             } else {
                 $collCarts = ChildCartQuery::create(null, $criteria)
-                    ->filterByUser($this)
+                    ->filterBycartUser($this)
                     ->find($con);
 
                 if (null !== $criteria) {
@@ -1857,7 +1857,7 @@ abstract class User implements ActiveRecordInterface
         $this->cartsScheduledForDeletion = clone $cartsToDelete;
 
         foreach ($cartsToDelete as $cartRemoved) {
-            $cartRemoved->setUser(null);
+            $cartRemoved->setcartUser(null);
         }
 
         $this->collCarts = null;
@@ -1898,7 +1898,7 @@ abstract class User implements ActiveRecordInterface
             }
 
             return $query
-                ->filterByUser($this)
+                ->filterBycartUser($this)
                 ->count($con);
         }
 
@@ -1936,7 +1936,7 @@ abstract class User implements ActiveRecordInterface
     protected function doAddCart(ChildCart $cart)
     {
         $this->collCarts[]= $cart;
-        $cart->setUser($this);
+        $cart->setcartUser($this);
     }
 
     /**
@@ -1953,7 +1953,7 @@ abstract class User implements ActiveRecordInterface
                 $this->cartsScheduledForDeletion->clear();
             }
             $this->cartsScheduledForDeletion[]= clone $cart;
-            $cart->setUser(null);
+            $cart->setcartUser(null);
         }
 
         return $this;
@@ -1976,10 +1976,10 @@ abstract class User implements ActiveRecordInterface
      * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
      * @return ObjectCollection|ChildCart[] List of ChildCart objects
      */
-    public function getCartsJoinBook(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    public function getCartsJoincartBook(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
     {
         $query = ChildCartQuery::create(null, $criteria);
-        $query->joinWith('Book', $joinBehavior);
+        $query->joinWith('cartBook', $joinBehavior);
 
         return $this->getCarts($query, $con);
     }
@@ -2238,45 +2238,45 @@ abstract class User implements ActiveRecordInterface
     }
 
     /**
-     * Clears out the collBooks collection
+     * Clears out the collcartBooks collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
      * them to be refetched by subsequent calls to accessor method.
      *
      * @return void
-     * @see        addBooks()
+     * @see        addcartBooks()
      */
-    public function clearBooks()
+    public function clearcartBooks()
     {
-        $this->collBooks = null; // important to set this to NULL since that means it is uninitialized
+        $this->collcartBooks = null; // important to set this to NULL since that means it is uninitialized
     }
 
     /**
-     * Initializes the collBooks crossRef collection.
+     * Initializes the collcartBooks crossRef collection.
      *
-     * By default this just sets the collBooks collection to an empty collection (like clearBooks());
+     * By default this just sets the collcartBooks collection to an empty collection (like clearcartBooks());
      * however, you may wish to override this method in your stub class to provide setting appropriate
      * to your application -- for example, setting the initial array to the values stored in database.
      *
      * @return void
      */
-    public function initBooks()
+    public function initcartBooks()
     {
         $collectionClassName = CartTableMap::getTableMap()->getCollectionClassName();
 
-        $this->collBooks = new $collectionClassName;
-        $this->collBooksPartial = true;
-        $this->collBooks->setModel('\Book');
+        $this->collcartBooks = new $collectionClassName;
+        $this->collcartBooksPartial = true;
+        $this->collcartBooks->setModel('\Book');
     }
 
     /**
-     * Checks if the collBooks collection is loaded.
+     * Checks if the collcartBooks collection is loaded.
      *
      * @return bool
      */
-    public function isBooksLoaded()
+    public function iscartBooksLoaded()
     {
-        return null !== $this->collBooks;
+        return null !== $this->collcartBooks;
     }
 
     /**
@@ -2294,39 +2294,39 @@ abstract class User implements ActiveRecordInterface
      *
      * @return ObjectCollection|ChildBook[] List of ChildBook objects
      */
-    public function getBooks(Criteria $criteria = null, ConnectionInterface $con = null)
+    public function getcartBooks(Criteria $criteria = null, ConnectionInterface $con = null)
     {
-        $partial = $this->collBooksPartial && !$this->isNew();
-        if (null === $this->collBooks || null !== $criteria || $partial) {
+        $partial = $this->collcartBooksPartial && !$this->isNew();
+        if (null === $this->collcartBooks || null !== $criteria || $partial) {
             if ($this->isNew()) {
                 // return empty collection
-                if (null === $this->collBooks) {
-                    $this->initBooks();
+                if (null === $this->collcartBooks) {
+                    $this->initcartBooks();
                 }
             } else {
 
                 $query = ChildBookQuery::create(null, $criteria)
-                    ->filterByUser($this);
-                $collBooks = $query->find($con);
+                    ->filterBycartUser($this);
+                $collcartBooks = $query->find($con);
                 if (null !== $criteria) {
-                    return $collBooks;
+                    return $collcartBooks;
                 }
 
-                if ($partial && $this->collBooks) {
+                if ($partial && $this->collcartBooks) {
                     //make sure that already added objects gets added to the list of the database.
-                    foreach ($this->collBooks as $obj) {
-                        if (!$collBooks->contains($obj)) {
-                            $collBooks[] = $obj;
+                    foreach ($this->collcartBooks as $obj) {
+                        if (!$collcartBooks->contains($obj)) {
+                            $collcartBooks[] = $obj;
                         }
                     }
                 }
 
-                $this->collBooks = $collBooks;
-                $this->collBooksPartial = false;
+                $this->collcartBooks = $collcartBooks;
+                $this->collcartBooksPartial = false;
             }
         }
 
-        return $this->collBooks;
+        return $this->collcartBooks;
     }
 
     /**
@@ -2335,29 +2335,29 @@ abstract class User implements ActiveRecordInterface
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param  Collection $books A Propel collection.
+     * @param  Collection $cartBooks A Propel collection.
      * @param  ConnectionInterface $con Optional connection object
      * @return $this|ChildUser The current object (for fluent API support)
      */
-    public function setBooks(Collection $books, ConnectionInterface $con = null)
+    public function setcartBooks(Collection $cartBooks, ConnectionInterface $con = null)
     {
-        $this->clearBooks();
-        $currentBooks = $this->getBooks();
+        $this->clearcartBooks();
+        $currentcartBooks = $this->getcartBooks();
 
-        $booksScheduledForDeletion = $currentBooks->diff($books);
+        $cartBooksScheduledForDeletion = $currentcartBooks->diff($cartBooks);
 
-        foreach ($booksScheduledForDeletion as $toDelete) {
-            $this->removeBook($toDelete);
+        foreach ($cartBooksScheduledForDeletion as $toDelete) {
+            $this->removecartBook($toDelete);
         }
 
-        foreach ($books as $book) {
-            if (!$currentBooks->contains($book)) {
-                $this->doAddBook($book);
+        foreach ($cartBooks as $cartBook) {
+            if (!$currentcartBooks->contains($cartBook)) {
+                $this->doAddcartBook($cartBook);
             }
         }
 
-        $this->collBooksPartial = false;
-        $this->collBooks = $books;
+        $this->collcartBooksPartial = false;
+        $this->collcartBooks = $cartBooks;
 
         return $this;
     }
@@ -2372,16 +2372,16 @@ abstract class User implements ActiveRecordInterface
      *
      * @return int the number of related Book objects
      */
-    public function countBooks(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
+    public function countcartBooks(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
     {
-        $partial = $this->collBooksPartial && !$this->isNew();
-        if (null === $this->collBooks || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collBooks) {
+        $partial = $this->collcartBooksPartial && !$this->isNew();
+        if (null === $this->collcartBooks || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collcartBooks) {
                 return 0;
             } else {
 
                 if ($partial && !$criteria) {
-                    return count($this->getBooks());
+                    return count($this->getcartBooks());
                 }
 
                 $query = ChildBookQuery::create(null, $criteria);
@@ -2390,11 +2390,11 @@ abstract class User implements ActiveRecordInterface
                 }
 
                 return $query
-                    ->filterByUser($this)
+                    ->filterBycartUser($this)
                     ->count($con);
             }
         } else {
-            return count($this->collBooks);
+            return count($this->collcartBooks);
         }
     }
 
@@ -2402,19 +2402,19 @@ abstract class User implements ActiveRecordInterface
      * Associate a ChildBook to this object
      * through the cart cross reference table.
      *
-     * @param ChildBook $book
+     * @param ChildBook $cartBook
      * @return ChildUser The current object (for fluent API support)
      */
-    public function addBook(ChildBook $book)
+    public function addcartBook(ChildBook $cartBook)
     {
-        if ($this->collBooks === null) {
-            $this->initBooks();
+        if ($this->collcartBooks === null) {
+            $this->initCartBooks();
         }
 
-        if (!$this->getBooks()->contains($book)) {
+        if (!$this->getCartBooks()->contains($cartBook)) {
             // only add it if the **same** object is not already associated
-            $this->collBooks->push($book);
-            $this->doAddBook($book);
+            $this->collcartBooks->push($cartBook);
+            $this->doAddCartBook($cartBook);
         }
 
         return $this;
@@ -2422,58 +2422,58 @@ abstract class User implements ActiveRecordInterface
 
     /**
      *
-     * @param ChildBook $book
+     * @param ChildBook $cartBook
      */
-    protected function doAddBook(ChildBook $book)
+    protected function doAddcartBook(ChildBook $cartBook)
     {
         $cart = new ChildCart();
 
-        $cart->setBook($book);
+        $cart->setcartBook($cartBook);
 
-        $cart->setUser($this);
+        $cart->setcartUser($this);
 
         $this->addCart($cart);
 
         // set the back reference to this object directly as using provided method either results
         // in endless loop or in multiple relations
-        if (!$book->isUsersLoaded()) {
-            $book->initUsers();
-            $book->getUsers()->push($this);
-        } elseif (!$book->getUsers()->contains($this)) {
-            $book->getUsers()->push($this);
+        if (!$cartBook->iscartUsersLoaded()) {
+            $cartBook->initcartUsers();
+            $cartBook->getcartUsers()->push($this);
+        } elseif (!$cartBook->getcartUsers()->contains($this)) {
+            $cartBook->getcartUsers()->push($this);
         }
 
     }
 
     /**
-     * Remove book of this object
+     * Remove cartBook of this object
      * through the cart cross reference table.
      *
-     * @param ChildBook $book
+     * @param ChildBook $cartBook
      * @return ChildUser The current object (for fluent API support)
      */
-    public function removeBook(ChildBook $book)
+    public function removecartBook(ChildBook $cartBook)
     {
-        if ($this->getBooks()->contains($book)) {
+        if ($this->getcartBooks()->contains($cartBook)) {
             $cart = new ChildCart();
-            $cart->setBook($book);
-            if ($book->isUsersLoaded()) {
+            $cart->setcartBook($cartBook);
+            if ($cartBook->iscartUsersLoaded()) {
                 //remove the back reference if available
-                $book->getUsers()->removeObject($this);
+                $cartBook->getcartUsers()->removeObject($this);
             }
 
-            $cart->setUser($this);
+            $cart->setcartUser($this);
             $this->removeCart(clone $cart);
             $cart->clear();
 
-            $this->collBooks->remove($this->collBooks->search($book));
+            $this->collcartBooks->remove($this->collcartBooks->search($cartBook));
 
-            if (null === $this->booksScheduledForDeletion) {
-                $this->booksScheduledForDeletion = clone $this->collBooks;
-                $this->booksScheduledForDeletion->clear();
+            if (null === $this->cartBooksScheduledForDeletion) {
+                $this->cartBooksScheduledForDeletion = clone $this->collcartBooks;
+                $this->cartBooksScheduledForDeletion->clear();
             }
 
-            $this->booksScheduledForDeletion->push($book);
+            $this->cartBooksScheduledForDeletion->push($cartBook);
         }
 
 
@@ -2768,8 +2768,8 @@ abstract class User implements ActiveRecordInterface
                     $o->clearAllReferences($deep);
                 }
             }
-            if ($this->collBooks) {
-                foreach ($this->collBooks as $o) {
+            if ($this->collcartBooks) {
+                foreach ($this->collcartBooks as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
@@ -2783,7 +2783,7 @@ abstract class User implements ActiveRecordInterface
         $this->collBooks = null;
         $this->collCarts = null;
         $this->collWishlists = null;
-        $this->collBooks = null;
+        $this->collcartBooks = null;
         $this->collcurrentBooks = null;
     }
 

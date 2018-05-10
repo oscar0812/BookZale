@@ -34,25 +34,25 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildCartQuery rightJoinWith($relation) Adds a RIGHT JOIN clause and with to the query
  * @method     ChildCartQuery innerJoinWith($relation) Adds a INNER JOIN clause and with to the query
  *
- * @method     ChildCartQuery leftJoinBook($relationAlias = null) Adds a LEFT JOIN clause to the query using the Book relation
- * @method     ChildCartQuery rightJoinBook($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Book relation
- * @method     ChildCartQuery innerJoinBook($relationAlias = null) Adds a INNER JOIN clause to the query using the Book relation
+ * @method     ChildCartQuery leftJoincartBook($relationAlias = null) Adds a LEFT JOIN clause to the query using the cartBook relation
+ * @method     ChildCartQuery rightJoincartBook($relationAlias = null) Adds a RIGHT JOIN clause to the query using the cartBook relation
+ * @method     ChildCartQuery innerJoincartBook($relationAlias = null) Adds a INNER JOIN clause to the query using the cartBook relation
  *
- * @method     ChildCartQuery joinWithBook($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the Book relation
+ * @method     ChildCartQuery joinWithcartBook($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the cartBook relation
  *
- * @method     ChildCartQuery leftJoinWithBook() Adds a LEFT JOIN clause and with to the query using the Book relation
- * @method     ChildCartQuery rightJoinWithBook() Adds a RIGHT JOIN clause and with to the query using the Book relation
- * @method     ChildCartQuery innerJoinWithBook() Adds a INNER JOIN clause and with to the query using the Book relation
+ * @method     ChildCartQuery leftJoinWithcartBook() Adds a LEFT JOIN clause and with to the query using the cartBook relation
+ * @method     ChildCartQuery rightJoinWithcartBook() Adds a RIGHT JOIN clause and with to the query using the cartBook relation
+ * @method     ChildCartQuery innerJoinWithcartBook() Adds a INNER JOIN clause and with to the query using the cartBook relation
  *
- * @method     ChildCartQuery leftJoinUser($relationAlias = null) Adds a LEFT JOIN clause to the query using the User relation
- * @method     ChildCartQuery rightJoinUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the User relation
- * @method     ChildCartQuery innerJoinUser($relationAlias = null) Adds a INNER JOIN clause to the query using the User relation
+ * @method     ChildCartQuery leftJoincartUser($relationAlias = null) Adds a LEFT JOIN clause to the query using the cartUser relation
+ * @method     ChildCartQuery rightJoincartUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the cartUser relation
+ * @method     ChildCartQuery innerJoincartUser($relationAlias = null) Adds a INNER JOIN clause to the query using the cartUser relation
  *
- * @method     ChildCartQuery joinWithUser($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the User relation
+ * @method     ChildCartQuery joinWithcartUser($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the cartUser relation
  *
- * @method     ChildCartQuery leftJoinWithUser() Adds a LEFT JOIN clause and with to the query using the User relation
- * @method     ChildCartQuery rightJoinWithUser() Adds a RIGHT JOIN clause and with to the query using the User relation
- * @method     ChildCartQuery innerJoinWithUser() Adds a INNER JOIN clause and with to the query using the User relation
+ * @method     ChildCartQuery leftJoinWithcartUser() Adds a LEFT JOIN clause and with to the query using the cartUser relation
+ * @method     ChildCartQuery rightJoinWithcartUser() Adds a RIGHT JOIN clause and with to the query using the cartUser relation
+ * @method     ChildCartQuery innerJoinWithcartUser() Adds a INNER JOIN clause and with to the query using the cartUser relation
  *
  * @method     \BookQuery|\UserQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
  *
@@ -281,7 +281,7 @@ abstract class CartQuery extends ModelCriteria
      * $query->filterByUserId(array('min' => 12)); // WHERE user_id > 12
      * </code>
      *
-     * @see       filterByUser()
+     * @see       filterBycartUser()
      *
      * @param     mixed $userId The value to use as filter.
      *              Use scalar values for equality.
@@ -324,7 +324,7 @@ abstract class CartQuery extends ModelCriteria
      * $query->filterByBookId(array('min' => 12)); // WHERE book_id > 12
      * </code>
      *
-     * @see       filterByBook()
+     * @see       filterBycartBook()
      *
      * @param     mixed $bookId The value to use as filter.
      *              Use scalar values for equality.
@@ -367,7 +367,7 @@ abstract class CartQuery extends ModelCriteria
      *
      * @return ChildCartQuery The current query, for fluid interface
      */
-    public function filterByBook($book, $comparison = null)
+    public function filterBycartBook($book, $comparison = null)
     {
         if ($book instanceof \Book) {
             return $this
@@ -380,22 +380,22 @@ abstract class CartQuery extends ModelCriteria
             return $this
                 ->addUsingAlias(CartTableMap::COL_BOOK_ID, $book->toKeyValue('PrimaryKey', 'Id'), $comparison);
         } else {
-            throw new PropelException('filterByBook() only accepts arguments of type \Book or Collection');
+            throw new PropelException('filterBycartBook() only accepts arguments of type \Book or Collection');
         }
     }
 
     /**
-     * Adds a JOIN clause to the query using the Book relation
+     * Adds a JOIN clause to the query using the cartBook relation
      *
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return $this|ChildCartQuery The current query, for fluid interface
      */
-    public function joinBook($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joincartBook($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('Book');
+        $relationMap = $tableMap->getRelation('cartBook');
 
         // create a ModelJoin object for this join
         $join = new ModelJoin();
@@ -410,14 +410,14 @@ abstract class CartQuery extends ModelCriteria
             $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
             $this->addJoinObject($join, $relationAlias);
         } else {
-            $this->addJoinObject($join, 'Book');
+            $this->addJoinObject($join, 'cartBook');
         }
 
         return $this;
     }
 
     /**
-     * Use the Book relation Book object
+     * Use the cartBook relation Book object
      *
      * @see useQuery()
      *
@@ -427,11 +427,11 @@ abstract class CartQuery extends ModelCriteria
      *
      * @return \BookQuery A secondary query class using the current class as primary query
      */
-    public function useBookQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function usecartBookQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         return $this
-            ->joinBook($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'Book', '\BookQuery');
+            ->joincartBook($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'cartBook', '\BookQuery');
     }
 
     /**
@@ -444,7 +444,7 @@ abstract class CartQuery extends ModelCriteria
      *
      * @return ChildCartQuery The current query, for fluid interface
      */
-    public function filterByUser($user, $comparison = null)
+    public function filterBycartUser($user, $comparison = null)
     {
         if ($user instanceof \User) {
             return $this
@@ -457,22 +457,22 @@ abstract class CartQuery extends ModelCriteria
             return $this
                 ->addUsingAlias(CartTableMap::COL_USER_ID, $user->toKeyValue('PrimaryKey', 'Id'), $comparison);
         } else {
-            throw new PropelException('filterByUser() only accepts arguments of type \User or Collection');
+            throw new PropelException('filterBycartUser() only accepts arguments of type \User or Collection');
         }
     }
 
     /**
-     * Adds a JOIN clause to the query using the User relation
+     * Adds a JOIN clause to the query using the cartUser relation
      *
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return $this|ChildCartQuery The current query, for fluid interface
      */
-    public function joinUser($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joincartUser($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('User');
+        $relationMap = $tableMap->getRelation('cartUser');
 
         // create a ModelJoin object for this join
         $join = new ModelJoin();
@@ -487,14 +487,14 @@ abstract class CartQuery extends ModelCriteria
             $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
             $this->addJoinObject($join, $relationAlias);
         } else {
-            $this->addJoinObject($join, 'User');
+            $this->addJoinObject($join, 'cartUser');
         }
 
         return $this;
     }
 
     /**
-     * Use the User relation User object
+     * Use the cartUser relation User object
      *
      * @see useQuery()
      *
@@ -504,11 +504,11 @@ abstract class CartQuery extends ModelCriteria
      *
      * @return \UserQuery A secondary query class using the current class as primary query
      */
-    public function useUserQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function usecartUserQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         return $this
-            ->joinUser($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'User', '\UserQuery');
+            ->joincartUser($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'cartUser', '\UserQuery');
     }
 
     /**

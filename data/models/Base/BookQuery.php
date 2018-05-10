@@ -934,11 +934,11 @@ abstract class BookQuery extends ModelCriteria
      *
      * @return ChildBookQuery The current query, for fluid interface
      */
-    public function filterByUser($user, $comparison = Criteria::EQUAL)
+    public function filterBycartUser($user, $comparison = Criteria::EQUAL)
     {
         return $this
             ->useCartQuery()
-            ->filterByUser($user, $comparison)
+            ->filterBycartUser($user, $comparison)
             ->endUse();
     }
 

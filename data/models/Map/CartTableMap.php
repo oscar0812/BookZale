@@ -141,14 +141,14 @@ class CartTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('Book', '\\Book', RelationMap::MANY_TO_ONE, array (
+        $this->addRelation('cartBook', '\\Book', RelationMap::MANY_TO_ONE, array (
   0 =>
   array (
     0 => ':book_id',
     1 => ':id',
   ),
 ), null, null, null, false);
-        $this->addRelation('User', '\\User', RelationMap::MANY_TO_ONE, array (
+        $this->addRelation('cartUser', '\\User', RelationMap::MANY_TO_ONE, array (
   0 =>
   array (
     0 => ':user_id',
