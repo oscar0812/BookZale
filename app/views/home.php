@@ -87,49 +87,7 @@
                     <div class="product-slider">
                       <?php foreach (\BookQuery::create() as $book) { ?>
                         <div class="item">
-                            <div class="product">
-                                <div class="flip-container">
-                                    <div class="flipper">
-                                        <div class="front">
-                                            <a href="detail">
-                                                <img src="<?=$book->getImageUrl()?>" alt="" class="img-responsive clip-image">
-                                            </a>
-                                        </div>
-                                        <div class="back">
-                                            <a href="detail">
-                                                <img src="<?=$book->getImageUrl()?>" alt="" class="img-responsive clip-image">
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <a href="detail" class="invisible">
-                                    <img src="<?=$book->getImageUrl()?>" alt="" class="img-responsive clip-image">
-                                </a>
-                                <div class="text">
-                                    <h3><a href="detail"><?=$book->getName()?></a></h3>
-                                    <p class="price">$<?=$book->getPrice()?></p>
-                                </div>
-                                <!-- /.text -->
-                                <?php if($book->getPrice() <= 10) { ?>
-                                  <div class="ribbon sale">
-                                      <div class="theribbon">SALE</div>
-                                      <div class="ribbon-background"></div>
-                                  </div>
-                                  <!-- /.ribbon -->
-                                <?php } ?>
-                                <!--
-                                <div class="ribbon new">
-                                    <div class="theribbon">NEW</div>
-                                    <div class="ribbon-background"></div>
-                                </div>
-
-                                <div class="ribbon gift">
-                                    <div class="theribbon">GIFT</div>
-                                    <div class="ribbon-background"></div>
-                                </div>
-                              -->
-                            </div>
-                            <!-- /.product -->
+                            <?php require("templates/product-with-btn.php")?>
                         </div>
                       <?php }?>
                             <!-- /.product -->

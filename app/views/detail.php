@@ -110,31 +110,10 @@
           </div>
         </div>
 
-        <?php foreach($books as $book) { ?>
+        <?php foreach($books as $book) {
+          $height = true?>
         <div class="col-md-3 col-sm-6">
-          <div class="product same-height">
-            <div class="flip-container">
-              <div class="flipper">
-                <div class="front">
-                  <a href="detail?book_id=<?=$book->getId()?>">
-                                                <img src="<?=$book->getImageUrl()?>" alt="" class="img-responsive clip-image">
-                                            </a>
-                </div>
-                <div class="back">
-                  <a href="detail?book_id=<?=$book->getId()?>">
-                                                <img src="<?=$book->getImageUrl()?>" alt="" class="img-responsive clip-image">
-                                            </a>
-                </div>
-              </div>
-            </div>
-            <a href="detail?book_id=<?=$book->getId()?>" class="invisible">
-                                    <img src="<?=$book->getImageUrl()?>" alt="" class="img-responsive clip-image">
-                                </a>
-            <div class="text">
-              <h3><?=$book->getName()?></h3>
-              <p class="price">$<?=$book->getPrice()?></p>
-            </div>
-          </div>
+          <?php require("templates/product-with-btn.php")?>
           <!-- /.product -->
         </div>
         <?php } ?>

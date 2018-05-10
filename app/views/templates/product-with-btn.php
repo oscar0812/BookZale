@@ -1,4 +1,4 @@
-  <div class="product">
+  <div class="product <?php if(isset($height))echo "same-height"?>">
     <div class="flip-container">
       <div class="flipper">
         <div class="front">
@@ -19,11 +19,29 @@
     <div class="text">
       <h3><a href="detail?book_id=<?=$book->getId()?>"><?=$book->getName()?></a></h3>
       <p class="price">$<?=$book->getPrice()?></p>
+      <?php if(isset($btn)) { ?>
       <p class="buttons">
         <a href="detail?book_id=<?=$book->getId()?>" class="btn btn-default">View detail</a>
         <a href="basket" class="btn btn-primary"><i class="fa fa-shopping-cart"></i>Add to cart</a>
       </p>
+    <?php } ?>
     </div>
     <!-- /.text -->
+    <!--
+    <div class="ribbon sale">
+        <div class="theribbon">SALE</div>
+        <div class="ribbon-background"></div>
+    </div>
+
+  <div class="ribbon new">
+      <div class="theribbon">NEW</div>
+      <div class="ribbon-background"></div>
+  </div>
+
+  <div class="ribbon gift">
+      <div class="theribbon">GIFT</div>
+      <div class="ribbon-background"></div>
+  </div>
+-->
   </div>
   <!-- /.product -->
