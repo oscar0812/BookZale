@@ -228,7 +228,6 @@ function setRibbons() {
   $.each($('.product'), function(i, v) {
     sale_ = $(this).find('.ribbon.sale');
     new_ = $(this).find('.ribbon.new');
-    console.log(new_);
     if (new_.length) {
       // new exist
       if (!sale_.length) {

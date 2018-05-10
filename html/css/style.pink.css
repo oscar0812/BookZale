@@ -307,7 +307,7 @@ h1 {
   position: absolute;
   top: 50px;
   padding-left: 51px;
-  z-index: 20;
+  z-index: 90000;
 }
 .ribbon .ribbon-background {
   position: absolute;

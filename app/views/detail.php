@@ -80,11 +80,6 @@
           <p><?=$current_book->getDescription()?></p>
           <h4>Posted By</h4>
           <p><?=$current_book->getUser()->getName()?></p>
-          <h4>Something</h4>
-          <ul>
-            <li>1</li>
-            <li>2</li>
-          </ul>
 
           <blockquote>
             <p><em><?=$current_book->getCategory()->getDescription()?></em>

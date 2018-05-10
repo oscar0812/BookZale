@@ -52,7 +52,8 @@
       </div>
 
       <div class="row products">
-        <?php foreach ($books as $book) {?>
+        <?php foreach ($books as $book) {
+          $btn = true?>
           <div class="col-md-4 col-sm-6">
           <?php require("templates/book-product.php")?>
           </div>
