@@ -210,6 +210,7 @@ class BookTableMap extends TableMap
     1 => ':id',
   ),
 ), null, null, 'Wishlists', false);
+        $this->addRelation('User', '\\User', RelationMap::MANY_TO_MANY, array(), null, null, 'Users');
         $this->addRelation('currentUser', '\\User', RelationMap::MANY_TO_MANY, array(), null, null, 'currentUsers');
     } // buildRelations()
 

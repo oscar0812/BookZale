@@ -26,7 +26,7 @@
       <parameter name="Engine" value="InnoDB"/>
     </vendor>
   </table>
-  <table name="cart" idMethod="native" phpName="Cart">
+  <table name="cart" idMethod="native" phpName="Cart" isCrossRef="true">
     <column name="user_id" phpName="UserId" type="INTEGER" primaryKey="true" required="true"/>
     <column name="book_id" phpName="BookId" type="INTEGER" primaryKey="true" required="true"/>
     <foreign-key foreignTable="book" name="cart_ibfk_1">

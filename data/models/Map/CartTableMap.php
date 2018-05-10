@@ -130,6 +130,7 @@ class CartTableMap extends TableMap
         $this->setClassName('\\Cart');
         $this->setPackage('');
         $this->setUseIdGenerator(false);
+        $this->setIsCrossRef(true);
         // columns
         $this->addForeignPrimaryKey('user_id', 'UserId', 'INTEGER' , 'user', 'id', true, null, null);
         $this->addForeignPrimaryKey('book_id', 'BookId', 'INTEGER' , 'book', 'id', true, null, null);

@@ -662,6 +662,23 @@ abstract class UserQuery extends ModelCriteria
 
     /**
      * Filter the query by a related Book object
+     * using the cart table as cross reference
+     *
+     * @param Book $book the related object to use as filter
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildUserQuery The current query, for fluid interface
+     */
+    public function filterByBook($book, $comparison = Criteria::EQUAL)
+    {
+        return $this
+            ->useCartQuery()
+            ->filterByBook($book, $comparison)
+            ->endUse();
+    }
+
+    /**
+     * Filter the query by a related Book object
      * using the wishlist table as cross reference
      *
      * @param Book $book the related object to use as filter

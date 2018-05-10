@@ -138,6 +138,16 @@ abstract class User implements ActiveRecordInterface
     /**
      * @var        ObjectCollection|ChildBook[] Cross Collection to store aggregation of ChildBook objects.
      */
+    protected $collBooks;
+
+    /**
+     * @var bool
+     */
+    protected $collBooksPartial;
+
+    /**
+     * @var        ObjectCollection|ChildBook[] Cross Collection to store aggregation of ChildBook objects.
+     */
     protected $collcurrentBooks;
 
     /**
@@ -169,6 +179,12 @@ abstract class User implements ActiveRecordInterface
      * @var     ConstraintViolationList
      */
     protected $validationFailures;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var ObjectCollection|ChildBook[]
+     */
+    protected $booksScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -694,6 +710,7 @@ abstract class User implements ActiveRecordInterface
 
             $this->collWishlists = null;
 
+            $this->collBooks = null;
             $this->collcurrentBooks = null;
         } // if (deep)
     }
@@ -808,6 +825,35 @@ abstract class User implements ActiveRecordInterface
                 }
                 $this->resetModified();
             }
+
+            if ($this->booksScheduledForDeletion !== null) {
+                if (!$this->booksScheduledForDeletion->isEmpty()) {
+                    $pks = array();
+                    foreach ($this->booksScheduledForDeletion as $entry) {
+                        $entryPk = [];
+
+                        $entryPk[0] = $this->getId();
+                        $entryPk[1] = $entry->getId();
+                        $pks[] = $entryPk;
+                    }
+
+                    \CartQuery::create()
+                        ->filterByPrimaryKeys($pks)
+                        ->delete($con);
+
+                    $this->booksScheduledForDeletion = null;
+                }
+
+            }
+
+            if ($this->collBooks) {
+                foreach ($this->collBooks as $book) {
+                    if (!$book->isDeleted() && ($book->isNew() || $book->isModified())) {
+                        $book->save($con);
+                    }
+                }
+            }
+
 
             if ($this->currentBooksScheduledForDeletion !== null) {
                 if (!$this->currentBooksScheduledForDeletion->isEmpty()) {
@@ -2192,6 +2238,249 @@ abstract class User implements ActiveRecordInterface
     }
 
     /**
+     * Clears out the collBooks collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return void
+     * @see        addBooks()
+     */
+    public function clearBooks()
+    {
+        $this->collBooks = null; // important to set this to NULL since that means it is uninitialized
+    }
+
+    /**
+     * Initializes the collBooks crossRef collection.
+     *
+     * By default this just sets the collBooks collection to an empty collection (like clearBooks());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @return void
+     */
+    public function initBooks()
+    {
+        $collectionClassName = CartTableMap::getTableMap()->getCollectionClassName();
+
+        $this->collBooks = new $collectionClassName;
+        $this->collBooksPartial = true;
+        $this->collBooks->setModel('\Book');
+    }
+
+    /**
+     * Checks if the collBooks collection is loaded.
+     *
+     * @return bool
+     */
+    public function isBooksLoaded()
+    {
+        return null !== $this->collBooks;
+    }
+
+    /**
+     * Gets a collection of ChildBook objects related by a many-to-many relationship
+     * to the current object by way of the cart cross-reference table.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this ChildUser is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param      Criteria $criteria Optional query object to filter the query
+     * @param      ConnectionInterface $con Optional connection object
+     *
+     * @return ObjectCollection|ChildBook[] List of ChildBook objects
+     */
+    public function getBooks(Criteria $criteria = null, ConnectionInterface $con = null)
+    {
+        $partial = $this->collBooksPartial && !$this->isNew();
+        if (null === $this->collBooks || null !== $criteria || $partial) {
+            if ($this->isNew()) {
+                // return empty collection
+                if (null === $this->collBooks) {
+                    $this->initBooks();
+                }
+            } else {
+
+                $query = ChildBookQuery::create(null, $criteria)
+                    ->filterByUser($this);
+                $collBooks = $query->find($con);
+                if (null !== $criteria) {
+                    return $collBooks;
+                }
+
+                if ($partial && $this->collBooks) {
+                    //make sure that already added objects gets added to the list of the database.
+                    foreach ($this->collBooks as $obj) {
+                        if (!$collBooks->contains($obj)) {
+                            $collBooks[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collBooks = $collBooks;
+                $this->collBooksPartial = false;
+            }
+        }
+
+        return $this->collBooks;
+    }
+
+    /**
+     * Sets a collection of Book objects related by a many-to-many relationship
+     * to the current object by way of the cart cross-reference table.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param  Collection $books A Propel collection.
+     * @param  ConnectionInterface $con Optional connection object
+     * @return $this|ChildUser The current object (for fluent API support)
+     */
+    public function setBooks(Collection $books, ConnectionInterface $con = null)
+    {
+        $this->clearBooks();
+        $currentBooks = $this->getBooks();
+
+        $booksScheduledForDeletion = $currentBooks->diff($books);
+
+        foreach ($booksScheduledForDeletion as $toDelete) {
+            $this->removeBook($toDelete);
+        }
+
+        foreach ($books as $book) {
+            if (!$currentBooks->contains($book)) {
+                $this->doAddBook($book);
+            }
+        }
+
+        $this->collBooksPartial = false;
+        $this->collBooks = $books;
+
+        return $this;
+    }
+
+    /**
+     * Gets the number of Book objects related by a many-to-many relationship
+     * to the current object by way of the cart cross-reference table.
+     *
+     * @param      Criteria $criteria Optional query object to filter the query
+     * @param      boolean $distinct Set to true to force count distinct
+     * @param      ConnectionInterface $con Optional connection object
+     *
+     * @return int the number of related Book objects
+     */
+    public function countBooks(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
+    {
+        $partial = $this->collBooksPartial && !$this->isNew();
+        if (null === $this->collBooks || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collBooks) {
+                return 0;
+            } else {
+
+                if ($partial && !$criteria) {
+                    return count($this->getBooks());
+                }
+
+                $query = ChildBookQuery::create(null, $criteria);
+                if ($distinct) {
+                    $query->distinct();
+                }
+
+                return $query
+                    ->filterByUser($this)
+                    ->count($con);
+            }
+        } else {
+            return count($this->collBooks);
+        }
+    }
+
+    /**
+     * Associate a ChildBook to this object
+     * through the cart cross reference table.
+     *
+     * @param ChildBook $book
+     * @return ChildUser The current object (for fluent API support)
+     */
+    public function addBook(ChildBook $book)
+    {
+        if ($this->collBooks === null) {
+            $this->initBooks();
+        }
+
+        if (!$this->getBooks()->contains($book)) {
+            // only add it if the **same** object is not already associated
+            $this->collBooks->push($book);
+            $this->doAddBook($book);
+        }
+
+        return $this;
+    }
+
+    /**
+     *
+     * @param ChildBook $book
+     */
+    protected function doAddBook(ChildBook $book)
+    {
+        $cart = new ChildCart();
+
+        $cart->setBook($book);
+
+        $cart->setUser($this);
+
+        $this->addCart($cart);
+
+        // set the back reference to this object directly as using provided method either results
+        // in endless loop or in multiple relations
+        if (!$book->isUsersLoaded()) {
+            $book->initUsers();
+            $book->getUsers()->push($this);
+        } elseif (!$book->getUsers()->contains($this)) {
+            $book->getUsers()->push($this);
+        }
+
+    }
+
+    /**
+     * Remove book of this object
+     * through the cart cross reference table.
+     *
+     * @param ChildBook $book
+     * @return ChildUser The current object (for fluent API support)
+     */
+    public function removeBook(ChildBook $book)
+    {
+        if ($this->getBooks()->contains($book)) {
+            $cart = new ChildCart();
+            $cart->setBook($book);
+            if ($book->isUsersLoaded()) {
+                //remove the back reference if available
+                $book->getUsers()->removeObject($this);
+            }
+
+            $cart->setUser($this);
+            $this->removeCart(clone $cart);
+            $cart->clear();
+
+            $this->collBooks->remove($this->collBooks->search($book));
+
+            if (null === $this->booksScheduledForDeletion) {
+                $this->booksScheduledForDeletion = clone $this->collBooks;
+                $this->booksScheduledForDeletion->clear();
+            }
+
+            $this->booksScheduledForDeletion->push($book);
+        }
+
+
+        return $this;
+    }
+
+    /**
      * Clears out the collcurrentBooks collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
@@ -2479,6 +2768,11 @@ abstract class User implements ActiveRecordInterface
                     $o->clearAllReferences($deep);
                 }
             }
+            if ($this->collBooks) {
+                foreach ($this->collBooks as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->collcurrentBooks) {
                 foreach ($this->collcurrentBooks as $o) {
                     $o->clearAllReferences($deep);
@@ -2489,6 +2783,7 @@ abstract class User implements ActiveRecordInterface
         $this->collBooks = null;
         $this->collCarts = null;
         $this->collWishlists = null;
+        $this->collBooks = null;
         $this->collcurrentBooks = null;
     }
 
