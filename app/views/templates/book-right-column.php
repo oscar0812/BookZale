@@ -17,7 +17,7 @@ _________________________________________________________ -->
           ?>
           <li class="<?=$highlight?>">
             <a href="books?category=<?=$c->getId()?>">
-              <?=$c->getName()?> <span class="badge pull-right">2</span></a>
+              <?=$c->getName()?> <span class="badge pull-right"><?=$c->count()?></span></a>
 
           <?php if(count($children)!=0) { ?>
             <ul>

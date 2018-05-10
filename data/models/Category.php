@@ -17,4 +17,8 @@ class Category extends BaseCategory
   public function getChildren(){
     return \CategoryQuery::create()->findByParent($this->getId());
   }
+
+  public function count(){
+    return count(\BookQuery::create()->findByCategory($this));
+  }
 }
