@@ -87,7 +87,7 @@
                     <div class="product-slider">
                       <?php foreach (\BookQuery::create() as $book) { ?>
                         <div class="item">
-                            <?php require("templates/product-with-btn.php")?>
+                            <?php require("templates/book-product.php")?>
                         </div>
                       <?php }?>
                             <!-- /.product -->

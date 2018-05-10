@@ -21,6 +21,14 @@ $container['notFoundHandler'] = function ($c) {
     };
 };
 
+$app->get('/', function ($request, $response, $args) {
+    return $this->view->render(
+                $response,
+                "home.php",
+            ['router' => $this->router, 'user'=>currentUser()]
+            );
+});
+
 $app->get('/books', function ($request, $response, $args) {
     $get = $request->getParams();
     // get book category
@@ -28,7 +36,7 @@ $app->get('/books', function ($request, $response, $args) {
     $category = \CategoryQuery::create()->findOneById($category);
     // parameter was illegal if $category == null
     $category = $category == null?\CategoryQuery::create()->findOneById(1):$category;
-    return $this->view->render($response,"books.php", ['router' => $this->router,
+    return $this->view->render($response, "books.php", ['router' => $this->router,
         'user'=>currentUser(), 'category'=>$category,
         'categories'=>\CategoryQuery::create()->findByParent(0),
         'books'=>\BookQuery::create()->findByCategory($category)]);
@@ -37,8 +45,10 @@ $app->get('/books', function ($request, $response, $args) {
 $app->get('/detail', function ($request, $response, $args) {
     $get = $request->getParams();
     $book = \BookQuery::create()->findPk($get['book_id']);
-    if($book == null) return $response->withRedirect("books");
-    return $this->view->render($response,"detail.php", ['router' => $this->router,
+    if ($book == null) {
+        return $response->withRedirect("books");
+    }
+    return $this->view->render($response, "detail.php", ['router' => $this->router,
         'user'=>currentUser(), 'category'=>$book->getCategory(),
         'categories'=>\CategoryQuery::create()->findByParent(0),
         'books'=>\BookQuery::create()->findByCategory($book->getCategory()),

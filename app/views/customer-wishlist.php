@@ -62,7 +62,7 @@
         <?php foreach (\WishlistQuery::create()->findByCurrentUser($user) as $wish) {
           $book = $wish->getCurrentBook()?>
           <div class="col-md-3 col-sm-4">
-            <?php require("templates/product-with-btn.php")?>
+            <?php require("templates/book-product.php")?>
           </div>
         <?php } ?>
 

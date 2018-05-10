@@ -102,7 +102,7 @@
 
         <?php foreach(\BookQuery::create()->limit(3) as $book) { ?>
         <div class="col-md-3 col-sm-6">
-          <?php require("templates/product-with-btn.php")?>
+          <?php require("templates/book-product.php")?>
           <!-- /.product -->
         </div>
         <?php } ?>
