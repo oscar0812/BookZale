@@ -25,6 +25,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildBookQuery orderByPrice($order = Criteria::ASC) Order by the price column
  * @method     ChildBookQuery orderByDescription($order = Criteria::ASC) Order by the description column
  * @method     ChildBookQuery orderByImageUrl($order = Criteria::ASC) Order by the image_url column
+ * @method     ChildBookQuery orderByDatePosted($order = Criteria::ASC) Order by the date_posted column
  * @method     ChildBookQuery orderByCategoryId($order = Criteria::ASC) Order by the category_id column
  * @method     ChildBookQuery orderByPostedBy($order = Criteria::ASC) Order by the posted_by column
  * @method     ChildBookQuery orderBySold($order = Criteria::ASC) Order by the sold column
@@ -34,6 +35,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildBookQuery groupByPrice() Group by the price column
  * @method     ChildBookQuery groupByDescription() Group by the description column
  * @method     ChildBookQuery groupByImageUrl() Group by the image_url column
+ * @method     ChildBookQuery groupByDatePosted() Group by the date_posted column
  * @method     ChildBookQuery groupByCategoryId() Group by the category_id column
  * @method     ChildBookQuery groupByPostedBy() Group by the posted_by column
  * @method     ChildBookQuery groupBySold() Group by the sold column
@@ -96,6 +98,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildBook findOneByPrice(double $price) Return the first ChildBook filtered by the price column
  * @method     ChildBook findOneByDescription(string $description) Return the first ChildBook filtered by the description column
  * @method     ChildBook findOneByImageUrl(string $image_url) Return the first ChildBook filtered by the image_url column
+ * @method     ChildBook findOneByDatePosted(int $date_posted) Return the first ChildBook filtered by the date_posted column
  * @method     ChildBook findOneByCategoryId(int $category_id) Return the first ChildBook filtered by the category_id column
  * @method     ChildBook findOneByPostedBy(int $posted_by) Return the first ChildBook filtered by the posted_by column
  * @method     ChildBook findOneBySold(boolean $sold) Return the first ChildBook filtered by the sold column *
@@ -108,6 +111,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildBook requireOneByPrice(double $price) Return the first ChildBook filtered by the price column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildBook requireOneByDescription(string $description) Return the first ChildBook filtered by the description column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildBook requireOneByImageUrl(string $image_url) Return the first ChildBook filtered by the image_url column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildBook requireOneByDatePosted(int $date_posted) Return the first ChildBook filtered by the date_posted column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildBook requireOneByCategoryId(int $category_id) Return the first ChildBook filtered by the category_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildBook requireOneByPostedBy(int $posted_by) Return the first ChildBook filtered by the posted_by column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildBook requireOneBySold(boolean $sold) Return the first ChildBook filtered by the sold column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
@@ -118,6 +122,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildBook[]|ObjectCollection findByPrice(double $price) Return ChildBook objects filtered by the price column
  * @method     ChildBook[]|ObjectCollection findByDescription(string $description) Return ChildBook objects filtered by the description column
  * @method     ChildBook[]|ObjectCollection findByImageUrl(string $image_url) Return ChildBook objects filtered by the image_url column
+ * @method     ChildBook[]|ObjectCollection findByDatePosted(int $date_posted) Return ChildBook objects filtered by the date_posted column
  * @method     ChildBook[]|ObjectCollection findByCategoryId(int $category_id) Return ChildBook objects filtered by the category_id column
  * @method     ChildBook[]|ObjectCollection findByPostedBy(int $posted_by) Return ChildBook objects filtered by the posted_by column
  * @method     ChildBook[]|ObjectCollection findBySold(boolean $sold) Return ChildBook objects filtered by the sold column
@@ -219,7 +224,7 @@ abstract class BookQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT id, name, price, description, image_url, category_id, posted_by, sold FROM book WHERE id = :p0';
+        $sql = 'SELECT id, name, price, description, image_url, date_posted, category_id, posted_by, sold FROM book WHERE id = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -464,6 +469,47 @@ abstract class BookQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(BookTableMap::COL_IMAGE_URL, $imageUrl, $comparison);
+    }
+
+    /**
+     * Filter the query on the date_posted column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByDatePosted(1234); // WHERE date_posted = 1234
+     * $query->filterByDatePosted(array(12, 34)); // WHERE date_posted IN (12, 34)
+     * $query->filterByDatePosted(array('min' => 12)); // WHERE date_posted > 12
+     * </code>
+     *
+     * @param     mixed $datePosted The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildBookQuery The current query, for fluid interface
+     */
+    public function filterByDatePosted($datePosted = null, $comparison = null)
+    {
+        if (is_array($datePosted)) {
+            $useMinMax = false;
+            if (isset($datePosted['min'])) {
+                $this->addUsingAlias(BookTableMap::COL_DATE_POSTED, $datePosted['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($datePosted['max'])) {
+                $this->addUsingAlias(BookTableMap::COL_DATE_POSTED, $datePosted['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(BookTableMap::COL_DATE_POSTED, $datePosted, $comparison);
     }
 
     /**

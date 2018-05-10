@@ -107,6 +107,13 @@ abstract class Book implements ActiveRecordInterface
     protected $image_url;
 
     /**
+     * The value for the date_posted field.
+     *
+     * @var        int
+     */
+    protected $date_posted;
+
+    /**
      * The value for the category_id field.
      *
      * @var        int
@@ -475,6 +482,16 @@ abstract class Book implements ActiveRecordInterface
     }
 
     /**
+     * Get the [date_posted] column value.
+     *
+     * @return int
+     */
+    public function getDatePosted()
+    {
+        return $this->date_posted;
+    }
+
+    /**
      * Get the [category_id] column value.
      *
      * @return int
@@ -615,6 +632,26 @@ abstract class Book implements ActiveRecordInterface
     } // setImageUrl()
 
     /**
+     * Set the value of [date_posted] column.
+     *
+     * @param int $v new value
+     * @return $this|\Book The current object (for fluent API support)
+     */
+    public function setDatePosted($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->date_posted !== $v) {
+            $this->date_posted = $v;
+            $this->modifiedColumns[BookTableMap::COL_DATE_POSTED] = true;
+        }
+
+        return $this;
+    } // setDatePosted()
+
+    /**
      * Set the value of [category_id] column.
      *
      * @param int $v new value
@@ -745,13 +782,16 @@ abstract class Book implements ActiveRecordInterface
             $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : BookTableMap::translateFieldName('ImageUrl', TableMap::TYPE_PHPNAME, $indexType)];
             $this->image_url = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : BookTableMap::translateFieldName('CategoryId', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : BookTableMap::translateFieldName('DatePosted', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->date_posted = (null !== $col) ? (int) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : BookTableMap::translateFieldName('CategoryId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->category_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : BookTableMap::translateFieldName('PostedBy', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 7 + $startcol : BookTableMap::translateFieldName('PostedBy', TableMap::TYPE_PHPNAME, $indexType)];
             $this->posted_by = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 7 + $startcol : BookTableMap::translateFieldName('Sold', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 8 + $startcol : BookTableMap::translateFieldName('Sold', TableMap::TYPE_PHPNAME, $indexType)];
             $this->sold = (null !== $col) ? (boolean) $col : null;
             $this->resetModified();
 
@@ -761,7 +801,7 @@ abstract class Book implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 8; // 8 = BookTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 9; // 9 = BookTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException(sprintf('Error populating %s object', '\\Book'), 0, $e);
@@ -1072,6 +1112,9 @@ abstract class Book implements ActiveRecordInterface
         if ($this->isColumnModified(BookTableMap::COL_IMAGE_URL)) {
             $modifiedColumns[':p' . $index++]  = 'image_url';
         }
+        if ($this->isColumnModified(BookTableMap::COL_DATE_POSTED)) {
+            $modifiedColumns[':p' . $index++]  = 'date_posted';
+        }
         if ($this->isColumnModified(BookTableMap::COL_CATEGORY_ID)) {
             $modifiedColumns[':p' . $index++]  = 'category_id';
         }
@@ -1106,6 +1149,9 @@ abstract class Book implements ActiveRecordInterface
                         break;
                     case 'image_url':
                         $stmt->bindValue($identifier, $this->image_url, PDO::PARAM_STR);
+                        break;
+                    case 'date_posted':
+                        $stmt->bindValue($identifier, $this->date_posted, PDO::PARAM_INT);
                         break;
                     case 'category_id':
                         $stmt->bindValue($identifier, $this->category_id, PDO::PARAM_INT);
@@ -1194,12 +1240,15 @@ abstract class Book implements ActiveRecordInterface
                 return $this->getImageUrl();
                 break;
             case 5:
-                return $this->getCategoryId();
+                return $this->getDatePosted();
                 break;
             case 6:
-                return $this->getPostedBy();
+                return $this->getCategoryId();
                 break;
             case 7:
+                return $this->getPostedBy();
+                break;
+            case 8:
                 return $this->getSold();
                 break;
             default:
@@ -1237,9 +1286,10 @@ abstract class Book implements ActiveRecordInterface
             $keys[2] => $this->getPrice(),
             $keys[3] => $this->getDescription(),
             $keys[4] => $this->getImageUrl(),
-            $keys[5] => $this->getCategoryId(),
-            $keys[6] => $this->getPostedBy(),
-            $keys[7] => $this->getSold(),
+            $keys[5] => $this->getDatePosted(),
+            $keys[6] => $this->getCategoryId(),
+            $keys[7] => $this->getPostedBy(),
+            $keys[8] => $this->getSold(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1357,12 +1407,15 @@ abstract class Book implements ActiveRecordInterface
                 $this->setImageUrl($value);
                 break;
             case 5:
-                $this->setCategoryId($value);
+                $this->setDatePosted($value);
                 break;
             case 6:
-                $this->setPostedBy($value);
+                $this->setCategoryId($value);
                 break;
             case 7:
+                $this->setPostedBy($value);
+                break;
+            case 8:
                 $this->setSold($value);
                 break;
         } // switch()
@@ -1407,13 +1460,16 @@ abstract class Book implements ActiveRecordInterface
             $this->setImageUrl($arr[$keys[4]]);
         }
         if (array_key_exists($keys[5], $arr)) {
-            $this->setCategoryId($arr[$keys[5]]);
+            $this->setDatePosted($arr[$keys[5]]);
         }
         if (array_key_exists($keys[6], $arr)) {
-            $this->setPostedBy($arr[$keys[6]]);
+            $this->setCategoryId($arr[$keys[6]]);
         }
         if (array_key_exists($keys[7], $arr)) {
-            $this->setSold($arr[$keys[7]]);
+            $this->setPostedBy($arr[$keys[7]]);
+        }
+        if (array_key_exists($keys[8], $arr)) {
+            $this->setSold($arr[$keys[8]]);
         }
     }
 
@@ -1470,6 +1526,9 @@ abstract class Book implements ActiveRecordInterface
         }
         if ($this->isColumnModified(BookTableMap::COL_IMAGE_URL)) {
             $criteria->add(BookTableMap::COL_IMAGE_URL, $this->image_url);
+        }
+        if ($this->isColumnModified(BookTableMap::COL_DATE_POSTED)) {
+            $criteria->add(BookTableMap::COL_DATE_POSTED, $this->date_posted);
         }
         if ($this->isColumnModified(BookTableMap::COL_CATEGORY_ID)) {
             $criteria->add(BookTableMap::COL_CATEGORY_ID, $this->category_id);
@@ -1570,6 +1629,7 @@ abstract class Book implements ActiveRecordInterface
         $copyObj->setPrice($this->getPrice());
         $copyObj->setDescription($this->getDescription());
         $copyObj->setImageUrl($this->getImageUrl());
+        $copyObj->setDatePosted($this->getDatePosted());
         $copyObj->setCategoryId($this->getCategoryId());
         $copyObj->setPostedBy($this->getPostedBy());
         $copyObj->setSold($this->getSold());
@@ -2511,6 +2571,7 @@ abstract class Book implements ActiveRecordInterface
         $this->price = null;
         $this->description = null;
         $this->image_url = null;
+        $this->date_posted = null;
         $this->category_id = null;
         $this->posted_by = null;
         $this->sold = null;

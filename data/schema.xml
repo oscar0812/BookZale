@@ -6,6 +6,7 @@
     <column name="price" phpName="Price" type="DOUBLE" size="8" scale="2" required="true"/>
     <column name="description" phpName="Description" type="VARCHAR" size="4098" required="true"/>
     <column name="image_url" phpName="ImageUrl" type="VARCHAR" size="128" required="true"/>
+    <column name="date_posted" phpName="DatePosted" type="INTEGER" size="16" required="true"/>
     <column name="category_id" phpName="CategoryId" type="INTEGER" required="true"/>
     <column name="posted_by" phpName="PostedBy" type="INTEGER" required="true"/>
     <column name="sold" phpName="Sold" type="BOOLEAN" size="1" required="true" defaultValue="false"/>

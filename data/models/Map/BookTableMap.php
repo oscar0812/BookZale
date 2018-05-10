@@ -59,7 +59,7 @@ class BookTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 8;
+    const NUM_COLUMNS = 9;
 
     /**
      * The number of lazy-loaded columns
@@ -69,7 +69,7 @@ class BookTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 8;
+    const NUM_HYDRATE_COLUMNS = 9;
 
     /**
      * the column name for the id field
@@ -95,6 +95,11 @@ class BookTableMap extends TableMap
      * the column name for the image_url field
      */
     const COL_IMAGE_URL = 'book.image_url';
+
+    /**
+     * the column name for the date_posted field
+     */
+    const COL_DATE_POSTED = 'book.date_posted';
 
     /**
      * the column name for the category_id field
@@ -123,11 +128,11 @@ class BookTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'Name', 'Price', 'Description', 'ImageUrl', 'CategoryId', 'PostedBy', 'Sold', ),
-        self::TYPE_CAMELNAME     => array('id', 'name', 'price', 'description', 'imageUrl', 'categoryId', 'postedBy', 'sold', ),
-        self::TYPE_COLNAME       => array(BookTableMap::COL_ID, BookTableMap::COL_NAME, BookTableMap::COL_PRICE, BookTableMap::COL_DESCRIPTION, BookTableMap::COL_IMAGE_URL, BookTableMap::COL_CATEGORY_ID, BookTableMap::COL_POSTED_BY, BookTableMap::COL_SOLD, ),
-        self::TYPE_FIELDNAME     => array('id', 'name', 'price', 'description', 'image_url', 'category_id', 'posted_by', 'sold', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, )
+        self::TYPE_PHPNAME       => array('Id', 'Name', 'Price', 'Description', 'ImageUrl', 'DatePosted', 'CategoryId', 'PostedBy', 'Sold', ),
+        self::TYPE_CAMELNAME     => array('id', 'name', 'price', 'description', 'imageUrl', 'datePosted', 'categoryId', 'postedBy', 'sold', ),
+        self::TYPE_COLNAME       => array(BookTableMap::COL_ID, BookTableMap::COL_NAME, BookTableMap::COL_PRICE, BookTableMap::COL_DESCRIPTION, BookTableMap::COL_IMAGE_URL, BookTableMap::COL_DATE_POSTED, BookTableMap::COL_CATEGORY_ID, BookTableMap::COL_POSTED_BY, BookTableMap::COL_SOLD, ),
+        self::TYPE_FIELDNAME     => array('id', 'name', 'price', 'description', 'image_url', 'date_posted', 'category_id', 'posted_by', 'sold', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, )
     );
 
     /**
@@ -137,11 +142,11 @@ class BookTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'Name' => 1, 'Price' => 2, 'Description' => 3, 'ImageUrl' => 4, 'CategoryId' => 5, 'PostedBy' => 6, 'Sold' => 7, ),
-        self::TYPE_CAMELNAME     => array('id' => 0, 'name' => 1, 'price' => 2, 'description' => 3, 'imageUrl' => 4, 'categoryId' => 5, 'postedBy' => 6, 'sold' => 7, ),
-        self::TYPE_COLNAME       => array(BookTableMap::COL_ID => 0, BookTableMap::COL_NAME => 1, BookTableMap::COL_PRICE => 2, BookTableMap::COL_DESCRIPTION => 3, BookTableMap::COL_IMAGE_URL => 4, BookTableMap::COL_CATEGORY_ID => 5, BookTableMap::COL_POSTED_BY => 6, BookTableMap::COL_SOLD => 7, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'name' => 1, 'price' => 2, 'description' => 3, 'image_url' => 4, 'category_id' => 5, 'posted_by' => 6, 'sold' => 7, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'Name' => 1, 'Price' => 2, 'Description' => 3, 'ImageUrl' => 4, 'DatePosted' => 5, 'CategoryId' => 6, 'PostedBy' => 7, 'Sold' => 8, ),
+        self::TYPE_CAMELNAME     => array('id' => 0, 'name' => 1, 'price' => 2, 'description' => 3, 'imageUrl' => 4, 'datePosted' => 5, 'categoryId' => 6, 'postedBy' => 7, 'sold' => 8, ),
+        self::TYPE_COLNAME       => array(BookTableMap::COL_ID => 0, BookTableMap::COL_NAME => 1, BookTableMap::COL_PRICE => 2, BookTableMap::COL_DESCRIPTION => 3, BookTableMap::COL_IMAGE_URL => 4, BookTableMap::COL_DATE_POSTED => 5, BookTableMap::COL_CATEGORY_ID => 6, BookTableMap::COL_POSTED_BY => 7, BookTableMap::COL_SOLD => 8, ),
+        self::TYPE_FIELDNAME     => array('id' => 0, 'name' => 1, 'price' => 2, 'description' => 3, 'image_url' => 4, 'date_posted' => 5, 'category_id' => 6, 'posted_by' => 7, 'sold' => 8, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, )
     );
 
     /**
@@ -166,6 +171,7 @@ class BookTableMap extends TableMap
         $this->addColumn('price', 'Price', 'DOUBLE', true, 8, null);
         $this->addColumn('description', 'Description', 'VARCHAR', true, 4098, null);
         $this->addColumn('image_url', 'ImageUrl', 'VARCHAR', true, 128, null);
+        $this->addColumn('date_posted', 'DatePosted', 'INTEGER', true, 16, null);
         $this->addForeignKey('category_id', 'CategoryId', 'INTEGER', 'category', 'id', true, null, null);
         $this->addForeignKey('posted_by', 'PostedBy', 'INTEGER', 'user', 'id', true, null, null);
         $this->addColumn('sold', 'Sold', 'BOOLEAN', true, 1, false);
@@ -353,6 +359,7 @@ class BookTableMap extends TableMap
             $criteria->addSelectColumn(BookTableMap::COL_PRICE);
             $criteria->addSelectColumn(BookTableMap::COL_DESCRIPTION);
             $criteria->addSelectColumn(BookTableMap::COL_IMAGE_URL);
+            $criteria->addSelectColumn(BookTableMap::COL_DATE_POSTED);
             $criteria->addSelectColumn(BookTableMap::COL_CATEGORY_ID);
             $criteria->addSelectColumn(BookTableMap::COL_POSTED_BY);
             $criteria->addSelectColumn(BookTableMap::COL_SOLD);
@@ -362,6 +369,7 @@ class BookTableMap extends TableMap
             $criteria->addSelectColumn($alias . '.price');
             $criteria->addSelectColumn($alias . '.description');
             $criteria->addSelectColumn($alias . '.image_url');
+            $criteria->addSelectColumn($alias . '.date_posted');
             $criteria->addSelectColumn($alias . '.category_id');
             $criteria->addSelectColumn($alias . '.posted_by');
             $criteria->addSelectColumn($alias . '.sold');
